@@ -4,6 +4,8 @@ const client = new Discord.Client();
 const SteamCommunity = require('steamcommunity');
 var community = new SteamCommunity();
 
+const fs = require('fs');
+
 var whoppl = {
   "yuna": "a rich guy who watches hentai",
   "kairu": "the traplord",
