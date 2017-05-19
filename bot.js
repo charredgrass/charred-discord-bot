@@ -150,4 +150,4 @@ client.on('message', message => {
   }
 });
 
-client.login('MzEzMTczMzA3MzI5NDc4NjY4.C_lzkg.HULiVsszISbas7PbqteljASs9kE');
+client.login(fs.readFileSync('./key.txt').toString("utf-8"));
