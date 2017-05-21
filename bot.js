@@ -6,24 +6,49 @@ var community = new SteamCommunity();
 
 const fs = require('fs');
 
-var whoppl = {
-  "yuna": "a rich guy who watches hentai",
-  "kairu": "the traplord",
-  "aesoa": "the boss",
-  "charred": "my dad",
-  "dank": "the best",
-  "danknissan": "the best",
-  "problemen": "some guy",
-  "imp": "a degenerate weeb but still pretty cool",
-  "wings": "some loser",
-  "danker": "gay",
-  "clam": "knif stealer",
-  "ghast": "a loser",
-  "danker": "the inferior dank",
-  "kansaurous": "a grammar nazi but the good kind",
-  "kuri2k": "a profile genius"
-}
+var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
 
+process.stdin.setEncoding('utf8');
+var commands = {
+  "UNKNOWN_COMMAND": function() {
+    return "Unknown command. Type `help` for help.";
+  },
+  "reload": function() {
+    whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
+  }
+};
+
+process.stdin.on('data', (text) => {
+  var stuff;
+  while (text.indexOf('\n') !== -1 || text.indexOf('\r') !== -1 || text.indexOf('  ') !== -1) {
+    text = text.replace(/\n|\r|\t/, '').replace(/  /, ' ');
+  }
+  var args = text.split(' ');
+  //call a function with args. Maybe make a function list or something?
+  var command = args[0].toLowerCase();
+  var trip = false;
+  for (var key in commands) {
+    if (key === command) {
+      trip = true;
+      stuff = commands[key](args[1], args[2], args[3]);
+      if (Array.isArray(stuff)) {
+        stuff.forEach(log);
+      } else {
+        log(stuff);
+      }
+    }
+  }
+  if (!trip) {
+    stuff = commands.UNKNOWN_COMMAND();
+    if (Array.isArray(stuff)) {
+      for (var i = 0; i < stuff.length; i++) {
+        log(stuff[i]);
+      }
+    } else {
+      log(stuff);
+    }
+  }
+});
 
 function whois(person) {
   for (var key in whoppl) {
