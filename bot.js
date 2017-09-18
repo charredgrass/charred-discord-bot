@@ -218,6 +218,9 @@ client.on('message', message => {
   if (msg.toLowerCase().includes("what is gambl")) {
     send("gamble is bad")
   }
+  if (msg.toLowerCase() === "!source" || msg.toLowerCase() === "!sauce") {
+    send("https://github.com/charredgrass/raocsgo-discord-bot");
+  }
   if (msg.substring(0, "!jokes".length).toLowerCase() === "!jokes") {
     if (message.channel.name === "bot_spam") {
       send(jokes.join("\n"))
