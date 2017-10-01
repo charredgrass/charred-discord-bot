@@ -55,8 +55,7 @@ process.stdin.on('data', (text) => {
     if (key === command) {
       trip = true;
       stuff = commands[key](args[1], args[2], args[3]);
-      if (Array.isArray(stuff)) {
-      } else {
+      if (Array.isArray(stuff)) {} else {
         console.log(stuff);
       }
     }
@@ -102,9 +101,37 @@ function getPrice(item, appid, cb) {
     appid
   }, (err, items) => {
     if (err) {
-      cb(err.message)
+      cb(err.message);
     } else {
-      cb(formatPrice(items))
+      cb(formatPrice(items));
+    }
+  });
+}
+
+function getImg(item, appid, cb, ecb) {
+  if (item.toLowerCase() == "kairu") {
+    cb("http://vignette1.wikia.nocookie.net/powerlisting/images/a/ad/Trap-image.png/revision/latest?cb=20160113212524");
+    return;
+  } else if (item.toLowerCase() == "livid") {
+    cb("https://s.thestreet.com/files/tsc/v2008/photos/contrib/uploads/transoceanrig_600x400.jpg");
+    return;
+  } else if (item.toLowerCase() == "dank") {
+    cb("http://st.motortrend.com/uploads/sites/10/2015/11/2015-nissan-juke-sl-suv-angular-front.png?interpolation=lanczos-none&fit=around|300;199");
+    return;
+  } else if (item.toLowerCase() == "yuna") {
+    cb("http://i.imgur.com/5vDmod7.png");
+    return;
+  } else if (item.toLowerCase() == "abuse") {
+    cb("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png");
+  }
+  community.marketSearch({
+    query: item,
+    appid: appid
+  }, (err, items) => {
+    if (err) {
+      ecb(err.message);
+    } else {
+      cb(items[0].image, items[0].market_hash_name);
     }
   });
 }
@@ -117,8 +144,8 @@ function removeAll(str, rep) {
 }
 
 function getRandomInt(min, max) {
-  let min = Math.ceil(min);
-  let max = Math.floor(max);
+  min = Math.ceil(min);
+  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -141,13 +168,19 @@ client.on('message', message => {
   var loc = message.channel;
   var msg = removeAll(message.content, "?");
 
-  var send = function(msg, opts) {
+  let send = function(msg, opts) {
     if (lastsent + 1000 < Date.now()) {
       lastsent = Date.now();
       loc.send(msg, opts);
     } else {
 
     }
+  };
+
+  let sendimg = function(img, text) {
+    send(text, {
+      embed: new Discord.RichEmbed().setImage(img)
+    });
   };
 
   let mroles = message.member.roles.array();
@@ -250,109 +283,19 @@ client.on('message', message => {
     getPrice(msg.substring("!priceof ".length), 730, send);
   }
   if (msg.substring(0, "!priceofdota ".length).toLowerCase() === "!priceofdota ") {
-    getPrice(msg.substring("!priceofdota ".length), 730, send);
+    getPrice(msg.substring("!priceofdota ".length), 570, send);
   }
   if (msg.substring(0, "!priceoftf ".length).toLowerCase() === "!priceoftf ") {
-    getPrice(msg.substring("!priceoftf ".length), 730, send);
+    getPrice(msg.substring("!priceoftf ".length), 440, send);
   }
   if (msg.substring(0, "!priceofpubg ".length).toLowerCase() === "!priceofpubg ") {
-    getPrice(msg.substring("!priceofpubg ".length), 730, send);
+    getPrice(msg.substring("!priceofpubg ".length), 578080, send);
   }
   if (msg.substring(0, "!imgof ".length).toLowerCase() === "!imgof ") {
-    let item = (msg.substring("!imgof ".length));
-    if (item.toLowerCase() == "kairu") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://vignette1.wikia.nocookie.net/powerlisting/images/a/ad/Trap-image.png/revision/latest?cb=20160113212524")
-      });
-      return;
-    } else if (item.toLowerCase() == "livid") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("https://s.thestreet.com/files/tsc/v2008/photos/contrib/uploads/transoceanrig_600x400.jpg")
-      });
-      return;
-    } else if (item.toLowerCase() == "dank") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://st.motortrend.com/uploads/sites/10/2015/11/2015-nissan-juke-sl-suv-angular-front.png?interpolation=lanczos-none&fit=around|300;199")
-      });
-      return;
-    } else if (item.toLowerCase() == "yuna") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://i.imgur.com/5vDmod7.png")
-      });
-      return;
-    } else if (item.toLowerCase() == "dank") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Mao_Zedong_portrait.jpg/330px-Mao_Zedong_portrait.jpg")
-      });
-      return;
-    } else if (item.toLowerCase() == "truth") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://i.imgur.com/mquGuuk.png")
-      });
-      return;
-    } else if (item.toLowerCase() == "abuse") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png")
-      });
-    }
-    community.marketSearch({
-      query: item,
-      appid: 730
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(items[0].market_hash_name, {
-          embed: new Discord.RichEmbed().setImage(items[0].image)
-        });
-      }
-    });
+    getImg(msg.substring("!imgof ".length), 730, sendimg, send);
   }
   if (msg.substring(0, "!imgofpubg ".length).toLowerCase() === "!imgofpubg ") {
-    let item = (msg.substring("!imgofpubg ".length));
-    if (item.toLowerCase() == "kairu") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://vignette1.wikia.nocookie.net/powerlisting/images/a/ad/Trap-image.png/revision/latest?cb=20160113212524")
-      });
-      return;
-    } else if (item.toLowerCase() == "livid") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("https://s.thestreet.com/files/tsc/v2008/photos/contrib/uploads/transoceanrig_600x400.jpg")
-      });
-      return;
-    } else if (item.toLowerCase() == "dank") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://st.motortrend.com/uploads/sites/10/2015/11/2015-nissan-juke-sl-suv-angular-front.png?interpolation=lanczos-none&fit=around|300;199")
-      });
-      return;
-    } else if (item.toLowerCase() == "yuna") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://i.imgur.com/5vDmod7.png")
-      });
-      return;
-    } else if (item.toLowerCase() == "dank") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Mao_Zedong_portrait.jpg/330px-Mao_Zedong_portrait.jpg")
-      });
-      return;
-    } else if (item.toLowerCase() == "truth") {
-      send("", {
-        embed: new Discord.RichEmbed().setImage("http://i.imgur.com/mquGuuk.png")
-      });
-      return;
-    }
-    community.marketSearch({
-      query: item,
-      appid: 578080
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(items[0].market_hash_name, {
-          embed: new Discord.RichEmbed().setImage(items[0].image)
-        });
-      }
-    });
+    getImg(msg.substring("!imgofpubg ".length), 578080, sendimg, send);
   }
   if (msg.substring(0, "!magic8 ".length).toLowerCase() === "!magic8 ") {
     var answers = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
