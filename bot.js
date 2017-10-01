@@ -420,7 +420,7 @@
         return;
       } else if (item.toLowerCase() == "abuse") {
         send("", {
-          embed: new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png");
+          embed: new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png")
         });
       }
       community.marketSearch({
