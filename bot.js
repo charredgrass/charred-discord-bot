@@ -264,6 +264,7 @@ client.on('message', message => {
   }
   if (msg.substring(0, "!anchorloc".length).toLowerCase() === "!anchorloc") {
     anchorloc = loc;
+    message.delete();
   }
   if (msg.substring(0, "!proxy".length).toLowerCase() === "!proxy") {
     if (message.author.id == "154826263628873728") {
@@ -271,12 +272,6 @@ client.on('message', message => {
       if (anchorloc) {
         anchorloc.send(toSay);
       }
-      message.delete();
-    }
-  }
-  if (msg.toLowerCase() == "!stopmusic") {
-    for (let i = 0; i < client.voiceConnections.array().length; i++) {
-      client.voiceConnections.array()[i].disconnect();
     }
   }
   if (msg.substring(0, "!priceof ".length).toLowerCase() === "!priceof ") {
@@ -315,6 +310,14 @@ client.on('message', message => {
       send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
       if (helpdocs[args[0]]) {
         send(helpdocs[args[0]]);
+      }
+    } else {
+      send("Unknown command. Type \"!help\" for help.");
+    }
+  }
+});
+
+client.login(fs.readFileSync('./key.txt').toString("utf-8"));  send(helpdocs[args[0]]);
       }
     } else {
       send("Unknown command. Type \"!help\" for help.");
