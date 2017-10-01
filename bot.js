@@ -43,7 +43,7 @@
       return "yep"
     }
   };
-
+  var anchorloc;
   process.stdin.on('data', (text) => {
     var stuff;
     while (text.indexOf('\n') !== -1 || text.indexOf('\r') !== -1 || text.indexOf('  ') !== -1) {
@@ -228,35 +228,35 @@
     if (msg.toLowerCase() === "!source2") {
       send("never")
     }
-    if (msg.substring(0, "!jokes".length).toLowerCase() === "!jokes") {
-      if (msg.split(" ").length > 1) {
-        let x = parseInt(msg.substring("!jokes ".length));
-        if (!x) {
-          x = 0
-        }
-        if (x <= Math.ceil(jokes.length / 20) && x >= 0) {
-          if (message.channel.name === "bot_spam") {
-            send(jokes.splice((x - 1) * 20, x * 20));
-          } else {
-            send("Please only use this command in #bot_spam. :poop:")
-          }
-        }
-      } else {
-        if (message.channel.name === "bot_spam") {
-          send(jokes.splice(0, 20));
-        } else {
-          send("Please only use this command in #bot_spam. :poop:")
-        } 
-      }
-      return;
-    }
+    // if (msg.substring(0, "!jokes".length).toLowerCase() === "!jokes") {
+    //   if (msg.split(" ").length > 1) {
+    //     let x = parseInt(msg.substring("!jokes ".length));
+    //     if (!x) {
+    //       x = 0
+    //     }
+    //     if (x <= Math.ceil(jokes.length / 20) && x >= 0) {
+    //       if (message.channel.name === "bot_spam") {
+    //         send(jokes.splice((x - 1) * 20, x * 20));
+    //       } else {
+    //         send("Please only use this command in #bot_spam. :poop:")
+    //       }
+    //     }
+    //   } else {
+    //     if (message.channel.name === "bot_spam") {
+    //       send(jokes.splice(0, 20));
+    //     } else {
+    //       send("Please only use this command in #bot_spam. :poop:")
+    //     } 
+    //   }
+    //   return;
+    // }
     if (msg.substring(0, "!joke".length).toLowerCase() === "!joke") {
       if (msg.split(" ").length > 1) {
         let x = parseInt(msg.substring("!joke ".length));
         if (x && x - 1 < jokes.length) {
           if (x == 69) {
             // send("")
-          } else if (x==0) {
+          } else if (x == 0) {
             send("People who think arrays start at 1")
           } else {
             send(jokes[x - 1])
@@ -268,6 +268,17 @@
         send(getRandomFromList(jokes));
       }
     }
+    if (msg.substring(0, "!anchorloc".length).toLowerCase() === "!anchorloc") {
+      anchorloc = loc;
+    }
+    if (msg.substring(0, "!proxy".length).toLowerCase() === "!proxy") {
+      if (message.author.id == "154826263628873728") {
+        let toSay = msg.substring("!proxy ".length);
+        if (anchorloc) {
+          anchorloc.send(toSay);
+        }
+      }
+    }
     if (msg.substring(0, "!music".length).toLowerCase() === "!music") {
       if (ismod === false) {
         send("You do not have permission.");
@@ -277,7 +288,7 @@
         send("You must supply a URL")
         return;
       }
-      toPlay = msg.substring("!music ".length);
+      let toPlay = msg.substring("!music ".length);
       if (toPlay == "it's everyday bro") {
         toPlay = "http://dopefile.pk/mp3embed-ujje58ncqvlx.mp3"
       }
@@ -407,6 +418,10 @@
           embed: new Discord.RichEmbed().setImage("http://i.imgur.com/mquGuuk.png")
         });
         return;
+      } else if (item.toLowerCase() == "abuse") {
+        send("", {
+          embed: new Discord.RichEmbed().setImage("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png");
+        });
       }
       community.marketSearch({
         query: item,
