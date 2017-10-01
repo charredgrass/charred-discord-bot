@@ -96,6 +96,19 @@ function formatPrice(prices) {
   return ret;
 }
 
+function getPrice(item, appid, cb) {
+  community.marketSearch({
+    query: item,
+    appid
+  }, (err, items) => {
+    if (err) {
+      cb(err.message)
+    } else {
+      cb(formatPrice(items))
+    }
+  });
+}
+
 function removeAll(str, rep) {
   while (str.includes(rep) === true) {
     str = str.replace(rep, "");
@@ -234,56 +247,16 @@ client.on('message', message => {
     }
   }
   if (msg.substring(0, "!priceof ".length).toLowerCase() === "!priceof ") {
-    let item = (msg.substring("!priceof ".length));
-    community.marketSearch({
-      query: item,
-      appid: 730
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(formatPrice(items));
-      }
-    });
+    getPrice(msg.substring("!priceof ".length), 730, send);
   }
   if (msg.substring(0, "!priceofdota ".length).toLowerCase() === "!priceofdota ") {
-    let item = (msg.substring("!priceofdota ".length));
-    community.marketSearch({
-      query: item,
-      appid: 570
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(formatPrice(items));
-      }
-    });
+    getPrice(msg.substring("!priceofdota ".length), 730, send);
   }
   if (msg.substring(0, "!priceoftf ".length).toLowerCase() === "!priceoftf ") {
-    let item = (msg.substring("!priceoftf ".length));
-    community.marketSearch({
-      query: item,
-      appid: 440
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(formatPrice(items));
-      }
-    });
+    getPrice(msg.substring("!priceoftf ".length), 730, send);
   }
   if (msg.substring(0, "!priceofpubg ".length).toLowerCase() === "!priceofpubg ") {
-    let item = (msg.substring("!priceofpubg ".length));
-    community.marketSearch({
-      query: item,
-      appid: 578080
-    }, (err, items) => {
-      if (err) {
-        send(err.message);
-      } else {
-        send(formatPrice(items));
-      }
-    });
+    getPrice(msg.substring("!priceofpubg ".length), 730, send);
   }
   if (msg.substring(0, "!imgof ".length).toLowerCase() === "!imgof ") {
     let item = (msg.substring("!imgof ".length));
