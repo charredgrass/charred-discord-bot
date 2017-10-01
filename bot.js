@@ -316,13 +316,3 @@ client.on('message', message => {
     }
   }
 });
-
-client.login(fs.readFileSync('./key.txt').toString("utf-8"));  send(helpdocs[args[0]]);
-      }
-    } else {
-      send("Unknown command. Type \"!help\" for help.");
-    }
-  }
-});
-
-client.login(fs.readFileSync('./key.txt').toString("utf-8"));
