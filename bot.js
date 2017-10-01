@@ -316,3 +316,5 @@ client.on('message', message => {
     }
   }
 });
+
+client.login(fs.readFileSync('./key.txt').toString("utf-8"));
