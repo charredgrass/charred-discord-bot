@@ -6,6 +6,8 @@ var community = new SteamCommunity();
 
 const fs = require('fs');
 
+const gamemod = require('./lib/game_utils.js');
+
 var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
 
 const hiddenppl = {
@@ -21,6 +23,8 @@ for (let i = 0; i < jokes.length; i++) {
     jokes[i] = jokes[i].replace("///", "\n");
 }
 var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
+
+var ghandler = new gamemod.GameData(gamedata);
 
 process.stdin.setEncoding('utf8');
 var commands = {
@@ -41,6 +45,11 @@ var commands = {
   "test": function() {
     console.log(jokes.join("\n"));
     return "yep";
+  },
+  "stop": function() {
+    fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+    process.exit(0);
+    return "Stopping.";
   }
 };
 var anchorloc;
@@ -154,8 +163,61 @@ function getRandomFromList(list) {
   return list[getRandomInt(0, list.length)];
 }
 
-function game(args) {
-  
+function game(args, user, send, mens) {
+  if (ghandler.playerExists(user) === false) {
+    ghandler.newPlayer(user);
+  }
+  if (args[0] === "balance") {
+    let x = ghandler.getBalOf(user);
+    if (x < 0) {
+      send("Not found.");
+    } else {
+      send(x);
+    }
+  }
+  if (args[0] === "coinflip" && args[1]) {
+    if (args[1] === "allin") {
+      ghandler.setBalOf(user, 0)
+      send("Woah, we got a high roller here...\nYou lose. You now have 0 credits.");
+      return;
+    }
+    let amt = Number(args[1]);
+    if (Number.isNaN(amt)) {
+      return;
+    } else {
+      amt = parseInt(amt);
+      let m = parseInt(ghandler.getBalOf(user));
+      if (amt > m) {
+        send("No.");
+        return;
+      }
+      let res = getRandomInt(0, 2);
+      if (res === 0) {
+        ghandler.setBalOf(user, m + amt);
+        send("You win. You now have " + (m + amt) + " credits.");
+      } else {
+        ghandler.setBalOf(user, m - amt)
+        if (parseInt(m - amt) === 0) {
+
+        } else {
+          send("You lose. You now have " + (m - amt) + " credits.")
+        }
+      }
+    }
+  }
+  if (args[0] === "admin" && user === "154826263628873728") {
+    if (args[1] === "set") {
+      let person = args[2];
+      let amt = Number(args[3]);
+      if (Number.isNaN(amt)) {
+        return;
+      }
+      ghandler.setBalOf(person, amt);
+    }
+    if (args[1] === "sm") {
+
+    }
+  }
 }
 
 var lastsent = Date.now();
@@ -298,7 +360,7 @@ client.on('message', message => {
     send(getRandomFromList(answers));
   }
   if (msg.substring(0, "!help".length).toLowerCase() === "!help") {
-    var preargs = (msg.substring("!help".length).split(" "));
+    let preargs = (msg.substring("!help".length).split(" "));
     let args = [];
     for (var i = 0; i < preargs.length; i++) {
       if (preargs[i] === "") {
@@ -315,6 +377,18 @@ client.on('message', message => {
     } else {
       send("Unknown command. Type \"!help\" for help.");
     }
+  }
+  if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
+    let preargs = (msg.substring("!game".length).split(" "));
+    let args = [];
+    for (var i = 0; i < preargs.length; i++) {
+      if (preargs[i] === "") {
+        //kill space
+      } else {
+        args.push(preargs[i]);
+      }
+    }
+    game(args, message.author.id, send, message.mentions);
   }
 });
 
