@@ -20,6 +20,7 @@ for (let i = 0; i < jokes.length; i++) {
   while (jokes[i].includes("///"))
     jokes[i] = jokes[i].replace("///", "\n");
 }
+var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
 
 process.stdin.setEncoding('utf8');
 var commands = {
@@ -154,7 +155,7 @@ function getRandomFromList(list) {
 }
 
 function game(args) {
-
+  
 }
 
 var lastsent = Date.now();
