@@ -168,11 +168,10 @@ function game(args, user, send, mens) {
     ghandler.newPlayer(user);
   }
   if (args[0] === "balance") {
-    let x = ghandler.getBalOf(user);
-    if (x < 0) {
-      send("Not found.");
+    if (args[1] && mens[0]) {
+      send(ghandler.getBalOf(mens[0].id))
     } else {
-      send(x);
+      send(ghandler.getBalOf(user));
     }
   }
   if (args[0] === "coinflip" && args[1]) {
@@ -182,7 +181,7 @@ function game(args, user, send, mens) {
       return;
     }
     let amt = Number(args[1]);
-    if (Number.isNaN(amt)) {
+    if (Number.isNaN(amt) || amt < 0) {
       return;
     } else {
       amt = parseInt(amt);
@@ -215,7 +214,12 @@ function game(args, user, send, mens) {
       ghandler.setBalOf(person, amt);
     }
     if (args[1] === "sm") {
-
+      let person = mens[0].id;
+      let amt = Number(args[3]);
+      if (Number.isNaN(amt)) {
+        return;
+      }
+      ghandler.setBalOf(person, amt);
     }
   }
 }
@@ -239,6 +243,11 @@ client.on('message', message => {
 
     }
   };
+
+  let sgame = function(msg, opts) {
+    lastsent = Date.now();
+    loc.send(msg, opts)
+  }
 
   let sendimg = function(img, text) {
     send(text, {
@@ -388,7 +397,7 @@ client.on('message', message => {
         args.push(preargs[i]);
       }
     }
-    game(args, message.author.id, send, message.mentions);
+    game(args, message.author.id, sgame, message.mentions.users.array());
   }
 });
 
