@@ -1,8 +1,8 @@
-#raocsgo-discord-bot
+# raocsgo-discord-bot
 
 Bot for [his the Discord server](https://discord.gg/mFRnbQA).
 
-##Dependencies
+## Dependencies
 
 ```
 npm install discord.js
