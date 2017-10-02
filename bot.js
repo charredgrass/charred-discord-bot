@@ -163,9 +163,9 @@ function getRandomFromList(list) {
   return list[getRandomInt(0, list.length)];
 }
 
-function game(args, user, send, mens) {
+function game(args, user, send, mens, name) {
   if (ghandler.playerExists(user) === false) {
-    ghandler.newPlayer(user);
+    ghandler.newPlayer(user, name);
   }
   if (args[0] === "balance") {
     if (args[1] && mens[0]) {
@@ -203,6 +203,9 @@ function game(args, user, send, mens) {
         }
       }
     }
+  }
+  if (args[0] === "leaderboard") {
+    send(ghandler.getLeaderboard());
   }
   if (args[0] === "admin" && user === "154826263628873728") {
     if (args[1] === "set") {
@@ -246,6 +249,15 @@ client.on('message', message => {
 
   let sgame = function(msg, opts) {
     lastsent = Date.now();
+    let ismod = false;
+    for (let i = 0; i < mroles.length; i++) {
+      if (mroles[i].name.includes("Mod")) {
+        ismod = true;
+      }
+    }
+    if (message.channel.name == "general" && ismod == false) {
+      return;
+    }
     loc.send(msg, opts)
   }
 
@@ -397,7 +409,7 @@ client.on('message', message => {
         args.push(preargs[i]);
       }
     }
-    game(args, message.author.id, sgame, message.mentions.users.array());
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
   }
 });
 
