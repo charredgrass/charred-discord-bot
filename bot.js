@@ -235,7 +235,7 @@ function game(args, user, send, mens, name) {
     }
     if (args[1] == "freefill") {
       let person = mens[0].id;
-      ghandler.freefill(person)
+      ghandler.freefill(person);
     }
   }
   if (args[0] == "blackjack") {
