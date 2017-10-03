@@ -174,6 +174,9 @@ function game(args, user, send, mens, name) {
       send(ghandler.getBalOf(user));
     }
   }
+  if (args[0] === "free") {
+    ghandler.refill(user, send)
+  }
   if (args[0] === "coinflip" && args[1]) {
     if (args[1] === "allin") {
       ghandler.setBalOf(user, 0)
@@ -223,6 +226,9 @@ function game(args, user, send, mens, name) {
         return;
       }
       ghandler.setBalOf(person, amt);
+    }
+    if (args[1] === "save") {
+      fs.writeFileSync("./game_data.json", ghandler.dataToSave());
     }
   }
   if (args[0] == "blackjack") {
