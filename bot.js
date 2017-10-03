@@ -197,7 +197,7 @@ function game(args, user, send, mens, name) {
       } else {
         ghandler.setBalOf(user, m - amt)
         if (parseInt(m - amt) === 0) {
-
+          send("You lose! Haha, look at this goofball who lost everything.")
         } else {
           send("You lose. You now have " + (m - amt) + " credits.")
         }
