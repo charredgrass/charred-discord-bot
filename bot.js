@@ -225,6 +225,21 @@ function game(args, user, send, mens, name) {
       ghandler.setBalOf(person, amt);
     }
   }
+  if (args[0] == "blackjack") {
+    let amt = Number(args[1]);
+    if (Number.isNaN(amt) || amt < 0) {
+      return;
+    } else {
+      amt = parseInt(amt);
+      ghandler.startGame(user, "blackjack", amt, send);
+    }
+  }
+  if (args[0] == "hit") {
+    ghandler.moveGame(user, ["hit"], send);
+  }
+  if (args[0] == "stand") {
+    ghandler.moveGame(user, ["stand"], send);
+  }
 }
 
 var lastsent = Date.now();
@@ -408,6 +423,10 @@ client.on('message', message => {
       } else {
         args.push(preargs[i]);
       }
+    }
+    if (args[0] == "help") {
+      send("use !game balance to see your current number of credits, use !game coinflip 100 to coinflip 100 credits\nBlackjack: !game blackjack 10 to start a game for 10 credits, !game hit or !game stand to hit or stand.")
+      return;
     }
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
   }
