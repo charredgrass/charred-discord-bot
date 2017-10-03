@@ -233,6 +233,10 @@ function game(args, user, send, mens, name) {
     if (args[1] == "leaderboard") {
       send(ghandler.getLeaderboard(9999999));
     }
+    if (args[1] == "freefill") {
+      let person = mens[0].id;
+      ghandler.
+    }
   }
   if (args[0] == "blackjack") {
     let amt = Number(args[1]);
