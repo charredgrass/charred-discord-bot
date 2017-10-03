@@ -208,7 +208,7 @@ function game(args, user, send, mens, name) {
     }
   }
   if (args[0] === "leaderboard") {
-    send(ghandler.getLeaderboard());
+    send(ghandler.getLeaderboard(5));
   }
   if (args[0] === "admin" && user === "154826263628873728") {
     if (args[1] === "set") {
@@ -229,6 +229,9 @@ function game(args, user, send, mens, name) {
     }
     if (args[1] === "save") {
       fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+    }
+    if (args[1] == "leaderboard") {
+      send(ghandler.getLeaderboard(9999999));
     }
   }
   if (args[0] == "blackjack") {
