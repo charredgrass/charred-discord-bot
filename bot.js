@@ -178,13 +178,15 @@ function game(args, user, send, mens, name) {
     ghandler.refill(user, send);
   }
   if (args[0] === "give" && args[1] && args[2]) {
-    let person = mens[0].id;
-    let amt = Number(args[2]);
-    if (Number.isNaN(amt) || amt <= 0) {
-      return;
-    } else {
-      amt = parseInt(amt);
-      ghandler.send(user, person, amt, send);
+    if (mens[0]) {
+      let person = mens[0].id;
+      let amt = Number(args[2]);
+      if (Number.isNaN(amt) || amt <= 0) {
+        return;
+      } else {
+        amt = parseInt(amt);
+        ghandler.send(user, person, amt, send);
+      }
     }
   }
   if (args[0] === "coinflip" && args[1]) {
