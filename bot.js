@@ -169,17 +169,27 @@ function game(args, user, send, mens, name) {
   }
   if (args[0] === "balance") {
     if (args[1] && mens[0]) {
-      send(ghandler.getBalOf(mens[0].id))
+      send(ghandler.getBalOf(mens[0].id));
     } else {
       send(ghandler.getBalOf(user));
     }
   }
   if (args[0] === "free") {
-    ghandler.refill(user, send)
+    ghandler.refill(user, send);
+  }
+  if (args[0] === "give" && args[1] && args[2]) {
+    let person = mens[0].id;
+    let amt = Number(args[2]);
+    if (Number.isNaN(amt) || amt <= 0) {
+      return;
+    } else {
+      amt = parseInt(amt);
+      ghandler.send(user, person, amt, send);
+    }
   }
   if (args[0] === "coinflip" && args[1]) {
     if (args[1] === "allin") {
-      ghandler.setBalOf(user, 0)
+      ghandler.setBalOf(user, 0);
       send("Woah, we got a high roller here...\nYou lose. You now have 0 credits.");
       return;
     }
@@ -198,11 +208,11 @@ function game(args, user, send, mens, name) {
         ghandler.setBalOf(user, m + amt);
         send("You win. You now have " + (m + amt) + " credits.");
       } else {
-        ghandler.setBalOf(user, m - amt)
+        ghandler.setBalOf(user, m - amt);
         if (parseInt(m - amt) === 0) {
-          send("You lose! Haha, look at this goofball who lost everything.")
+          send("You lose! Haha, look at this goofball who lost everything.");
         } else {
-          send("You lose. You now have " + (m - amt) + " credits.")
+          send("You lose. You now have " + (m - amt) + " credits.");
         }
       }
     }
@@ -286,8 +296,8 @@ client.on('message', message => {
     if (message.channel.name == "general" && ismod == false) {
       return;
     }
-    loc.send(msg, opts)
-  }
+    loc.send(msg, opts);
+  };
 
   let sendimg = function(img, text) {
     send(text, {
@@ -411,7 +421,7 @@ client.on('message', message => {
   if (msg.substring(0, "!help".length).toLowerCase() === "!help") {
     let preargs = (msg.substring("!help".length).split(" "));
     let args = [];
-    for (var i = 0; i < preargs.length; i++) {
+    for (let i = 0; i < preargs.length; i++) {
       if (preargs[i] === "") {
         //kill space
       } else {
@@ -430,7 +440,7 @@ client.on('message', message => {
   if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
     let preargs = (msg.substring("!game".length).split(" "));
     let args = [];
-    for (var i = 0; i < preargs.length; i++) {
+    for (let i = 0; i < preargs.length; i++) {
       if (preargs[i] === "") {
         //kill space
       } else {
@@ -438,7 +448,7 @@ client.on('message', message => {
       }
     }
     if (args[0] == "help") {
-      send("you must be in #bot_spam or #game to use this.\nuse !game balance to see your current number of credits, use !game coinflip 100 to coinflip 100 credits\nBlackjack: !game blackjack 10 to start a game for 10 credits, !game hit or !game stand to hit or stand.")
+      send("you must be in #bot_spam or #game to use this.\nuse !game balance to see your current number of credits, use !game coinflip 100 to coinflip 100 credits\nBlackjack: !game blackjack 10 to start a game for 10 credits, !game hit or !game stand to hit or stand.");
       return;
     }
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
