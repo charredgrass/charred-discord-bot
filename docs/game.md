@@ -2,7 +2,7 @@
 
 !game is a stupid gambling game for the bot. Use the following commands to play and manage your credits. Note that most commands will not give a response in #general, please restrict it to [#bot_spam](https://discord.gg/USktR6m).
 
-**Credits** are a fake currency used only for CharredBot. They are literally worthless, except the person with the most credits is clearly better than the scrubs below them. Credits are always whole values and are rounded down if you 
+**Credits** are a fake currency used only for CharredBot. They are literally worthless, except the person with the most credits is clearly better than the scrubs below them. Credits are always whole values and are rounded down.
 
 Please keep in mind that !game is just for fun. It is **not** an accurate simulation of gambling. CharredBot is rigged so you have a very slight profit. Gambling such as CS:GO coinflip and roulette are NEVER in the users' favor.
 
@@ -21,6 +21,10 @@ Thanks to @trash can for helping with the first draft of instructions.
 `!game balance @user`, where `@user` is a Discord mention of the target user, gives the current balance of the target. It is equivalent to the targeted user using `!game balance`.
 
 ![game balance](https://i.imgur.com/41UO9Q2.png)
+
+## leaderboard
+
+`!game leaderboard` display the 5 players with the highest balances. 
 
 ## free
 
