@@ -6,7 +6,9 @@
 
 Please keep in mind that !game is just for fun. It is **not** an accurate simulation of gambling. CharredBot is rigged so you have a very slight profit. Gambling such as CS:GO coinflip and roulette are NEVER in the users' favor.
 
-Thanks to @trash can for helping with the first draft of instructions.
+**Found a bug?** [Report it here!](https://github.com/charredgrass/raocsgo-discord-bot/issues/new)
+
+Thanks to trash can for helping with the first draft of instructions, and mgrev for being the unknowing test subject.
 
 ## help
 
