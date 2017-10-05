@@ -41,13 +41,13 @@ credits | chance
 
 ![game give](https://i.imgur.com/j9tTxfS.png)
 
-#Games
+# Games
 
-##coinflip [credits]
+## coinflip [credits]
 
 `!game coinflip [credits]`, where credits is a number, will coinflip that amount of credits. You will randomly either lose that many credits or gain that many credits.
 
-##blackjack [credits]
+## blackjack [credits]
 
 `!game blackjack [credits]`, where credits is a number, will start a game of blackjack and bet that amount of credits. The credits are immediately removed from your balance.
 
