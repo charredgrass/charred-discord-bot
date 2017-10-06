@@ -163,6 +163,18 @@ function getRandomFromList(list) {
   return list[getRandomInt(0, list.length)];
 }
 
+function clearEmptyArgs(list) {
+  let args = [];
+  for (let i = 0; i < list.length; i++) {
+    if (list[i] === "") {
+      //kill space
+    } else {
+      args.push(list[i]);
+    }
+  }
+  return args;
+}
+
 function game(args, user, send, mens, name) {
   if (ghandler.playerExists(user) === false) {
     ghandler.newPlayer(user, name);
@@ -439,6 +451,19 @@ client.on('message', message => {
       send("Unknown command. Type \"!help\" for help.");
     }
   }
+  if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
+    let preargs = (msg.substring("g".length).split(" "));
+    let args = clearEmptyArgs(preargs);
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] == "bj") args[i] = "blackjack";
+      if (args[i] == "cf") args[i] = "coinflip";
+      if (args[i] == "h") args[i] = "hit";
+      if (args[i] == "s") args[i] = "stand";
+      if (args[i] == "b") args[i] = "balance";
+      if (args[i] == "lb") args[i] = "leaderboard";
+    }
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
+  }
   if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
     let preargs = (msg.substring("!game".length).split(" "));
     let args = [];
@@ -450,7 +475,7 @@ client.on('message', message => {
       }
     }
     if (args[0] == "help") {
-      send("you must be in #bot_spam or #game to use this.\nuse !game balance to see your current number of credits, use !game coinflip 100 to coinflip 100 credits\nBlackjack: !game blackjack 10 to start a game for 10 credits, !game hit or !game stand to hit or stand.");
+      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
     }
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
