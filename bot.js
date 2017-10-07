@@ -434,7 +434,11 @@ client.on('message', message => {
     send(getRandomFromList(answers));
   }
   if (msg.substring(0, "!steam".length).toLowerCase() === "!steam") {
-    steamgame.getGameSummary(msg.substring("!steam ".length), send);
+    try {
+      steamgame.getGameSummary(msg.substring("!steam ".length), send);
+    } catch (err) {
+      console.log(err.message)
+    }
   }
   if (msg.substring(0, "!help".length).toLowerCase() === "!help") {
     let preargs = (msg.substring("!help".length).split(" "));
