@@ -7,6 +7,7 @@ var community = new SteamCommunity();
 const fs = require('fs');
 
 const gamemod = require('./lib/game_utils.js');
+const steamgame = require('./lib/steamgame.js');
 
 var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
 
@@ -22,8 +23,8 @@ for (let i = 0; i < jokes.length; i++) {
   while (jokes[i].includes("///"))
     jokes[i] = jokes[i].replace("///", "\n");
 }
-var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
 
+var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
 
 process.stdin.setEncoding('utf8');
@@ -432,16 +433,12 @@ client.on('message', message => {
     var answers = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
     send(getRandomFromList(answers));
   }
+  if (msg.substring(0, "!steam".length).toLowerCase() === "!steam") {
+    steamgame.getGameSummary(msg.substring("!steam ".length));
+  }
   if (msg.substring(0, "!help".length).toLowerCase() === "!help") {
     let preargs = (msg.substring("!help".length).split(" "));
-    let args = [];
-    for (let i = 0; i < preargs.length; i++) {
-      if (preargs[i] === "") {
-        //kill space
-      } else {
-        args.push(preargs[i]);
-      }
-    }
+    let args = clearEmptyArgs(preargs);
     if (args.length === 0) {
       send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
       if (helpdocs[args[0]]) {
@@ -462,19 +459,12 @@ client.on('message', message => {
       if (args[i] == "b") args[i] = "balance";
       if (args[i] == "lb") args[i] = "leaderboard";
     }
-    if (args[0] == "f" && args.length == 1) {send("GFs owned: 0. Because you're a fucking faggot."), return;}
+    if (args[0] == "f" && args.length == 1) {send("GFs owned: 0. Because you're a fucking loser."), return;}
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
   }
   if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
     let preargs = (msg.substring("!game".length).split(" "));
-    let args = [];
-    for (let i = 0; i < preargs.length; i++) {
-      if (preargs[i] === "") {
-        //kill space
-      } else {
-        args.push(preargs[i]);
-      }
-    }
+    let args = clearEmptyArgs(preargs);
     if (args[0] == "help") {
       send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
