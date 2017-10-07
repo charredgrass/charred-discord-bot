@@ -462,6 +462,7 @@ client.on('message', message => {
       if (args[i] == "b") args[i] = "balance";
       if (args[i] == "lb") args[i] = "leaderboard";
     }
+    if (args[0] == "f" && args.length == 1) {send("GFs owned: 0. Because you're a fucking faggot."), return;}
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
   }
   if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
