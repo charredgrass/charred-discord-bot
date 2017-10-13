@@ -404,6 +404,9 @@ client.on('message', message => {
       send(getRandomFromList(jokes));
     }
   }
+  if (msg === "!jokes") {
+    send("https://github.com/charredgrass/raocsgo-discord-bot/blob/master/texts/jokes.txt");
+  }
   if (msg.substring(0, "!anchorloc".length).toLowerCase() === "!anchorloc") {
     anchorloc = loc;
     message.delete();
