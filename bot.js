@@ -8,6 +8,7 @@ const fs = require('fs');
 
 const gamemod = require('./lib/game_utils.js');
 const steamgame = require('./lib/steamgame.js');
+const utils = require('./lib/utils.js');
 
 var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
 
@@ -26,6 +27,8 @@ for (let i = 0; i < jokes.length; i++) {
 
 var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
+
+var emojiHolder;
 
 process.stdin.setEncoding('utf8');
 var commands = {
@@ -291,6 +294,10 @@ client.on('message', message => {
 
   if (message.author.bot === true) {
     return;
+  }
+
+  if (!emojiHolder) {
+    emojiHolder = utils.getAllEmoji(message.guild);
   }
 
   var loc = message.channel;
