@@ -176,9 +176,14 @@ function clearEmptyArgs(list) {
   return args;
 }
 
-function game(args, user, send, mens, name) {
+function game(args, user, send, mens, name, autoInit) {
   if (ghandler.playerExists(user) === false) {
-    ghandler.newPlayer(user, name);
+    if (autoInit === true) {
+      ghandler.newPlayer(user, name);
+    } else {
+      send("See !game help for help.");
+      return
+    }
   }
   if (args[0] === "balance") {
     if (args[1] && mens[0]) {
@@ -455,6 +460,10 @@ client.on('message', message => {
   if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
     let preargs = (msg.substring("g".length).split(" "));
     let args = clearEmptyArgs(preargs);
+    if (args[0] == "help") {
+      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
+      return;
+    }
     for (let i = 0; i < args.length; i++) {
       if (args[i] == "bj") args[i] = "blackjack";
       if (args[i] == "cf") args[i] = "coinflip";
@@ -467,7 +476,7 @@ client.on('message', message => {
       send("GFs owned: 0. Because you're a fucking loser.");
       return;
     }
-    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
   }
   if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
     let preargs = (msg.substring("!game".length).split(" "));
@@ -476,7 +485,7 @@ client.on('message', message => {
       send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
     }
-    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username);
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
   }
 });
 
