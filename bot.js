@@ -296,9 +296,9 @@ client.on('message', message => {
     return;
   }
 
-  if (!emojiHolder) {
-    emojiHolder = utils.getAllEmoji(message.guild);
-  }
+  // if (!emojiHolder) {
+  //   emojiHolder = utils.getAllEmoji(message.guild);
+  // }
 
   var loc = message.channel;
   var msg = removeAll(message.content, "?");
