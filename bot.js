@@ -301,6 +301,10 @@ function game(args, user, send, mens, name, autoInit) {
 
 var lastsent = Date.now();
 
+setInterval(() => {
+  fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+}, 1000 * 60 * 30);
+
 client.on('message', message => {
 
   if (message.author.bot === true) {
