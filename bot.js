@@ -289,12 +289,21 @@ function game(args, user, send, mens, name, autoInit) {
   }
   if (args[0] == "testspin") {
     let amt = Number(args[1]);
-    if (Number.isNaN(amt) || amt <= 0) {
+    if (Number.isNaN(amt) || amt <= 0 || amt > 1000000) {
       return;
     } else {
       amt = parseInt(amt);
       let n = slots.fullSpin(amt);
       send(n.str);
+    }
+  }
+  if (args[0] == "slots") {
+    let amt = Number(args[1]);
+    if (Number.isNaN(amt) || amt <= 0) {
+      return;
+    } else {
+      amt = parseInt(amt);
+      ghandler.slots(user, amt, send);
     }
   }
 }
