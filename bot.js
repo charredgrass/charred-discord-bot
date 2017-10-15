@@ -294,7 +294,7 @@ function game(args, user, send, mens, name, autoInit) {
     } else {
       amt = parseInt(amt);
       let n = slots.fullSpin(amt);
-      send(n.str)
+      send(n.str);
     }
   }
 }
