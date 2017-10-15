@@ -9,6 +9,7 @@ const fs = require('fs');
 const gamemod = require('./lib/game_utils.js');
 const steamgame = require('./lib/steamgame.js');
 const utils = require('./lib/utils.js');
+const slots = require('./lib/slots.js');
 
 var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
 
@@ -285,6 +286,16 @@ function game(args, user, send, mens, name, autoInit) {
   }
   if (args[0] == "stand") {
     ghandler.moveGame(user, ["stand"], send);
+  }
+  if (args[0] == "testspin") {
+    let amt = Number(args[1]);
+    if (Number.isNaN(amt) || amt <= 0) {
+      return;
+    } else {
+      amt = parseInt(amt);
+      let n = slots.fullSpin(amt);
+      send(n.str)
+    }
   }
 }
 
