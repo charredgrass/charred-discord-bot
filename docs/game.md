@@ -67,5 +67,5 @@ Scenario | Payout
 --|--
 Loss | 0
 Push (draw) | 1 * inital bet (breaks even)
-Win | 2.2 * initial bet
-Win with Blackjack | 3.3 * initial bet
+Win | 2.5 * initial bet
+Win with Blackjack | 3.5 * initial bet
