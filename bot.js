@@ -139,6 +139,8 @@ function getImg(item, appid, cb, ecb) {
     return;
   } else if (item.toLowerCase() == "abuse") {
     cb("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png");
+  } else if (item.toLowerCase() == "tato") {
+    cb("https://cdn.discordapp.com/attachments/318187405335068675/369579039884836865/tato.jpg");
   }
   community.marketSearch({
     query: item,
@@ -356,8 +358,10 @@ client.on('message', message => {
       embed: new Discord.RichEmbed().setImage(img)
     });
   };
-
-  let mroles = message.member.roles.array();
+  let mroles = [];
+  if (message.member) {
+    mroles = message.member.roles.array();
+  }
   let ismod = false;
   for (let i = 0; i < mroles.length; i++) {
     if (mroles[i].name.includes("Mod")) {
