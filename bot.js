@@ -364,11 +364,6 @@ client.on('message', message => {
     }
   }
 
-  if (msg.toLowerCase().includes("drakemoon.com/promo-code/")) {
-    message.delete();
-    return;
-  }
-
   if (msg == "!info") {
     send("I'm a bot run by Charred. https://github.com/charredgrass/raocsgo-discord-bot");
   }
