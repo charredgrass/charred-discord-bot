@@ -9,6 +9,7 @@ const fs = require('fs');
 const gamemod = require('./lib/game_utils.js');
 const steamgame = require('./lib/steamgame.js');
 const utils = require('./lib/utils.js');
+const hascmd = utils.hascmd;
 const slots = require('./lib/slots.js');
 
 var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
@@ -445,29 +446,29 @@ client.on('message', message => {
       }
     }
   }
-  if (msg.substring(0, "!priceof ".length).toLowerCase() === "!priceof ") {
+  if (hascmd(msg, "priceof")) {
     getPrice(msg.substring("!priceof ".length), 730, send);
   }
-  if (msg.substring(0, "!priceofdota ".length).toLowerCase() === "!priceofdota ") {
+  if (hascmd(msg, "priceofdota")) {
     getPrice(msg.substring("!priceofdota ".length), 570, send);
   }
-  if (msg.substring(0, "!priceoftf ".length).toLowerCase() === "!priceoftf ") {
+  if (hascmd(msg, "priceoftf")) {
     getPrice(msg.substring("!priceoftf ".length), 440, send);
   }
-  if (msg.substring(0, "!priceofpubg ".length).toLowerCase() === "!priceofpubg ") {
+  if (hascmd(msg, "priceofpubg")) {
     getPrice(msg.substring("!priceofpubg ".length), 578080, send);
   }
-  if (msg.substring(0, "!imgof ".length).toLowerCase() === "!imgof ") {
+  if (hascmd(msg, "imgof")) {
     getImg(msg.substring("!imgof ".length), 730, sendimg, send);
   }
-  if (msg.substring(0, "!imgofpubg ".length).toLowerCase() === "!imgofpubg ") {
+  if (hascmd(msg, "imgofpubg")) {
     getImg(msg.substring("!imgofpubg ".length), 578080, sendimg, send);
   }
-  if (msg.substring(0, "!magic8 ".length).toLowerCase() === "!magic8 ") {
+  if (hascmd(msg, "magic8")) {
     var answers = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
     send(getRandomFromList(answers));
   }
-  if (msg.substring(0, "!steam".length).toLowerCase() === "!steam") {
+  if (hascmd(msg, "steam")) {
     try {
       steamgame.getGameSummary(msg.substring("!steam ".length), send);
     } catch (err) {
@@ -507,7 +508,7 @@ client.on('message', message => {
     }
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
   }
-  if (msg.substring(0, "!game".length).toLowerCase() === "!game") {
+  if (hascmd(msg, "game")) {
     let preargs = (msg.substring("!game".length).split(" "));
     let args = clearEmptyArgs(preargs);
     if (args[0] == "help") {
