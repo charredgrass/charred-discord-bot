@@ -247,6 +247,9 @@ function game(args, user, send, mens, name, autoInit) {
   if (args[0] === "leaderboard") {
     send(ghandler.getLeaderboard(10));
   }
+  if (args[0] === "loserboard") {
+    send(ghandler.getLoserboard(10));
+  }
   if (args[0] === "admin" && user === "154826263628873728") {
     if (args[1] === "set") {
       let person = args[2];
