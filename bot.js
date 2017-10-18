@@ -171,18 +171,6 @@ function getRandomFromList(list) {
   return list[getRandomInt(0, list.length)];
 }
 
-function clearEmptyArgs(list) {
-  let args = [];
-  for (let i = 0; i < list.length; i++) {
-    if (list[i] === "") {
-      //kill space
-    } else {
-      args.push(list[i]);
-    }
-  }
-  return args;
-}
-
 function game(args, user, send, mens, name, autoInit) {
   if (ghandler.playerExists(user) === false) {
     if (autoInit === true) {
@@ -482,9 +470,8 @@ client.on('message', message => {
       console.log(err.message)
     }
   }
-  if (msg.substring(0, "!help".length).toLowerCase() === "!help") {
-    let preargs = (msg.substring("!help".length).split(" "));
-    let args = clearEmptyArgs(preargs);
+  if (hascmd(msg, "help")) {
+    let args = utils.argify(msg, "help")
     if (args.length === 0) {
       send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
       if (helpdocs[args[0]]) {
@@ -495,8 +482,7 @@ client.on('message', message => {
     }
   }
   if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
-    let preargs = (msg.substring("g".length).split(" "));
-    let args = clearEmptyArgs(preargs);
+    let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
     if (args[0] == "help") {
       send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
@@ -516,8 +502,7 @@ client.on('message', message => {
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
   }
   if (hascmd(msg, "game")) {
-    let preargs = (msg.substring("!game".length).split(" "));
-    let args = clearEmptyArgs(preargs);
+    let args = utils.argify(msg, "game");
     if (args[0] == "help") {
       send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
