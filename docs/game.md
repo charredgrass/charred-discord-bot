@@ -69,3 +69,29 @@ Loss | 0
 Push (draw) | 1 * inital bet (breaks even)
 Win | 2.5 * initial bet
 Win with Blackjack | 3.5 * initial bet
+
+## slots [credits]
+
+`!game slots [creidts`, where credits is a number, will spend that many credits and pull a slot machine.
+
+The payout is determined by the 3 icons in the middle row of the display. Icons divided into 3 tiers:
+
+![slots tiers](https://i.imgur.com/XYIoCA5.png)
+
+Based on the combinations of the icons, you will receive one of these payouts. If multiple combinations occur, the machine gives you the highest applicable payout possible. The payout listed is a multiplier, the actual amount paid is your initial bet * payout multiplier, rounded down to the nearest whole credit.
+
+Combination | Payout | Probability (%)
+--|--|--
+None | 0 | 54.45
+3 of any Tier 1 | 1.3 | 6.99
+3 of any Tier 2 | 5 | .88
+2 of any Tier 3 | 1 | 7.22
+3 of any Tier 3 | 8 | .88
+2 matching Tier 1 | 2 | 21.00
+3 matching Tier 1 | 14 | 1.17
+2 matching Tier 2 | 3 | 3.61
+3 matching Tier 2 | 69 | .11
+2 matching Tier 3 | 7 | 3.60
+3 matching Tier 3 | 70 | 0.11
+
+\* *probabilities based on simulation of 10 million trialsm rounded to nearest hundredth of a percent*
