@@ -6,6 +6,7 @@ var community = new SteamCommunity();
 
 const fs = require('fs');
 
+console.log("I got here!")
 const gamemod = require('./lib/game_utils.js');
 const steamgame = require('./lib/steamgame.js');
 const utils = require('./lib/utils.js');
@@ -308,6 +309,8 @@ setInterval(() => {
   fs.writeFileSync("./game_data.json", ghandler.dataToSave());
 }, 1000 * 60 * 30);
 
+
+
 client.on('message', message => {
 
   if (message.author.bot === true) {
@@ -513,5 +516,7 @@ client.on('message', message => {
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
   }
 });
+
+
 
 client.login(fs.readFileSync('./key.txt').toString("utf-8"));
