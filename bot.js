@@ -408,6 +408,9 @@ client.on('message', message => {
   if (msg.toLowerCase() === "!source2") {
     send("never");
   }
+  if (msg.toLowerCase() === "!test") {
+    send(utils.generateGrave("Camaron","","","!joke 18","   -Charred",""))
+  }
   if (msg.substring(0, "!joke".length).toLowerCase() === "!joke") {
     if (msg.split(" ").length > 1) {
       let x = parseInt(msg.substring("!joke ".length));
