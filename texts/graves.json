@@ -20,12 +20,17 @@
 	"nick": "\"Flamse\""
 }, {
 	"names": ["bob", "bobilica"],
-	"epit": ["\"Still convinced\"", "he was Danker.\"", "      -Charred", "",""],
+	"epit": ["\"Still convinced\"", "he was Danker.\"", "      -Charred", "", ""],
 	"grave_name": "Bobilica",
 	"nick": ""
 }, {
 	"names": ["lemon", "TheLemon"],
-	"epit": ["i.imgur.com","/mn9ylSm.jpg","  -Oneechan_Catbug","",""],
+	"epit": ["i.imgur.com", "/mn9ylSm.jpg", "  -Oneechan_Catbug", "", ""],
 	"grave_name": "Lemon",
+	"nick": ""
+}, {
+	"names": ["viet", "vietnam veteran"],
+	"epit": ["", "", "", "", ""],
+	"grave_name": "Viet",
 	"nick": ""
 }]
