@@ -26,6 +26,7 @@ for (let i = 0; i < jokes.length; i++) {
   while (jokes[i].includes("///"))
     jokes[i] = jokes[i].replace("///", "\n");
 }
+var graves = JSON.parse(fs.readFileSync('./texts/graves.json').toString("utf-8"));
 
 var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
@@ -410,9 +411,9 @@ client.on('message', message => {
   if (msg.toLowerCase() === "!source2") {
     send("never");
   }
-  if (msg.toLowerCase() === "!test") {
-    send(utils.generateGrave("Camaron","","","!joke 18","   -Charred",""))
-  }
+  // if (msg.toLowerCase() === "!test") {
+  //   send(utils.generateGrave("Camaron","","\"!joke 18\" ","      -Charred","",""))
+  // }
   if (msg.substring(0, "!joke".length).toLowerCase() === "!joke") {
     if (msg.split(" ").length > 1) {
       let x = parseInt(msg.substring("!joke ".length));
@@ -513,6 +514,29 @@ client.on('message', message => {
       return;
     }
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
+  }
+  if (hascmd(msg, "grave")) {
+    let arg = msg.substring("!grave ".length);
+    if (arg.toLowerCase() == "help") {
+      send("A tribute to the permanently banned users of RAOfCSGO. Use `!grave list` for a list of all the tombstones.");
+      return;
+    }
+    if (arg.toLowerCase() == "list") {
+      let hold = [];
+      for (let i = 0; i < graves.length; i++) {
+        hold.push(graves[i].grave_name);
+      }
+      send(hold.join(", "));
+      return;
+    }
+    for (let i = 0; i < graves.length; i++) {
+      for (let j = 0; j < graves[i].names.length; j++) {
+        if (arg.toLowerCase() == graves[i].names[j]) {
+          send(utils.generateGrave(graves[i].grave_name, graves[i].nick, graves[i].epit));
+          return;
+        }
+      }
+    }
   }
 });
 
