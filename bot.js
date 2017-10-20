@@ -6,7 +6,6 @@ var community = new SteamCommunity();
 
 const fs = require('fs');
 
-console.log("I got here!")
 const gamemod = require('./lib/game_utils.js');
 const steamgame = require('./lib/steamgame.js');
 const utils = require('./lib/utils.js');
