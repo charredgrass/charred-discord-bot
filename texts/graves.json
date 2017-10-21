@@ -20,7 +20,7 @@
 	"nick": "\"Flamse\""
 }, {
 	"names": ["bob", "bobilica"],
-	"epit": ["\"Still convinced\"", "he was Danker.\"", "      -Charred", "", ""],
+	"epit": ["\"Still convinced", "he was Danker.\"", "      -Charred", "", ""],
 	"grave_name": "Bobilica",
 	"nick": ""
 }, {
@@ -29,8 +29,19 @@
 	"grave_name": "Lemon",
 	"nick": ""
 }, {
-	"names": ["viet", "vietnam veteran"],
-	"epit": ["", "", "", "", ""],
+	"names": ["Viet"],
+	"epit": [
+		"",
+		"\"Guys I just",
+		"got scammed\"",
+		"   -viet",
+		""
+	],
 	"grave_name": "Viet",
+	"nick": ""
+}, {
+	"names": ["what", "为什么", "kotanaru"],
+	"epit": ["", "\"Nigga tf\"", " -Oneechan_Catbug", "", ""],
+	"grave_name": "Kotanaru",
 	"nick": ""
 }]
