@@ -6,18 +6,18 @@ function center(text, space) {
 
 function generateGrave(name, subn, lines) {
     ret =  "        ______________</br>";
-    ret += "       /              \\</br>";
-    ret += "      /                \\</br>";
-    ret += "     /" + center(name, 18) + "\\</br>";
-    ret += "     |" + center(subn, 18) + "|</br>";
-    ret += "     |                  |</br>";
-    ret += "     |" + center(lines[0], 18) + "|</br>";
-    ret += "     |" + center(lines[1], 18) + "|</br>";
-    ret += "     |" + center(lines[2], 18) + "|</br>";
-    ret += "     |" + center(lines[3], 18) + "|</br>";
-    ret += "     |" + center(lines[4], 18) + "|</br>";
-    ret += "     |                  |</br>";
-    ret += "     |                  |</br>";
+    ret += "       /              \\\\</br>";
+    ret += "      /                \\\\</br>";
+    ret += "     /" + center(name, 18) + "\\\\</br>";
+    ret += "     |" + center(subn, 18) + "||</br>";
+    ret += "     |                  ||</br>";
+    ret += "     |" + center(lines[0], 18) + "||</br>";
+    ret += "     |" + center(lines[1], 18) + "||</br>";
+    ret += "     |" + center(lines[2], 18) + "||</br>";
+    ret += "     |" + center(lines[3], 18) + "||</br>";
+    ret += "     |" + center(lines[4], 18) + "||</br>";
+    ret += "     |                  ||</br>";
+    ret += "     |                  ||</br>";
     ret += "-------------------------------";
     return ret;
 }

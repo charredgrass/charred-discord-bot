@@ -518,7 +518,7 @@ client.on('message', message => {
   if (hascmd(msg, "grave")) {
     let arg = msg.substring("!grave ".length);
     if (arg.toLowerCase() == "help") {
-      send("A tribute to the permanently banned users of RAOfCSGO. Use `!grave list` for a list of all the tombstones.");
+      send("A tribute to the permanently banned users of RAOfCSGO, or the ones who have abandoned us. Use `!grave list` for a list of all the tombstones.");
       return;
     }
     if (arg.toLowerCase() == "list") {
