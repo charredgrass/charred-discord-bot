@@ -112,9 +112,15 @@ function formatPrice(prices) {
   return ret;
 }
 
+function replacify(text) {
+  return text.replace(/(?:^| )[fF][nN](?: |$)/g, "Factory New").replace(/(?:^| )[mM][wW](?: |$)/g, "Minimal Wear")
+    .replace(/(?:^| )[fF][tT](?: |$)/g, "Field-Tested").replace(/(?:^| )[wW][wW](?: |$)/g, "Well-Worn")
+    .replace(/(?:^| )[fF][nN](?: |$)/g, "Battle-Scarred");
+}
+
 function getPrice(item, appid, cb) {
   community.marketSearch({
-    query: item,
+    query: replacify(item),
     appid
   }, (err, items) => {
     if (err) {
