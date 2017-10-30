@@ -236,6 +236,7 @@ function game(args, user, send, mens, name, autoInit) {
         } else {
           send("You lose. You now have " + (m - amt) + " credits.");
         }
+        ghandler.addKarma(user, amt);
       }
     }
   }

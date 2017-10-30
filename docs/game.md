@@ -72,7 +72,7 @@ Win with Blackjack | 3.5 * initial bet
 
 ## slots [credits]
 
-`!game slots [creidts`, where credits is a number, will spend that many credits and pull a slot machine.
+`!game slots [credits]`, where credits is a number, will spend that many credits and pull a slot machine.
 
 The payout is determined by the 3 icons in the middle row of the display. Icons divided into 3 tiers:
 
@@ -94,4 +94,4 @@ None | 0 | 54.45
 2 matching Tier 3 | 7 | 03.60
 3 matching Tier 3 | 70 | 00.11
 
-\* *probabilities based on simulation of 10 million trialsm rounded to nearest hundredth of a percent*
+\* *probabilities based on simulation of 10 million trials rounded to nearest hundredth of a percent*
