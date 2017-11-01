@@ -1,18 +1,18 @@
-const Discord = require('discord.js');
+const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const SteamCommunity = require('steamcommunity');
+const SteamCommunity = require("steamcommunity");
 var community = new SteamCommunity();
 
-const fs = require('fs');
+const fs = require("fs");
 
-const gamemod = require('./lib/game_utils.js');
-const steamgame = require('./lib/steamgame.js');
-const utils = require('./lib/utils.js');
+const gamemod = require("./lib/game_utils.js");
+const steamgame = require("./lib/steamgame.js");
+const utils = require("./lib/utils.js");
 const hascmd = utils.hascmd;
-const slots = require('./lib/slots.js');
+const slots = require("./lib/slots.js");
 
-var whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
+var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
 
 const hiddenppl = {
   "god": "me",
@@ -20,13 +20,13 @@ const hiddenppl = {
 };
 
 var everyone = Object.keys(whoppl).join(", ");
-var helpdocs = JSON.parse(fs.readFileSync('./texts/helpdocs.json').toString("utf-8"));
-var jokes = (fs.readFileSync('./texts/jokes.txt').toString("utf-8").split("\n"));
+var helpdocs = JSON.parse(fs.readFileSync("./texts/helpdocs.json").toString("utf-8"));
+var jokes = (fs.readFileSync("./texts/jokes.txt").toString("utf-8").split("\n"));
 for (let i = 0; i < jokes.length; i++) {
   while (jokes[i].includes("///"))
     jokes[i] = jokes[i].replace("///", "\n");
 }
-var graves = JSON.parse(fs.readFileSync('./texts/graves.json').toString("utf-8"));
+var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
@@ -36,16 +36,16 @@ var archive = new lbh.LBArchive("./data/archives/", 1);
 
 var emojiHolder;
 
-process.stdin.setEncoding('utf8');
+process.stdin.setEncoding("utf8");
 var commands = {
   "UNKNOWN_COMMAND": function() {
     return "Unknown command. Type `help` for help.";
   },
   "reload": function() {
-    whoppl = JSON.parse(fs.readFileSync('./texts/whois.json').toString("utf-8"));
+    whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
     everyone = Object.keys(whoppl).join(", ");
-    helpdocs = JSON.parse(fs.readFileSync('./texts/helpdocs.json').toString("utf-8"));
-    jokes = (fs.readFileSync('./texts/jokes.txt').toString("utf-8").split("\n"));
+    helpdocs = JSON.parse(fs.readFileSync("./texts/helpdocs.json").toString("utf-8"));
+    jokes = (fs.readFileSync("./texts/jokes.txt").toString("utf-8").split("\n"));
     for (let i = 0; i < jokes.length; i++) {
       while (jokes[i].includes("///"))
         jokes[i] = jokes[i].replace("///", "\n");
@@ -63,12 +63,12 @@ var commands = {
   }
 };
 var anchorloc;
-process.stdin.on('data', (text) => {
+process.stdin.on("data", (text) => {
   var stuff;
-  while (text.indexOf('\n') !== -1 || text.indexOf('\r') !== -1 || text.indexOf('  ') !== -1) {
-    text = text.replace(/\n|\r|\t/, '').replace(/  /, ' ');
+  while (text.indexOf("\n") !== -1 || text.indexOf("\r") !== -1 || text.indexOf("  ") !== -1) {
+    text = text.replace(/\n|\r|\t/, "").replace(/  /, " ");
   }
-  var args = text.split(' ');
+  var args = text.split(" ");
   var command = args[0].toLowerCase();
   var trip = false;
   for (var key in commands) {
@@ -103,8 +103,8 @@ function whois(person) {
 
 
 
-client.on('ready', () => {
-  console.log('Connected and initialized.');
+client.on("ready", () => {
+  console.log("Connected and initialized.");
 });
 
 function formatPrice(prices) {
@@ -329,7 +329,7 @@ setInterval(() => {
 
 
 
-client.on('message', message => {
+client.on("message", message => {
 
   if (message.author.bot === true) {
     return;
@@ -394,7 +394,7 @@ client.on('message', message => {
     send("https://docs.google.com/document/d/1u0-YAZG7Rv7P9N94vKEGocvJccGlDvK2RZxWMcg8pDA/edit?usp=sharing");
   }
   if (msg.toLowerCase().includes("trap")) {
-    send('Traps? Ask Kairu about our Grade A Traps today!');
+    send("Traps? Ask Kairu about our Grade A Traps today!");
   }
   if (msg.toLowerCase() === "who am i") {
     send("None of your business.");
@@ -560,5 +560,5 @@ client.on('message', message => {
 
 
 
-client.login(fs.readFileSync('./key.txt').toString("utf-8"));
+client.login(fs.readFileSync("./key.txt").toString("utf-8"));
 // client.login("MzY4NDk5MDgzMTU5MDExMzI4.DNk1gw.smVpCVvhMrgoWjS98sPjTkjuSjY");

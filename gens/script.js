@@ -5,7 +5,7 @@ function center(text, space) {
 }
 
 function generateGrave(name, subn, lines) {
-    ret =  "        ________________</br>";
+    let ret =  "        ________________</br>";
     ret += "       /              \\ \\</br>";
     ret += "      /                \\ \\</br>";
     ret += "     /" + center(name, 18) + "\\ \\</br>";
