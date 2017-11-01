@@ -34,8 +34,6 @@ var ghandler = new gamemod.GameData(gamedata);
 var lbh = require("./lib/lb_archive.js");
 var archive = new lbh.LBArchive("./data/archives/", 1);
 
-var emojiHolder;
-
 process.stdin.setEncoding("utf8");
 var commands = {
   "UNKNOWN_COMMAND": function() {
@@ -66,7 +64,7 @@ var anchorloc;
 process.stdin.on("data", (text) => {
   var stuff;
   while (text.indexOf("\n") !== -1 || text.indexOf("\r") !== -1 || text.indexOf("  ") !== -1) {
-    text = text.replace(/\n|\r|\t/, "").replace(/  /, " ");
+    text = text.replace(/\n|\r|\t/, "").replace(/ {2}/, " ");
   }
   var args = text.split(" ");
   var command = args[0].toLowerCase();
@@ -187,7 +185,7 @@ function game(args, user, send, mens, name, autoInit) {
       ghandler.newPlayer(user, name);
     } else {
       send("See !game help for help. Note: You can't use shortened commands without first using a full one.");
-      return
+      return;
     }
   }
   if (args[0] === "balance") {
@@ -346,8 +344,6 @@ client.on("message", message => {
     if (lastsent + 1000 < Date.now()) {
       lastsent = Date.now();
       loc.send(msg, opts);
-    } else {
-
     }
   };
 
@@ -359,7 +355,7 @@ client.on("message", message => {
         ismod = true;
       }
     }
-    if (message.channel.name == "general" && ismod == false) {
+    if (message.channel.name == "general" && ismod === false) {
       return;
     }
     loc.send(msg, opts);
@@ -438,7 +434,7 @@ client.on("message", message => {
       if (x && x - 1 < jokes.length) {
         if (x == 69) {
           // send("")
-        } else if (x == 0) {
+        } else if (x === 0) {
           send("People who think arrays start at 1");
         } else {
           send(jokes[x - 1]);
@@ -491,11 +487,11 @@ client.on("message", message => {
     try {
       steamgame.getGameSummary(msg.substring("!steam ".length), send);
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
     }
   }
   if (hascmd(msg, "help")) {
-    let args = utils.argify(msg, "help")
+    let args = utils.argify(msg, "help");
     if (args.length === 0) {
       send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
       if (helpdocs[args[0]]) {

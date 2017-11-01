@@ -23,13 +23,13 @@ function generateGrave(name, subn, lines) {
 }
 
 function load() {
-    document.getElementById("grave").innerHTML = generateGrave(document.getElementById("title").value, document.getElementById("stitle").value, [document.getElementById("line1").value, document.getElementById("line2").value, document.getElementById("line3").value, document.getElementById("line4").value, document.getElementById("line5").value])
+    document.getElementById("grave").innerHTML = generateGrave(document.getElementById("title").value, document.getElementById("stitle").value, [document.getElementById("line1").value, document.getElementById("line2").value, document.getElementById("line3").value, document.getElementById("line4").value, document.getElementById("line5").value]);
     document.getElementById("gravejson").innerHTML = JSON.stringify({
         names: [document.getElementById("title").value.toLowerCase()],
         epit: [document.getElementById("line1").value, document.getElementById("line2").value, document.getElementById("line3").value, document.getElementById("line4").value, document.getElementById("line5").value],
         grave_name: document.getElementById("title").value,
         nick: document.getElementById("stitle").value
-    }, null, 4)
+    }, null, 4);
 }
 
 function copyToClipboard(element) {
