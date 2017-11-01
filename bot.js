@@ -28,8 +28,10 @@ for (let i = 0; i < jokes.length; i++) {
 }
 var graves = JSON.parse(fs.readFileSync('./texts/graves.json').toString("utf-8"));
 
-var gamedata = JSON.parse(fs.readFileSync("./game_data.json"));
+var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
+
+var archive = new require("./lib/lb_archive.js").LBArchive("./data/archives/")
 
 var emojiHolder;
 
@@ -54,7 +56,7 @@ var commands = {
     return "yep";
   },
   "stop": function() {
-    fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+    fs.writeFileSync("./data/game_data.json", ghandler.dataToSave());
     process.exit(0);
     return "Stopping.";
   }
@@ -183,7 +185,7 @@ function game(args, user, send, mens, name, autoInit) {
     if (autoInit === true) {
       ghandler.newPlayer(user, name);
     } else {
-      send("See !game help for help.");
+      send("See !game help for help. Note: You can't use shortened commands without first using a full one.");
       return
     }
   }
@@ -264,7 +266,7 @@ function game(args, user, send, mens, name, autoInit) {
       ghandler.setBalOf(person, amt);
     }
     if (args[1] === "save") {
-      fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+      fs.writeFileSync("./data/game_data.json", ghandler.dataToSave());
     }
     if (args[1] == "leaderboard") {
       send(ghandler.getLeaderboard(9999999));
@@ -308,12 +310,21 @@ function game(args, user, send, mens, name, autoInit) {
       ghandler.slots(user, amt, send);
     }
   }
+  if (args[0] == "archive") {
+    let seas = Number(args[1]);
+    if (Number.isNaN(seas) || seas <= 0) {
+      return;
+    } else {
+      if (seas != 1) return;
+      send(archive.seasonLB(seas));
+    }
+  }
 }
 
 var lastsent = Date.now();
 
 setInterval(() => {
-  fs.writeFileSync("./game_data.json", ghandler.dataToSave());
+  fs.writeFileSync("./data/game_data.json", ghandler.dataToSave());
 }, 1000 * 60 * 30);
 
 
@@ -550,3 +561,4 @@ client.on('message', message => {
 
 
 client.login(fs.readFileSync('./key.txt').toString("utf-8"));
+// client.login("MzY4NDk5MDgzMTU5MDExMzI4.DNk1gw.smVpCVvhMrgoWjS98sPjTkjuSjY");
