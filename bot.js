@@ -32,7 +32,7 @@ var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
 
 var lbh = require("./lib/lb_archive.js");
-var archive = new lbh.LBArchive("./data/archives/");
+var archive = new lbh.LBArchive("./data/archives/", 1);
 
 var emojiHolder;
 
@@ -316,7 +316,6 @@ function game(args, user, send, mens, name, autoInit) {
     if (Number.isNaN(seas) || seas <= 0) {
       return;
     } else {
-      if (seas != 1) return;
       send(archive.seasonLB(seas));
     }
   }
