@@ -31,7 +31,8 @@ var graves = JSON.parse(fs.readFileSync('./texts/graves.json').toString("utf-8")
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 var ghandler = new gamemod.GameData(gamedata);
 
-var archive = new require("./lib/lb_archive.js").LBArchive("./data/archives/")
+var lbh = require("./lib/lb_archive.js");
+var archive = new lbh.LBArchive("./data/archives/");
 
 var emojiHolder;
 
