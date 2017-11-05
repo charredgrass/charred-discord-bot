@@ -184,7 +184,7 @@ function game(args, user, send, mens, name, autoInit) {
     if (autoInit === true) {
       ghandler.newPlayer(user, name);
     } else {
-      send("See !game help for help. Note: You can't use shortened commands without first using a full one.");
+      send("See !game help for help. Note: You can't use shortened commands without first using a full one. Try `!game balance`.");
       return;
     }
   }
@@ -552,9 +552,23 @@ client.on("message", message => {
       }
     }
   }
+  if (hascmd(msg, "gibs")) {
+    let args = utils.argify(msg, "gibs");
+    if (args[0] === "listify" && args[1]) {
+      message.channel.fetchMessages({limit:250}).then((msgs) => {
+        let marr = msgs.array();
+        let people = [];
+        for (let i = 0; i < marr.length; i++) {
+          if (marr[i].content.includes(args[1])) {
+            people.push(marr[i].author.username + "#" + marr[i].author.discriminator);
+          }
+        }
+        send(people.join(","));
+      });
+    }
+  }
 });
 
 
 
 client.login(fs.readFileSync("./key.txt").toString("utf-8"));
-// client.login("MzY4NDk5MDgzMTU5MDExMzI4.DNk1gw.smVpCVvhMrgoWjS98sPjTkjuSjY");

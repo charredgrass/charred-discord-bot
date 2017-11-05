@@ -46,13 +46,7 @@
 	"nick": ""
 }, {
 	"names": ["thegenuinebuzz", "buzz", "britbong", "brexit"],
-	"epit": [
-		"",
-		"\"we need a live",
-		"debate, getting",
-		"a beer\"",
-		"     -Ashspawn"
-	],
+	"epit": ["\"have fun with", "literally no value", "in giveaways\"", "-Buzz", ""],
 	"grave_name": "TheGenuineBuzz",
 	"nick": "\"Brexit\""
 }, {
@@ -74,5 +68,20 @@
 	"names": ["show_me_your_cats", "cats", "knife guy"],
 	"epit": ["", "\"He scammed me\"", "-Urgotaniceash3", "", ""],
 	"grave_name": "Show_me_your_cats",
+	"nick": ""
+}, {
+	"names": ["glockalisk", "glock"],
+	"epit": ["\"i miss arguing", "with him\"", "       -Poortato", "", ""],
+	"grave_name": "Glockalisk",
+	"nick": ""
+}, {
+	"names": ["electro"],
+	"epit": ["\"I'll only steal it", " if it's worth", "a lot.\"", "         -Charred", ""],
+	"grave_name": "Electro",
+	"nick": ""
+} {
+	"names": ["asian"],
+	"epit": ["\"prob wasnt ", "  even asian\"", "     -funny haha", "", ""],
+	"grave_name": "Asian",
 	"nick": ""
 }]
