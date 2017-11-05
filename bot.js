@@ -188,6 +188,11 @@ function game(args, user, send, mens, name, autoInit) {
       return;
     }
   }
+  if (ghandler.canMessAgain(user) === true) {
+    ghandler.newMess(user);
+  } else {
+    return;
+  }
   if (args[0] === "balance") {
     if (args[1] && mens[0]) {
       send(ghandler.getBalOf(mens[0].id));
@@ -563,7 +568,13 @@ client.on("message", message => {
             people.push(marr[i].author.username + "#" + marr[i].author.discriminator);
           }
         }
-        send(people.join(","));
+        let ret = [];
+        for (let i = 0; i < people.length; i++) {
+          if (ret.includes(people[i]) === false) {
+            ret.push(people[i]);
+          }
+        }
+        send("People who have said that phrase in the past 100 messages: " + ret.join(", "));
       });
     }
   }
