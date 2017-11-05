@@ -52,7 +52,7 @@ function generateCard(lines) {
     ret += "|                |</br>";
     ret += "|" + center(lines[0], 16) + "|</br>"; //title
     ret += "|" + center(lines[1], 16) + "|</br>"; //sub-title
-    ret += "|                |</br>" //spacer
+    ret += "|                |</br>"; //spacer
     ret += "|" + center(lines[2], 16) + "|</br>"; //lines of text
     ret += "|" + center(lines[3], 16) + "|</br>";
     ret += "|" + center(lines[4], 16) + "|</br>";
