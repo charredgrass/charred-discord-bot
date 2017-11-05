@@ -555,7 +555,7 @@ client.on("message", message => {
   if (hascmd(msg, "gibs")) {
     let args = utils.argify(msg, "gibs");
     if (args[0] === "listify" && args[1]) {
-      message.channel.fetchMessages({limit:250}).then((msgs) => {
+      message.channel.fetchMessages({limit:100}).then((msgs) => {
         let marr = msgs.array();
         let people = [];
         for (let i = 0; i < marr.length; i++) {
