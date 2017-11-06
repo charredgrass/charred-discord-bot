@@ -351,7 +351,7 @@ client.on("message", message => {
       loc.send(msg, opts);
     }
   };
-
+  let mroles = [];
   let sgame = function(msg, opts) {
     lastsent = Date.now();
     let ismod = false;
@@ -371,7 +371,6 @@ client.on("message", message => {
       embed: new Discord.RichEmbed().setImage(img)
     });
   };
-  let mroles = [];
   if (message.member) {
     mroles = message.member.roles.array();
   }
@@ -560,7 +559,9 @@ client.on("message", message => {
   if (hascmd(msg, "gibs")) {
     let args = utils.argify(msg, "gibs");
     if (args[0] === "listify" && args[1]) {
-      message.channel.fetchMessages({limit:100}).then((msgs) => {
+      message.channel.fetchMessages({
+        limit: 100
+      }).then((msgs) => {
         let marr = msgs.array();
         let people = [];
         for (let i = 0; i < marr.length; i++) {
