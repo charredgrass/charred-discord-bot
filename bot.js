@@ -119,13 +119,17 @@ function replacify(text) {
     .replace(/(?:^| )[bB][sS](?: |$)/g, " Battle-Scarred");
 }
 
-function getPrice(item, appid, cb) {
+function getPrice(item, appid, cb, debug) {
   community.marketSearch({
     query: replacify(item),
     appid
   }, (err, items) => {
     if (err) {
-      cb(err.message);
+      if (debug) {
+        cb(err.message + "\nDebug: " + replacify(item));
+      } else {
+        cb(err.message);
+      }
     } else {
       cb(formatPrice(items));
     }
@@ -467,6 +471,12 @@ client.on("message", message => {
   }
   if (hascmd(msg, "priceof")) {
     getPrice(msg.substring("!priceof ".length), 730, send);
+  }
+  if (hascmd(msg, "po")) {
+    getPrice(msg.substring("!po ".length), 730, send);
+  }
+  if (hascmd(msg, "podbg")) {
+    getPrice(msg.substring("!podbg ".length), 730, send, true);
   }
   if (hascmd(msg, "priceofdota")) {
     getPrice(msg.substring("!priceofdota ".length), 570, send);
