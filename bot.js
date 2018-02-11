@@ -153,6 +153,8 @@ function getImg(item, appid, cb, ecb) {
     cb("https://cdn.discordapp.com/attachments/167586953061990400/364157623832150017/madman.png");
   } else if (item.toLowerCase() == "tato") {
     cb("https://cdn.discordapp.com/attachments/318187405335068675/369579039884836865/tato.jpg");
+  } else if (item.toLowerCase() == "daka") {
+    cb("https://cdn.discordapp.com/attachments/308936393999253505/410292836509024256/Screenshot_20180204-092453.png");
   }
   community.marketSearch({
     query: item,
