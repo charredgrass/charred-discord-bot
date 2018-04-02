@@ -11,7 +11,7 @@ const steamgame = require("./lib/steamgame.js");
 
 const utils = require("./lib/utils.js");
 const hascmd = utils.hascmd;
-const argify = utils.argify
+const argify = utils.argify;
 
 const slots = require("./lib/slots.js");
 
@@ -389,10 +389,10 @@ client.on("message", message => {
 
   //Server Selector
   let server = loc.guild.id; //"guild" and "server" are the same thing
-  let shouldRespond = {
+  let shouldResp = {
     rao: false,
     atg: false
-  }
+  };
   if (server == "313169519545679872") { //NASS Test Server
     shouldResp.rao = true;
     shouldResp.atg = true;
