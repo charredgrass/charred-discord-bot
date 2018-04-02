@@ -119,7 +119,7 @@ function replacify(text) {
     .replace(/(?:^| )[bB][sS](?: |$)/g, " Battle-Scarred");
 }
 
-function getPrice(item, appid, cb, debug) {
+function getPrice(item, appid, cb, flags, debug) {
   community.marketSearch({
     query: replacify(item),
     appid
@@ -478,7 +478,7 @@ client.on("message", message => {
     getPrice(msg.substring("!po ".length), 730, send);
   }
   if (hascmd(msg, "podbg")) {
-    getPrice(msg.substring("!podbg ".length), 730, send, true);
+    getPrice(msg.substring("!podbg ".length), 730, send, null, true);
   }
   if (hascmd(msg, "priceofdota")) {
     getPrice(msg.substring("!priceofdota ".length), 570, send);
