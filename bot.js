@@ -8,8 +8,11 @@ const fs = require("fs");
 
 const gamemod = require("./lib/game_utils.js");
 const steamgame = require("./lib/steamgame.js");
+
 const utils = require("./lib/utils.js");
 const hascmd = utils.hascmd;
+const argify = utils.argify
+
 const slots = require("./lib/slots.js");
 
 var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
@@ -343,21 +346,16 @@ client.on("message", message => {
   if (message.author.bot === true) {
     return;
   }
-
-  // if (!emojiHolder) {
-  //   emojiHolder = utils.getAllEmoji(message.guild);
-  // }
-
   var loc = message.channel;
   var msg = removeAll(message.content, "?");
 
+  //SEND helper functions
   let send = function(msg, opts) {
     if (lastsent + 1000 < Date.now()) {
       lastsent = Date.now();
       loc.send(msg, opts);
     }
   };
-  let mroles = [];
   let sgame = function(msg, opts) {
     lastsent = Date.now();
     let ismod = false;
@@ -371,12 +369,14 @@ client.on("message", message => {
     }
     loc.send(msg, opts);
   };
-
   let sendimg = function(img, text) {
     send(text, {
       embed: new Discord.RichEmbed().setImage(img)
     });
   };
+
+  //Role Fillers
+  let mroles = [];
   if (message.member) {
     mroles = message.member.roles.array();
   }
@@ -385,6 +385,23 @@ client.on("message", message => {
     if (mroles[i].name.includes("Mod")) {
       ismod = true;
     }
+  }
+
+  //Server Selector
+  let server = loc.guild.id; //"guild" and "server" are the same thing
+  let shouldRespond = {
+    rao: false,
+    atg: false
+  }
+  if (server == "313169519545679872") { //NASS Test Server
+    shouldResp.rao = true;
+    shouldResp.atg = true;
+  }
+  if (server == "167586953061990400") { //RAOCSGO
+    shouldResp.rao = true;
+  }
+  if (server == "276220128822165505") { //AtG
+    shouldResp.atg = true;
   }
 
   if (msg == "!info") {
@@ -507,7 +524,7 @@ client.on("message", message => {
     }
   }
   if (hascmd(msg, "help")) {
-    let args = utils.argify(msg, "help");
+    let args = argify(msg, "help");
     if (args.length === 0) {
       send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
       if (helpdocs[args[0]]) {
@@ -538,7 +555,7 @@ client.on("message", message => {
     game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
   }
   if (hascmd(msg, "game")) {
-    let args = utils.argify(msg, "game");
+    let args = argify(msg, "game");
     if (args[0] == "help") {
       send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
       return;
@@ -569,7 +586,7 @@ client.on("message", message => {
     }
   }
   if (hascmd(msg, "gibs")) {
-    let args = utils.argify(msg, "gibs");
+    let args = argify(msg, "gibs");
     if (args[0] === "listify" && args[1]) {
       message.channel.fetchMessages({
         limit: 100
