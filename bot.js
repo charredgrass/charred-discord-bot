@@ -404,208 +404,237 @@ client.on("message", message => {
     shouldResp.atg = true;
   }
 
+  //Global Commands
   if (msg == "!info") {
-    send("I'm a bot run by Charred. https://github.com/charredgrass/raocsgo-discord-bot");
+    if (shouldResp.rao === true) {
+      send("I'm a bot run by Charred. https://github.com/charredgrass/raocsgo-discord-bot");
+    } else {
+      send("I'm a bot run by Bairac. https://github.com/charredgrass/raocsgo-discord-bot");
+    }
   }
   if (msg == "!ping") {
     send("Pong.");
   }
-  if (msg.toLowerCase().match(/([^a-zA-Z]|^)osu/)) {
-    send("We get it, you're a weeb.");
-  }
-  if (msg.toLowerCase() === "!whatthefuck" || msg.toLowerCase() === "!what") {
-    send("https://docs.google.com/document/d/1u0-YAZG7Rv7P9N94vKEGocvJccGlDvK2RZxWMcg8pDA/edit?usp=sharing");
-  }
-  if (msg.toLowerCase().includes("trap")) {
-    send("Traps? Ask Kairu about our Grade A Traps today!");
-  }
-  if (msg.toLowerCase() === "who am i") {
-    send("None of your business.");
-  }
-  if (msg.toLowerCase() === "what is love") {
-    send("Something you'll never feel.");
-  }
-  if (msg.toLowerCase() === "who are you" || msg.toLowerCase() === "who is bot charred") {
-    send("You're fucking retarded.");
-    return;
-  }
-  if (msg.toLowerCase() === "who is 为什么" || msg.toLowerCase() === "who is weishenme") {
-    send("\"为什么\"是小孩子");
-    return;
-  }
-  if (msg.toLowerCase() === "who is your daddy") {
-    send("Charred is my daddy");
-    return;
-  }
-  if (msg.substring(0, "who is everyone".length).toLowerCase() === "who is everyone") {
-    send(everyone + ", 为什么");
-  }
-  if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
-    send(whois(msg.substring("who is ".length)));
-  }
-  if (msg.toLowerCase().includes("what is gambl")) {
-    send("gamble is bad");
-  }
   if (msg.toLowerCase() === "!source" || msg.toLowerCase() === "!sauce") {
     send("https://github.com/charredgrass/raocsgo-discord-bot");
   }
-  if (msg.toLowerCase() === "!source2") {
-    send("never");
-  }
-  // if (msg.toLowerCase() === "!test") {
-  //   send(utils.generateGrave("Camaron","","\"!joke 18\" ","      -Charred","",""))
-  // }
-  if (msg.substring(0, "!joke".length).toLowerCase() === "!joke") {
-    if (msg.split(" ").length > 1) {
-      let x = parseInt(msg.substring("!joke ".length));
-      if (x && x - 1 < jokes.length) {
-        if (x == 69) {
-          // send("")
-        } else if (x === 0) {
-          send("People who think arrays start at 1");
-        } else {
-          send(jokes[x - 1]);
-        }
-      } else if (x && x != 69) {
-        send("People who think the bot has an unlimited number of jokes.");
-      }
-    } else {
-      send(getRandomFromList(jokes));
-    }
-  }
-  if (msg === "!jokes") {
-    send("https://github.com/charredgrass/raocsgo-discord-bot/blob/master/texts/jokes.txt");
-  }
-  if (msg.substring(0, "!anchorloc".length).toLowerCase() === "!anchorloc") {
-    anchorloc = loc;
-    message.delete();
-  }
-  if (msg.substring(0, "!proxy".length).toLowerCase() === "!proxy") {
-    if (message.author.id == "154826263628873728") {
-      let toSay = msg.substring("!proxy ".length);
-      if (anchorloc) {
-        anchorloc.send(toSay);
-      }
-    }
-  }
-  if (hascmd(msg, "priceof")) {
-    getPrice(msg.substring("!priceof ".length), 730, send);
-  }
-  if (hascmd(msg, "po")) {
-    getPrice(msg.substring("!po ".length), 730, send);
-  }
-  if (hascmd(msg, "podbg")) {
-    getPrice(msg.substring("!podbg ".length), 730, send, null, true);
-  }
-  if (hascmd(msg, "priceofdota")) {
-    getPrice(msg.substring("!priceofdota ".length), 570, send);
-  }
-  if (hascmd(msg, "priceoftf")) {
-    getPrice(msg.substring("!priceoftf ".length), 440, send);
-  }
-  if (hascmd(msg, "priceofpubg")) {
-    getPrice(msg.substring("!priceofpubg ".length), 578080, send);
-  }
-  if (hascmd(msg, "imgof")) {
-    getImg(msg.substring("!imgof ".length), 730, sendimg, send);
-  }
-  if (hascmd(msg, "imgofpubg")) {
-    getImg(msg.substring("!imgofpubg ".length), 578080, sendimg, send);
-  }
+
   if (hascmd(msg, "magic8")) {
     var answers = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "As I see it, yes", "Most likely", "Outlook good", "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later", "Better not tell you now", "Cannot predict now", "Concentrate and ask again", "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good", "Very doubtful"];
     send(getRandomFromList(answers));
   }
-  if (hascmd(msg, "steam")) {
-    try {
-      steamgame.getGameSummary(msg.substring("!steam ".length), send);
-    } catch (err) {
-      console.log(err.message);
+
+  //RAO Commands
+  if (shouldResp.rao === true) {
+    if (msg.toLowerCase().match(/([^a-zA-Z]|^)osu/)) {
+      send("We get it, you're a weeb.");
     }
-  }
-  if (hascmd(msg, "help")) {
-    let args = argify(msg, "help");
-    if (args.length === 0) {
-      send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
-      if (helpdocs[args[0]]) {
-        send(helpdocs[args[0]]);
+    if (msg.toLowerCase() === "!whatthefuck" || msg.toLowerCase() === "!what") {
+      send("https://docs.google.com/document/d/1u0-YAZG7Rv7P9N94vKEGocvJccGlDvK2RZxWMcg8pDA/edit?usp=sharing");
+    }
+    if (msg.toLowerCase().includes("trap")) {
+      send("Traps? Ask Kairu about our Grade A Traps today!");
+    }
+    if (msg.toLowerCase() === "who am i") {
+      send("None of your business.");
+    }
+    if (msg.toLowerCase() === "what is love") {
+      send("Something you'll never feel.");
+    }
+    if (msg.toLowerCase() === "who are you" || msg.toLowerCase() === "who is bot charred") {
+      send("You're fucking retarded.");
+      return;
+    }
+    if (msg.toLowerCase() === "who is 为什么" || msg.toLowerCase() === "who is weishenme") {
+      send("\"为什么\"是小孩子");
+      return;
+    }
+    if (msg.toLowerCase() === "who is your daddy") {
+      send("Charred is my daddy");
+      return;
+    }
+    if (msg.substring(0, "who is everyone".length).toLowerCase() === "who is everyone") {
+      send(everyone + ", 为什么");
+    }
+    if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
+      send(whois(msg.substring("who is ".length)));
+    }
+    if (msg.toLowerCase().includes("what is gambl")) {
+      send("gamble is bad");
+    }
+    if (msg.toLowerCase() === "!source2") {
+      send("never");
+    }
+    if (msg.substring(0, "!joke".length).toLowerCase() === "!joke") {
+      if (msg.split(" ").length > 1) {
+        let x = parseInt(msg.substring("!joke ".length));
+        if (x && x - 1 < jokes.length) {
+          if (x == 69) {
+            // send("")
+          } else if (x === 0) {
+            send("People who think arrays start at 1");
+          } else {
+            send(jokes[x - 1]);
+          }
+        } else if (x && x != 69) {
+          send("People who think the bot has an unlimited number of jokes.");
+        }
+      } else {
+        send(getRandomFromList(jokes));
       }
-    } else {
-      send("Unknown command. Type \"!help\" for help.");
     }
-  }
-  if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
-    let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
-    if (args[0] == "help") {
-      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
-      return;
+    if (msg === "!jokes") {
+      send("https://github.com/charredgrass/raocsgo-discord-bot/blob/master/texts/jokes.txt");
     }
-    for (let i = 0; i < args.length; i++) {
-      if (args[i] == "bj") args[i] = "blackjack";
-      if (args[i] == "cf") args[i] = "coinflip";
-      if (args[i] == "h") args[i] = "hit";
-      if (args[i] == "s") args[i] = "stand";
-      if (args[i] == "b") args[i] = "balance";
-      if (args[i] == "lb") args[i] = "leaderboard";
+    if (msg.substring(0, "!anchorloc".length).toLowerCase() === "!anchorloc") {
+      anchorloc = loc;
+      message.delete();
     }
-    if (args[0] == "f" && args.length == 1) {
-      send("GFs owned: 0. Because you're a fucking loser.");
-      return;
+    if (msg.substring(0, "!proxy".length).toLowerCase() === "!proxy") {
+      if (message.author.id == "154826263628873728") {
+        let toSay = msg.substring("!proxy ".length);
+        if (anchorloc) {
+          anchorloc.send(toSay);
+        }
+      }
     }
-    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
-  }
-  if (hascmd(msg, "game")) {
-    let args = argify(msg, "game");
-    if (args[0] == "help") {
-      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
-      return;
+    if (hascmd(msg, "priceof")) {
+      getPrice(msg.substring("!priceof ".length), 730, send);
     }
-    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
-  }
-  if (hascmd(msg, "grave")) {
-    let arg = msg.substring("!grave ".length);
-    if (arg.toLowerCase() == "help") {
-      send("A tribute to the permanently banned users of RAOfCSGO, or the ones who have abandoned us. Use `!grave list` for a list of all the tombstones.");
-      return;
+    if (hascmd(msg, "po")) {
+      getPrice(msg.substring("!po ".length), 730, send);
     }
-    if (arg.toLowerCase() == "list") {
-      let hold = [];
+    if (hascmd(msg, "podbg")) {
+      getPrice(msg.substring("!podbg ".length), 730, send, null, true);
+    }
+    if (hascmd(msg, "priceofdota")) {
+      getPrice(msg.substring("!priceofdota ".length), 570, send);
+    }
+    if (hascmd(msg, "priceoftf")) {
+      getPrice(msg.substring("!priceoftf ".length), 440, send);
+    }
+    if (hascmd(msg, "priceofpubg")) {
+      getPrice(msg.substring("!priceofpubg ".length), 578080, send);
+    }
+    if (hascmd(msg, "imgof")) {
+      getImg(msg.substring("!imgof ".length), 730, sendimg, send);
+    }
+    if (hascmd(msg, "imgofpubg")) {
+      getImg(msg.substring("!imgofpubg ".length), 578080, sendimg, send);
+    }
+    if (hascmd(msg, "steam")) {
+      try {
+        steamgame.getGameSummary(msg.substring("!steam ".length), send);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
+      let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
+      if (args[0] == "help") {
+        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
+        return;
+      }
+      for (let i = 0; i < args.length; i++) {
+        if (args[i] == "bj") args[i] = "blackjack";
+        if (args[i] == "cf") args[i] = "coinflip";
+        if (args[i] == "h") args[i] = "hit";
+        if (args[i] == "s") args[i] = "stand";
+        if (args[i] == "b") args[i] = "balance";
+        if (args[i] == "lb") args[i] = "leaderboard";
+      }
+      if (args[0] == "f" && args.length == 1) {
+        send("GFs owned: 0. Because you're a fucking loser.");
+        return;
+      }
+      game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
+    }
+    if (hascmd(msg, "game")) {
+      let args = argify(msg, "game");
+      if (args[0] == "help") {
+        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
+        return;
+      }
+      game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
+    }
+    if (hascmd(msg, "grave")) {
+      let arg = msg.substring("!grave ".length);
+      if (arg.toLowerCase() == "help") {
+        send("A tribute to the permanently banned users of RAOfCSGO, or the ones who have abandoned us. Use `!grave list` for a list of all the tombstones.");
+        return;
+      }
+      if (arg.toLowerCase() == "list") {
+        let hold = [];
+        for (let i = 0; i < graves.length; i++) {
+          hold.push(graves[i].grave_name);
+        }
+        send(hold.join(", "));
+        return;
+      }
       for (let i = 0; i < graves.length; i++) {
-        hold.push(graves[i].grave_name);
-      }
-      send(hold.join(", "));
-      return;
-    }
-    for (let i = 0; i < graves.length; i++) {
-      for (let j = 0; j < graves[i].names.length; j++) {
-        if (arg.toLowerCase() == graves[i].names[j]) {
-          send(utils.generateGrave(graves[i].grave_name, graves[i].nick, graves[i].epit));
-          return;
+        for (let j = 0; j < graves[i].names.length; j++) {
+          if (arg.toLowerCase() == graves[i].names[j]) {
+            send(utils.generateGrave(graves[i].grave_name, graves[i].nick, graves[i].epit));
+            return;
+          }
         }
+      }
+    }
+    if (hascmd(msg, "gibs")) {
+      let args = argify(msg, "gibs");
+      if (args[0] === "listify" && args[1]) {
+        message.channel.fetchMessages({
+          limit: 100
+        }).then((msgs) => {
+          let marr = msgs.array();
+          let people = [];
+          for (let i = 0; i < marr.length; i++) {
+            if (marr[i].content.includes(args[1])) {
+              people.push(marr[i].author.username + "#" + marr[i].author.discriminator);
+            }
+          }
+          let ret = [];
+          for (let i = 0; i < people.length; i++) {
+            if (ret.includes(people[i]) === false) {
+              ret.push(people[i]);
+            }
+          }
+          send("People who have said that phrase in the past 100 messages: " + ret.join(", "));
+        });
+      }
+    }
+    if (hascmd(msg, "help")) {
+      let args = argify(msg, "help");
+      if (args.length === 0) {
+        send("Valid commands: !help, !what, !priceof, !imgof, who is [person], !magic8, !info\nType \"!help help\" for more specific help.");
+        if (helpdocs[args[0]]) {
+          send(helpdocs[args[0]]);
+        }
+      } else {
+        send("Unknown command. Type \"!help\" for help.");
       }
     }
   }
-  if (hascmd(msg, "gibs")) {
-    let args = argify(msg, "gibs");
-    if (args[0] === "listify" && args[1]) {
-      message.channel.fetchMessages({
-        limit: 100
-      }).then((msgs) => {
-        let marr = msgs.array();
-        let people = [];
-        for (let i = 0; i < marr.length; i++) {
-          if (marr[i].content.includes(args[1])) {
-            people.push(marr[i].author.username + "#" + marr[i].author.discriminator);
-          }
-        }
-        let ret = [];
-        for (let i = 0; i < people.length; i++) {
-          if (ret.includes(people[i]) === false) {
-            ret.push(people[i]);
-          }
-        }
-        send("People who have said that phrase in the past 100 messages: " + ret.join(", "));
-      });
+
+  if (shouldResp.atg === true) {
+    if (hascmd(msg, "tobees")) {
+      let args = argify(msg, "tobees");
+      let val = Number(args[0]);
+      console.log(val);
+      if (isNaN(val) === false) {
+        send("" + val + " USD is " + (20 * val) + " bees.");
+      } else {
+        send("Give me a number, dipshit.");
+      }
+    }
+    if (hascmd(msg, "tousd")) {
+      let args = argify(msg, "tousd");
+      let val = Number(args[0]);
+      if (isNaN(val) === false) {
+        send("" + val + " bees is " + (0.05 * val) + " USD.");
+      } else {
+        send("Give me a number, dipshit.");
+      }
     }
   }
 });
