@@ -397,11 +397,13 @@ client.on("message", message => {
   }
   let shouldResp = {
     rao: false,
-    atg: false
+    atg: false,
+    frz: false
   };
-  if (server == "313169519545679872" || server = null) { //NASS Test Server or a DMChannel
+  if (server == "313169519545679872" || server == null) { //NASS Test Server or a DMChannel
     shouldResp.rao = true;
     shouldResp.atg = true;
+    shouldResp.frz = true;
   }
   if (server == "167586953061990400") { //RAOCSGO
     shouldResp.rao = true;
@@ -409,10 +411,13 @@ client.on("message", message => {
   if (server == "276220128822165505") { //AtG
     shouldResp.atg = true;
   }
+  if (server == "234382619767341056") { //Frozen
+    shouldResp.frz = true;
+  }
 
   //Global Commands
   if (msg == "!info") {
-    if (shouldResp.rao === true) {
+    if (shouldResp.rao === true || shouldResp.frz === true) {
       send("I'm a bot run by Charred. https://github.com/charredgrass/raocsgo-discord-bot");
     } else {
       send("I'm a bot run by Bairac. https://github.com/charredgrass/raocsgo-discord-bot");
