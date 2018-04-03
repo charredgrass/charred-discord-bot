@@ -648,7 +648,7 @@ client.on("message", message => {
       }
     }
     if (hascmd(msg, "token")) {
-      send(wow.getWowTokenPrice(TOKEN));
+      wow.getWowTokenPrice(TOKEN, send);
     }
   }
 });
