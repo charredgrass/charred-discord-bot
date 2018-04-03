@@ -647,7 +647,7 @@ client.on("message", message => {
         send("Give me a number, dipshit.");
       }
     }
-    if (hascmd(msg, "token")) {
+    if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
   }
