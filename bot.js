@@ -625,6 +625,9 @@ client.on("message", message => {
   if (shouldResp.atg === true) {
     if (hascmd(msg, "tobees")) {
       let args = argify(msg, "tobees");
+      if (args[0] == "myfuckingsanity") {
+        send("That bad, huh?");
+      }
       let val = Number(args[0]);
       if (isNaN(val) === false) {
         send("" + val + " USD is " + (20 * val) + " bees.");
@@ -634,6 +637,9 @@ client.on("message", message => {
     }
     if (hascmd(msg, "tousd")) {
       let args = argify(msg, "tousd");
+      if (args[0] == "myfuckingsanity") {
+        send("That bad, huh?");
+      }
       let val = Number(args[0]);
       if (isNaN(val) === false) {
         send("" + val + " bees is " + (0.05 * val) + " USD.");
