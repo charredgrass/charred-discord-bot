@@ -391,12 +391,15 @@ client.on("message", message => {
   }
 
   //Server Selector
-  let server = loc.guild.id; //"guild" and "server" are the same thing
+  let server = null;
+  if (loc.guild) {
+    server = loc.guild.id; //"guild" and "server" are the same thing
+  }
   let shouldResp = {
     rao: false,
     atg: false
   };
-  if (server == "313169519545679872") { //NASS Test Server
+  if (server == "313169519545679872" || server = null) { //NASS Test Server or a DMChannel
     shouldResp.rao = true;
     shouldResp.atg = true;
   }
