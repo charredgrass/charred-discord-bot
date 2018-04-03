@@ -15,6 +15,9 @@ const argify = utils.argify;
 
 const slots = require("./lib/slots.js");
 
+const wow = require("./lib/wowapi.js");
+const TOKEN = fs.readFileSync("./token.txt").toString("utf-8");
+
 var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
 
 const hiddenppl = {
@@ -638,9 +641,11 @@ client.on("message", message => {
         send("Give me a number, dipshit.");
       }
     }
+    if (hascmd(msg, "token")) {
+      send(wow.getWowTokenPrice(TOKEN));
+    }
   }
 });
-
 
 
 client.login(fs.readFileSync("./key.txt").toString("utf-8"));
