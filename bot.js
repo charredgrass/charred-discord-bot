@@ -16,7 +16,9 @@ const argify = utils.argify;
 const slots = require("./lib/slots.js");
 
 const wow = require("./lib/wowapi.js");
-const TOKEN = fs.readFileSync("./token.txt").toString("utf-8");
+let keyholder = fs.readFileSync("./token.txt").toString("utf-8").split(" ");
+const TOKEN = keyholder[0];
+const WOWKEY = keyholder[1];
 
 var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
 
@@ -657,6 +659,34 @@ client.on("message", message => {
     }
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
+    }
+    if (hascmd(msg, "prog")) {
+      let toon = "";
+      let realm = "";
+      let args = argify(msg, "prog");
+      if (args.length == 2) {
+        toon = args[0];
+        realm = args[1]
+      } else if (args.length == 1 && args[0].includes("-") === true) {
+        let temp = args[0].split("-");
+        toon = temp[0];
+        realm = temp[1];
+      } else if (args.length == 1) {
+        toon = args[0];
+        realm = "Undermine"
+      }
+      if (toon != "" && realm != "") {
+        wow.getCharacterProgressionData(WOWKEY, (chardata, err) => {
+          if (err) {
+            send(err);
+          } else {
+            const CURRENT_RAIDS = ["The Emerald Nightmare", "Trial of Valor", "The Nighthold", "Tomb of Sargeras", "Antorus, the Burning Throne"];
+            const ABBREVS = [" EN", "ToV", " NH", "ToS", "ABT"];
+            let progject = wow.getProgressionData(chardata, CURRENT_RAIDS, ABBREVS);
+            send(wow.prettyProg(progject, CURRENT_RAIDS, ABBREVS, realm, toon));
+          }
+        }, realm, toon);
+      }
     }
   }
 });
