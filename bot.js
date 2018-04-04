@@ -661,6 +661,7 @@ client.on("message", message => {
       wow.getWowTokenPrice(TOKEN, send);
     }
     if (hascmd(msg, "prog")) {
+      const HOMEREALM = "Undermine";
       let toon = "";
       let realm = "";
       let args = argify(msg, "prog");
@@ -673,7 +674,7 @@ client.on("message", message => {
         realm = temp[1];
       } else if (args.length == 1) {
         toon = args[0];
-        realm = "Undermine"
+        realm = HOMEREALM;
       }
       if (toon != "" && realm != "") {
         wow.getCharacterProgressionData(WOWKEY, (chardata, err) => {
@@ -682,7 +683,7 @@ client.on("message", message => {
           } else {
             const CURRENT_RAIDS = ["The Emerald Nightmare", "Trial of Valor", "The Nighthold", "Tomb of Sargeras", "Antorus, the Burning Throne"];
             const ABBREVS = [" EN", "ToV", " NH", "ToS", "ABT"];
-            let progject = wow.getProgressionData(chardata, CURRENT_RAIDS, ABBREVS);
+            let progject = wow.getProgressionData(chardata, CURRENT_RAIDS, ABBREVS); //"progression object"
             send(wow.prettyProg(progject, CURRENT_RAIDS, ABBREVS, realm, toon));
           }
         }, realm, toon);
