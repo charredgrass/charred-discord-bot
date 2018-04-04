@@ -1,6 +1,6 @@
 # raocsgo-discord-bot
 
-Bot for the /r/RandomActsofCSGO and <Against the Grain>-Undermine discord servers.
+Bot for the /r/RandomActsofCSGO and \<Against the Grain\>-Undermine discord servers.
 
 ## Dependencies
 

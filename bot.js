@@ -548,7 +548,7 @@ client.on("message", message => {
     if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
       let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
       if (args[0] == "help") {
-        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
+        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/raocsgo/game.md");
         return;
       }
       for (let i = 0; i < args.length; i++) {
