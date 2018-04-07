@@ -692,6 +692,13 @@ client.on("message", message => {
     if (msg == "!nextraid") {
       send("The next raid time is: " + utils.getNextRaidTime());
     }
+    if (msg == "!amitoxic") {
+      if (message.author.id === "203714293340962817") {
+        send("Yes.");
+      } else {
+        send("Idk probably");
+      }
+    }
   }
 
   if (message.author.id === "154826263628873728") {
