@@ -693,12 +693,20 @@ client.on("message", message => {
       send("The next raid time is: " + utils.getNextRaidTime());
     }
     if (msg == "!amitoxic") {
-      if (message.author.id === "203714293340962817") {
+      if (message.author.id === "203714293340962817") { //cory
         send("Yes.");
-      } else if (message.author.id === "170562747950563328"){
+      } else if (message.author.id === "170562747950563328") { //ryan
         send("You wasted your limited chat-restricted messages to ask that?");
-      } else if (message.author.id === "170286101817327617" || message.author.id === "202642486504587264") {
+      } else if (message.author.id === "170286101817327617" || message.author.id === "202642486504587264") { //lur/leo
         send("No, but you're gay.")
+      } else if (message.author.id === "145024255787008000") { //stef
+        send("yes, and retarded");
+      } else if (message.author.id === "186256034086649857") { //justin
+        send("yea");
+      } else if (message.author.id === "247867522240610304") { //cham
+        send("˙sǝ⅄");
+      } else if (message.author.id === "274664443709751296" || message.author.id === "276220157532045323") { //mom/dad
+        send("Does it run in the family? If so, probably.");
       } else {
         send("Idk probably");
       }
