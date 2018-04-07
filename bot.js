@@ -695,6 +695,10 @@ client.on("message", message => {
     if (msg == "!amitoxic") {
       if (message.author.id === "203714293340962817") {
         send("Yes.");
+      } else if (message.author.id === "170562747950563328"){
+        send("You wasted your limited chat-restricted messages to ask that?");
+      } else if (message.author.id === "170286101817327617" || message.author.id === "202642486504587264") {
+        send("No, but you're gay.")
       } else {
         send("Idk probably");
       }
