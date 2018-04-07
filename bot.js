@@ -689,6 +689,9 @@ client.on("message", message => {
         }, realm, toon);
       }
     }
+    if (msg == "!nextraid") {
+      send("The next raid time is: " + utils.getNextRaidTime());
+    }
   }
 });
 
