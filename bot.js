@@ -693,6 +693,17 @@ client.on("message", message => {
       send("The next raid time is: " + utils.getNextRaidTime());
     }
   }
+
+  if (message.author.id === "154826263628873728") {
+    if (hascmd(msg, "setbotname")) {
+      let args = argify(msg, "setbotname");
+      if (args.length == 0) {
+
+      } else {
+        client.user.setUsername(args[0]);
+      }
+    }
+  }
 });
 
 
