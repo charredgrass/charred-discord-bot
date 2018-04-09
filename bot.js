@@ -20,6 +20,8 @@ let keyholder = fs.readFileSync("./token.txt").toString("utf-8").split(" ");
 const TOKEN = keyholder[0];
 const WOWKEY = keyholder[1];
 
+const HOMEREALM = "Undermine";
+
 var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
 
 const hiddenppl = {
@@ -661,22 +663,9 @@ client.on("message", message => {
       wow.getWowTokenPrice(TOKEN, send);
     }
     if (hascmd(msg, "prog")) {
-      const HOMEREALM = "Undermine";
-      let toon = "";
-      let realm = "";
       let args = argify(msg, "prog");
-      if (args.length == 2) {
-        toon = args[0];
-        realm = args[1]
-      } else if (args.length == 1 && args[0].includes("-") === true) {
-        let temp = args[0].split("-");
-        toon = temp[0];
-        realm = temp[1];
-      } else if (args.length == 1) {
-        toon = args[0];
-        realm = HOMEREALM;
-      }
-      if (toon != "" && realm != "") {
+      let tr = wow.argsToNameAndRealm(args, HOMEREALM);
+      if (tr[0] != "" && tr[1] != "") {
         wow.getCharacterProgressionData(WOWKEY, (chardata, err) => {
           if (err) {
             send(err);
@@ -684,9 +673,9 @@ client.on("message", message => {
             const CURRENT_RAIDS = ["The Emerald Nightmare", "Trial of Valor", "The Nighthold", "Tomb of Sargeras", "Antorus, the Burning Throne"];
             const ABBREVS = [" EN", "ToV", " NH", "ToS", "ABT"];
             let progject = wow.getProgressionData(chardata, CURRENT_RAIDS, ABBREVS); //"progression object"
-            send(wow.prettyProg(progject, CURRENT_RAIDS, ABBREVS, realm, toon));
+            send(wow.prettyProg(progject, CURRENT_RAIDS, ABBREVS, tr[1], tr[0]));
           }
-        }, realm, toon);
+        }, tr[1], tr[0]);
       }
     }
     if (msg == "!nextraid") {
