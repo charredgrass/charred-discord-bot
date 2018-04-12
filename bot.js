@@ -700,6 +700,9 @@ client.on("message", message => {
         send("Idk probably");
       }
     }
+    if (msg == "!attendance") {
+      send("https://docs.google.com/spreadsheets/d/1S68QnG1zU_UBJ5kdUM237aGzBF5sStrZsoMLUxfMfk0/edit?usp=sharing");
+    }
   }
 
   if (message.author.id === "154826263628873728") {
