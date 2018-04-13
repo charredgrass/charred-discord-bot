@@ -679,7 +679,8 @@ client.on("message", message => {
       }
     }
     if (msg == "!nextraid") {
-      send("The next raid time is: " + utils.getNextRaidTime());
+      let nextraid = utils.getNextRaidTime()
+      send("The next raid time is: " + nextraid);
     }
     if (msg == "!amitoxic") {
       if (message.author.id === "203714293340962817") { //cory
