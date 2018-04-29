@@ -13,6 +13,8 @@ const utils = require("./lib/utils.js");
 const hascmd = utils.hascmd;
 const argify = utils.argify;
 
+const timer = require("./lib/timer.js");
+
 const slots = require("./lib/slots.js");
 
 const wow = require("./lib/wowapi.js");
@@ -71,6 +73,7 @@ var commands = {
   }
 };
 var anchorloc;
+var timerobj;
 process.stdin.on("data", (text) => {
   var stuff;
   while (text.indexOf("\n") !== -1 || text.indexOf("\r") !== -1 || text.indexOf("  ") !== -1) {
@@ -704,6 +707,9 @@ client.on("message", message => {
     }
     if (msg == "!attendance") {
       send("https://docs.google.com/spreadsheets/d/1S68QnG1zU_UBJ5kdUM237aGzBF5sStrZsoMLUxfMfk0/edit?usp=sharing");
+    }
+    if (msg == "!starttimer") {
+      timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer(); //TODO make this not happen if timerjob is a pending timer
     }
   }
 
