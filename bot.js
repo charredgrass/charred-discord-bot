@@ -711,6 +711,10 @@ client.on("message", message => {
     if (msg == "!starttimer") {
       timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer(); //TODO make this not happen if timerjob is a pending timer
     }
+    if (msg == "!checktimer") {
+      if (timerobj)
+      send("" + utils.millisToMinutes(timerobj.howLong()) + " minutes remaining.");
+    }
   }
 
   if (message.author.id === "154826263628873728") {
