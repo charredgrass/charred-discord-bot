@@ -713,6 +713,7 @@ client.on("message", message => {
       if (args[0] == "start") {
         if (!timerobj || timerobj.howLong() < 0) { //if there is no timer, or the timer has expired
           timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+          send("Started a timer."); //TODO make variable
         } else {
           send("There is currently a timer running, clear it first using `!timer clear`.");
         }
@@ -725,15 +726,15 @@ client.on("message", message => {
             send("The timer expired" + utils.millisToMinutes(n) + " minutes ago.");
           }
         } else {
-          send("There is not currently a timer running.");
+          send("The timer is not currently running.");
         }
       } else if (args[0] == "clear") {
         if (timerobj) {
           let n = timerobj.howLong();
           if (n > 0) {
-            send("Clearing a timer that has " + utils.millisToMinutes(n) + " of " + utils.millisToMinutes(timerobj.duration) + " minutes left.");
+            send("Clearing a timer that had " + utils.millisToMinutes(n) + " of " + utils.millisToMinutes(timerobj.duration) + " minutes remaining.");
           } else {
-            send("Clearing a timer that expired " + utils.millisToMinutes(n) + " mintues ago.");
+            send("Clearing a timer that expired " + utils.millisToMinutes(n) + " minutes ago.");
           }
           timerobj = null;
         } else {
