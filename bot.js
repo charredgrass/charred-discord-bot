@@ -736,6 +736,7 @@ client.on("message", message => {
           } else {
             send("Clearing a timer that expired " + utils.millisToMinutes(n) + " minutes ago.");
           }
+          timerobj.stop();
           timerobj = null;
         } else {
           send("There is not currently a timer running.");
