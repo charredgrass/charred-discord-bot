@@ -728,8 +728,17 @@ client.on("message", message => {
           send("There is not currently a timer running.");
         }
       } else if (args[0] == "clear") {
-        send("Clearing a timer that has " + utils.millisToMinutes(timerobj.howLong()) + " of " + utils.millisToMinutes(timerobj.duration) + " minutes left.");
-        timerobj = null;
+        if (timerobj) {
+          let n = timerobj.howLong();
+          if (n > 0) {
+            send("Clearing a timer that has " + utils.millisToMinutes(n) + " of " + utils.millisToMinutes(timerobj.duration) + " minutes left.");
+          } else {
+            send("Clearing a timer that expired " + utils.millisToMinutes(n) + " mintues ago.");
+          }
+          timerobj = null;
+        } else {
+          send("There is not currently a timer running.");
+        }
       }
     }
   }
