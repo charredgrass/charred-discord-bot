@@ -708,12 +708,29 @@ client.on("message", message => {
     if (msg == "!attendance") {
       send("https://docs.google.com/spreadsheets/d/1S68QnG1zU_UBJ5kdUM237aGzBF5sStrZsoMLUxfMfk0/edit?usp=sharing");
     }
-    if (msg == "!starttimer") {
-      timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer(); //TODO make this not happen if timerjob is a pending timer
-    }
-    if (msg == "!checktimer") {
-      if (timerobj)
-      send("" + utils.millisToMinutes(timerobj.howLong()) + " minutes remaining.");
+    if (hascmd(msg, "timer")) {
+      let args = argify(msg, "timer");
+      if (args[0] == "start") {
+        if (!timerobj || timerobj.howLong() < 0) { //if there is no timer, or the timer has expired
+          timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+        } else {
+          send("There is currently a timer running, clear it first using `!timer clear`.");
+        }
+      } else if (args[0] == "check") {
+        if (timerobj) {
+          let n = timerobj.howLong();
+          if (n > 0) {
+            send("" + utils.millisToMinutes(n) + " minutes remaining.");
+          } else {
+            send("The timer expired" + utils.millisToMinutes(n) + " minutes ago.");
+          }
+        } else {
+          send("There is not currently a timer running.");
+        }
+      } else if (args[0] == "clear") {
+        send("Clearing a timer that has " + utils.millisToMinutes(timerobj.howLong()) + " of " + utils.millisToMinutes(timerobj.duration) + " minutes left.");
+        timerobj = null;
+      }
     }
   }
 
