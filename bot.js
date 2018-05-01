@@ -710,10 +710,16 @@ client.on("message", message => {
     }
     if (hascmd(msg, "timer")) {
       let args = argify(msg, "timer");
+      let flags = flagify(msg, "timer");
       if (args[0] == "start") {
         if (!timerobj || timerobj.howLong() < 0) { //if there is no timer, or the timer has expired
-          timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
-          send("Started a timer."); //TODO make variable
+          if (flagify["-t"] && Number(flagify["-t"]) > 0) {
+            timerobj = new timer(Number(flagify["t"]) * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+            send("Started a " + Number(flagify["t"]) + " minute timer."); //TODO make variable
+          } else {
+            timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+            send("Started a " + 20 + " minute timer.");
+          }
         } else {
           send("There is currently a timer running, clear it first using `!timer clear`.");
         }
@@ -723,7 +729,7 @@ client.on("message", message => {
           if (n > 0) {
             send("" + utils.millisToMinutes(n) + " minutes remaining.");
           } else {
-            send("The timer expired" + utils.millisToMinutes(n) + " minutes ago.");
+            send("The timer expired " + utils.millisToMinutes(n) + " minutes ago.");
           }
         } else {
           send("The timer is not currently running.");
