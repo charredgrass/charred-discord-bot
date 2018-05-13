@@ -401,7 +401,7 @@ client.on("message", message => {
     atg: false,
     frz: false
   };
-  if (server == "313169519545679872" || server == null) { //NASS Test Server or a DMChannel
+  if (server == "313169519545679872" || server === null) { //NASS Test Server or a DMChannel
     shouldResp.rao = true;
     shouldResp.atg = true;
     shouldResp.frz = true;
@@ -665,7 +665,7 @@ client.on("message", message => {
     if (hascmd(msg, "prog")) {
       let args = argify(msg, "prog");
       let tr = wow.argsToNameAndRealm(args, HOMEREALM);
-      if (tr[0] != "" && tr[1] != "") {
+      if (tr[0] !== "" && tr[1] !== "") {
         wow.getCharacterProgressionData(WOWKEY, (chardata, err) => {
           if (err) {
             send(err);
@@ -689,7 +689,7 @@ client.on("message", message => {
       } else if (message.author.id === "170562747950563328") { //ryan
         send("You wasted your limited chat-restricted messages to ask that?");
       } else if (message.author.id === "170286101817327617" || message.author.id === "202642486504587264") { //lur/leo
-        send("No, but you're gay.")
+        send("No, but you're gay.");
       } else if (message.author.id === "145024255787008000") { //stef
         send("yes, and retarded");
       } else if (message.author.id === "186256034086649857") { //justin
@@ -751,9 +751,7 @@ client.on("message", message => {
   if (message.author.id === "154826263628873728") {
     if (hascmd(msg, "setbotname")) {
       let args = argify(msg, "setbotname");
-      if (args.length == 0) {
-
-      } else {
+      if (args.length !== 0) {
         client.user.setUsername(args[0]);
       }
     }
