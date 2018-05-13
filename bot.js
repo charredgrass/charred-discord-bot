@@ -12,6 +12,7 @@ const steamgame = require("./lib/steamgame.js");
 const utils = require("./lib/utils.js");
 const hascmd = utils.hascmd;
 const argify = utils.argify;
+const flagify = utils.flagify;
 
 const timer = require("./lib/timer.js");
 
