@@ -102,7 +102,9 @@ process.stdin.on("data", (text) => {
 function whois(person) {
   let trueppl = Object.assign({}, whoppl, hiddenppl);
   if (trueppl.hasOwnProperty(person.toLowerCase()) === true) {
-    return person + " is " + trueppl[key];
+    return person + " is " + trueppl[person.toLowerCase()];
+  } else {
+    return "";
   }
 }
 
@@ -482,7 +484,10 @@ client.on("message", message => {
       send(everyone + ", 为什么");
     }
     if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
-      send(whois(msg.substring("who is ".length)));
+      let tem = whois(msg.substring("who is ".length));
+      if (tem !== "") {
+        send(tem);
+      }
     }
     if (msg.toLowerCase().includes("what is gambl")) {
       send("gamble is bad");
