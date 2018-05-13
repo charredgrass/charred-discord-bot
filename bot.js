@@ -101,10 +101,8 @@ process.stdin.on("data", (text) => {
 
 function whois(person) {
   let trueppl = Object.assign({}, whoppl, hiddenppl);
-  for (var key in trueppl) {
-    if (person.toLowerCase() === key) {
-      return person + " is " + trueppl[key];
-    }
+  if (trueppl.hasOwnProperty(person.toLowerCase())) {
+    return person + " is " + trueppl[key];
   }
 }
 
