@@ -1,14 +1,11 @@
 //Importing node.js modules
-
 const Discord = require("discord.js");
 const SteamCommunity = require("steamcommunity");
+const fs = require("fs");
 
 //Instantiating module objects
 const client = new Discord.Client();
 var community = new SteamCommunity();
-
-const fs = require("fs");
-
 
 //Importing my own files
 const gamemod = require("./lib/game_utils.js");
@@ -51,7 +48,6 @@ for (let i = 0; i < jokes.length; i++) {
 }
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
-
 
 //start reading from stdin and set up event listener for commands
 process.stdin.setEncoding("utf8");
@@ -725,9 +721,9 @@ client.on("message", message => {
       let flags = flagify(msg, "timer");
       if (args[0] == "start") {
         if (!timerobj || timerobj.howLong() < 0) { //if there is no timer, or the timer has expired
-          if (flagify["-t"] && Number(flagify["-t"]) > 0) {
-            timerobj = new timer(Number(flagify["t"]) * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
-            send("Started a " + Number(flagify["t"]) + " minute timer."); //TODO make variable
+          if (flags["-t"] && Number(flags["-t"]) > 0) {
+            timerobj = new timer(Number(flags["t"]) * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+            send("Started a " + Number(flags["t"]) + " minute timer."); //TODO make variable
           } else {
             timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
             send("Started a " + 20 + " minute timer.");
