@@ -1,37 +1,47 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
+//Importing node.js modules
 
+const Discord = require("discord.js");
 const SteamCommunity = require("steamcommunity");
+
+//Instantiating module objects
+const client = new Discord.Client();
 var community = new SteamCommunity();
 
 const fs = require("fs");
 
+
+//Importing my own files
 const gamemod = require("./lib/game_utils.js");
 const steamgame = require("./lib/steamgame.js");
-
 const utils = require("./lib/utils.js");
+const timer = require("./lib/timer.js");
+const slots = require("./lib/slots.js");
+const wow = require("./lib/wowapi.js");
+var lbh = require("./lib/lb_archive.js");
+
+//instantiate objects from my own code
+var ghandler = new gamemod.GameData(gamedata);
+var archive = new lbh.LBArchive("./data/archives/", 1);
+
+//assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
 const argify = utils.argify;
 const flagify = utils.flagify;
 
-const timer = require("./lib/timer.js");
-
-const slots = require("./lib/slots.js");
-
-const wow = require("./lib/wowapi.js");
+//read API keys from file. File is .gitignore-d
 let keyholder = fs.readFileSync("./token.txt").toString("utf-8").split(" ");
 const TOKEN = keyholder[0];
 const WOWKEY = keyholder[1];
 
+//Bad, hard coded constants
 const HOMEREALM = "Undermine";
-
-var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
-
 const hiddenppl = {
   "god": "me",
   "england": "my city"
 };
 
+//read more data from file
+var whoppl = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
 var everyone = Object.keys(whoppl).join(", ");
 var helpdocs = JSON.parse(fs.readFileSync("./texts/helpdocs.json").toString("utf-8"));
 var jokes = (fs.readFileSync("./texts/jokes.txt").toString("utf-8").split("\n"));
@@ -40,13 +50,10 @@ for (let i = 0; i < jokes.length; i++) {
     jokes[i] = jokes[i].replace("///", "\n");
 }
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
-
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
-var ghandler = new gamemod.GameData(gamedata);
 
-var lbh = require("./lib/lb_archive.js");
-var archive = new lbh.LBArchive("./data/archives/", 1);
 
+//start reading from stdin and set up event listener for commands
 process.stdin.setEncoding("utf8");
 var commands = {
   "UNKNOWN_COMMAND": function() {
@@ -73,8 +80,6 @@ var commands = {
     return "Stopping.";
   }
 };
-var anchorloc;
-var timerobj;
 process.stdin.on("data", (text) => {
   let stuff;
   while (text.indexOf("\n") !== -1 || text.indexOf("\r") !== -1 || text.indexOf("  ") !== -1) {
@@ -100,6 +105,18 @@ process.stdin.on("data", (text) => {
   }
 });
 
+//Global variables
+//I know...
+var anchorloc;
+var timerobj;
+
+//Event listener to trigger when bot starts
+client.on("ready", () => {
+  console.log("Connected and initialized.");
+});
+
+//Helper functions for chat commands
+
 function whois(person) {
   let trueppl = Object.assign({}, whoppl, hiddenppl);
   if (trueppl.hasOwnProperty(person.toLowerCase()) === true) {
@@ -108,10 +125,6 @@ function whois(person) {
     return "";
   }
 }
-
-client.on("ready", () => {
-  console.log("Connected and initialized.");
-});
 
 function formatPrice(prices) {
   let ret = "";
@@ -345,12 +358,15 @@ setInterval(() => {
 }, 1000 * 60 * 30);
 
 
-
+//Main event listener for messages
 client.on("message", message => {
 
+  //ignore other bots
   if (message.author.bot === true) {
     return;
   }
+
+  //shorthand
   var loc = message.channel;
   var msg = removeAll(message.content, "?");
 
@@ -368,10 +384,8 @@ client.on("message", message => {
 
   //SEND helper functions
   let send = function(msg, opts) {
-    if (lastsent + 1000 < Date.now()) {
-      lastsent = Date.now();
-      loc.send(msg, opts);
-    }
+    lastsent = Date.now();
+    loc.send(msg, opts);
   };
   let sgame = function(msg, opts) {
     lastsent = Date.now();
