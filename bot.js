@@ -83,7 +83,7 @@ process.stdin.on("data", (text) => {
   let command = args[0].toLowerCase();
   let trip = false;
 
-  if (commands.hasOwnProperty(command)) {
+  if (commands.hasOwnProperty(command) === true) {
     trip = true;
     stuff = commands[command](...args);
     if (Array.isArray(stuff) === false) {
@@ -101,7 +101,7 @@ process.stdin.on("data", (text) => {
 
 function whois(person) {
   let trueppl = Object.assign({}, whoppl, hiddenppl);
-  if (trueppl.hasOwnProperty(person.toLowerCase())) {
+  if (trueppl.hasOwnProperty(person.toLowerCase()) === true) {
     return person + " is " + trueppl[key];
   }
 }
