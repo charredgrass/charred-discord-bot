@@ -354,6 +354,18 @@ client.on("message", message => {
   var loc = message.channel;
   var msg = removeAll(message.content, "?");
 
+  //Role Fillers
+  let mroles = [];
+  if (message.member) {
+    mroles = message.member.roles.array();
+  }
+  let ismod = false;
+  for (let i = 0; i < mroles.length; i++) {
+    if (mroles[i].name.includes("Mod")) {
+      ismod = true;
+    }
+  }
+
   //SEND helper functions
   let send = function(msg, opts) {
     if (lastsent + 1000 < Date.now()) {
@@ -379,18 +391,6 @@ client.on("message", message => {
       embed: new Discord.RichEmbed().setImage(img)
     });
   };
-
-  //Role Fillers
-  let mroles = [];
-  if (message.member) {
-    mroles = message.member.roles.array();
-  }
-  let ismod = false;
-  for (let i = 0; i < mroles.length; i++) {
-    if (mroles[i].name.includes("Mod")) {
-      ismod = true;
-    }
-  }
 
   //Server Selector
   let server = null;
