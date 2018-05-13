@@ -89,14 +89,10 @@ process.stdin.on("data", (text) => {
     if (Array.isArray(stuff) === false) {
       console.log(stuff);
     }
-  }
-
-  if (trip === false) {
+  } else {
     stuff = commands.UNKNOWN_COMMAND();
     if (Array.isArray(stuff) === true) {
-      for (let i = 0; i < stuff.length; i++) {
-        console.log(stuff[i]);
-      }
+      console.log(JSON.stringify(stuff));
     } else {
       console.log(stuff);
     }
