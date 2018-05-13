@@ -108,8 +108,6 @@ function whois(person) {
   }
 }
 
-
-
 client.on("ready", () => {
   console.log("Connected and initialized.");
 });
