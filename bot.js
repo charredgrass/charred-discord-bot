@@ -75,26 +75,26 @@ var commands = {
 var anchorloc;
 var timerobj;
 process.stdin.on("data", (text) => {
-  var stuff;
+  let stuff;
   while (text.indexOf("\n") !== -1 || text.indexOf("\r") !== -1 || text.indexOf("  ") !== -1) {
     text = text.replace(/\n|\r|\t/, "").replace(/ {2}/, " ");
   }
-  var args = text.split(" ");
-  var command = args[0].toLowerCase();
-  var trip = false;
-  for (var key in commands) {
-    if (key === command) {
-      trip = true;
-      stuff = commands[key](args[1], args[2], args[3]);
-      if (Array.isArray(stuff)) {} else {
-        console.log(stuff);
-      }
+  let args = text.split(" ");
+  let command = args[0].toLowerCase();
+  let trip = false;
+
+  if (commands.hasOwnProperty(command)) {
+    trip = true;
+    stuff = commands[command](...args);
+    if (Array.isArray(stuff) === false) {
+      console.log(stuff);
     }
   }
-  if (!trip) {
+
+  if (trip === false) {
     stuff = commands.UNKNOWN_COMMAND();
-    if (Array.isArray(stuff)) {
-      for (var i = 0; i < stuff.length; i++) {
+    if (Array.isArray(stuff) === true) {
+      for (let i = 0; i < stuff.length; i++) {
         console.log(stuff[i]);
       }
     } else {
