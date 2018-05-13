@@ -14,7 +14,7 @@ const utils = require("./lib/utils.js");
 const timer = require("./lib/timer.js");
 const slots = require("./lib/slots.js");
 const wow = require("./lib/wowapi.js");
-var lbh = require("./lib/lb_archive.js");
+const lbh = require("./lib/lb_archive.js");
 
 //instantiate objects from my own code
 var ghandler = new gamemod.GameData(gamedata);
