@@ -16,10 +16,6 @@ const slots = require("./lib/slots.js");
 const wow = require("./lib/wowapi.js");
 const lbh = require("./lib/lb_archive.js");
 
-//instantiate objects from my own code
-var ghandler = new gamemod.GameData(gamedata);
-var archive = new lbh.LBArchive("./data/archives/", 1);
-
 //assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
 const argify = utils.argify;
@@ -48,6 +44,10 @@ for (let i = 0; i < jokes.length; i++) {
 }
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
+
+//instantiate objects from my own code that require external files
+var ghandler = new gamemod.GameData(gamedata);
+var archive = new lbh.LBArchive("./data/archives/", 1);
 
 //start reading from stdin and set up event listener for commands
 process.stdin.setEncoding("utf8");
