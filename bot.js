@@ -776,7 +776,7 @@ client.on("message", message => {
       let level = Number(args[1]);
       let con = Number(args[2]);
       if (isNaN(hitdie) === false && isNaN(level) === false && isNaN(con) === false) {
-        send(getHP(hitdie, level, con) + " HP"); //could have done getHP(...args) for syntactic sugar
+        send(dnd.getHP(hitdie, level, con) + " HP"); //could have done getHP(...args) for syntactic sugar
       } else {
         send("!hp help");
       }
