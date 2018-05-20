@@ -15,6 +15,7 @@ const timer = require("./lib/timer.js");
 const slots = require("./lib/slots.js");
 const wow = require("./lib/wowapi.js");
 const lbh = require("./lib/lb_archive.js");
+const dnd = require("./lib/dnd.js");
 
 //assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
@@ -45,7 +46,7 @@ for (let i = 0; i < jokes.length; i++) {
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 
-//instantiate objects from my own code that require external files
+//instantiate objects from my own code that require external files1
 var ghandler = new gamemod.GameData(gamedata);
 var archive = new lbh.LBArchive("./data/archives/", 1);
 
@@ -410,12 +411,14 @@ client.on("message", message => {
   let shouldResp = {
     rao: false,
     atg: false,
-    frz: false
+    frz: false,
+    dnd: false
   };
   if (server == "313169519545679872" || server === null) { //NASS Test Server or a DMChannel
     shouldResp.rao = true;
     shouldResp.atg = true;
     shouldResp.frz = true;
+    shouldResp.dnd = true;
   }
   if (server == "167586953061990400") { //RAOCSGO
     shouldResp.rao = true;
@@ -425,6 +428,9 @@ client.on("message", message => {
   }
   if (server == "234382619767341056") { //Frozen
     shouldResp.frz = true;
+  }
+  if (server == "446813545049358336") { //D&D
+    shouldResp.dnd = true;
   }
 
   //Global Commands
@@ -755,6 +761,24 @@ client.on("message", message => {
         } else {
           send("There is not currently a timer running.");
         }
+      }
+    }
+  }
+
+  if (shouldResp.dnd == true) {
+    if (hascmd(msg, "hp")) {
+      let args = argify(msg, "hp");
+      if (args[0] === "help") {
+        send("!hp <hitdie> <level> <con>");
+        return;
+      }
+      let hitdie = Number(args[0]);
+      let level = Number(args[1]);
+      let con = Number(args[2]);
+      if (isNaN(hitdie) === false && isNaN(level) === false && isNaN(con) === false) {
+        send(getHP(hitdie, level, con) + " HP"); //could have done getHP(...args) for syntactic sugar
+      } else {
+        send("!hp help");
       }
     }
   }
