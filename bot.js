@@ -173,17 +173,18 @@ function getImg(item, appid, cb, ecb) {
     cb("https://cdn.discordapp.com/attachments/318187405335068675/369579039884836865/tato.jpg");
   } else if (item.toLowerCase() == "daka") {
     cb("https://cdn.discordapp.com/attachments/308936393999253505/410292836509024256/Screenshot_20180204-092453.png");
+  } else {
+    community.marketSearch({
+      query: item,
+      appid: appid
+    }, (err, items) => {
+      if (err) {
+        ecb(err.message);
+      } else {
+        cb(items[0].image, items[0].market_hash_name);
+      }
+    });
   }
-  community.marketSearch({
-    query: item,
-    appid: appid
-  }, (err, items) => {
-    if (err) {
-      ecb(err.message);
-    } else {
-      cb(items[0].image, items[0].market_hash_name);
-    }
-  });
 }
 
 function removeAll(str, rep) {
@@ -764,7 +765,7 @@ client.on("message", message => {
       }
     }
     if (msg == "!cheese") {
-    	send("https://cdn.discordapp.com/attachments/412443393042677762/458863846166102047/giphy_1.gif");
+      sendimg("https://cdn.discordapp.com/attachments/412443393042677762/458863846166102047/giphy_1.gif");
     }
   }
 
