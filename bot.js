@@ -763,6 +763,9 @@ client.on("message", message => {
         }
       }
     }
+    if (msg == "!cheese") {
+    	send("https://cdn.discordapp.com/attachments/412443393042677762/458863846166102047/giphy_1.gif");
+    }
   }
 
   if (shouldResp.dnd == true) {
