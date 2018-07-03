@@ -779,6 +779,11 @@ client.on("message", message => {
       let hitdie = Number(args[0]);
       let level = Number(args[1]);
       let con = Number(args[2]);
+      const classes = ["barbarian", "bard", "cleric", "druid", "fighter", "monk", "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"];
+      const classhd = [12, 8, 8, 8, 10, 8, 10, 10, 8, 6, 8, 6];
+      if (isNaN(hitdie) === true && classes.includes(args[0]) === true) {
+        hitdie = classhd[classes.indexOf(args[0])];
+      }
       if (isNaN(hitdie) === false && isNaN(level) === false && isNaN(con) === false) {
         send(dnd.getHP(hitdie, level, con) + " HP"); //could have done getHP(...args) for syntactic sugar
       } else {
