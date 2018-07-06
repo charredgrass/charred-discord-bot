@@ -680,6 +680,9 @@ client.on("message", message => {
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
+    if (msg == "!broken") {
+      send("Fizz");
+    }
     if (hascmd(msg, "prog")) {
       let args = argify(msg, "prog");
       let tr = wow.argsToNameAndRealm(args, HOMEREALM);
