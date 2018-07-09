@@ -710,7 +710,7 @@ client.on("message", message => {
       } else if (message.author.id === "170562747950563328") { //ryan
         send("You wasted your limited chat-restricted messages to ask that?");
       } else if (message.author.id === "170286101817327617" || message.author.id === "202642486504587264") { //lur/leo
-        send("No, but you're gay.");
+        send("Yes, and gay.");
       } else if (message.author.id === "145024255787008000") { //stef
         send("yes, and retarded");
       } else if (message.author.id === "186256034086649857") { //justin
@@ -719,6 +719,8 @@ client.on("message", message => {
         send("˙sǝ⅄");
       } else if (message.author.id === "274664443709751296" || message.author.id === "276220157532045323") { //mom/dad
         send("Does it run in the family? If so, probably.");
+      } else if (message.author.id === "154826263628873728") {
+        send("yes, as fuck");
       } else {
         send("Idk probably");
       }
