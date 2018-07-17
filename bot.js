@@ -681,7 +681,9 @@ client.on("message", message => {
       wow.getWowTokenPrice(TOKEN, send);
     }
     if (msg.match( /\!\<\:token\:[\d]+\>/)) {
-      wow.wowTokenPrettySend(TOKEN, send);
+      let temote = client.emojis.find("name","token");
+      let gemote = client.emojis.find("name","gold");
+      wow.wowTokenPrettySend(TOKEN, send, temote, gemote);
     }
     if (msg == "!broken") {
       send("Fizz");
