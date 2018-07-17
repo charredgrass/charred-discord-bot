@@ -680,6 +680,9 @@ client.on("message", message => {
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
+    if (msg == "!:token:") {
+      wow.wowTokenPrettySend(TOKEN, send);
+    }
     if (msg == "!broken") {
       send("Fizz");
     }
