@@ -680,7 +680,7 @@ client.on("message", message => {
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
-    if (msg == /\!\<\:token\:[\d]+\>/) {
+    if (/\!\<\:token\:[\d]+\>/.match(msg)) {
       wow.wowTokenPrettySend(TOKEN, send);
     }
     if (msg == "!broken") {
