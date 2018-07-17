@@ -680,7 +680,6 @@ client.on("message", message => {
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
-    console.log(msg);
     if (msg.match( /\!\<\:token\:[\d]+\>/)) {
       wow.wowTokenPrettySend(TOKEN, send);
     }
