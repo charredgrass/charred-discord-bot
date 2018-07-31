@@ -739,8 +739,8 @@ client.on("message", message => {
       if (args[0] == "start") {
         if (!timerobj || timerobj.howLong() < 0) { //if there is no timer, or the timer has expired
           if (flags["-t"] && Number(flags["-t"]) > 0) {
-            timerobj = new timer(Number(flags["t"]) * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
-            send("Started a " + Number(flags["t"]) + " minute timer."); //TODO make variable
+            timerobj = new timer(Number(flags["-t"]) * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
+            send("Started a " + Number(flags["-t"]) + " minute timer."); //TODO make variable
           } else {
             timerobj = new timer(20 * 60 * 1000, send, ["Time's up."], Date.now()).startTimer();
             send("Started a " + 20 + " minute timer.");
