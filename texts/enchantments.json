@@ -1,0 +1,196 @@
+[{
+	"title": "Tyche's Trickery",
+	"subtitle": "augment 1, any weapon",
+	"text": "When you activate this ability, roll 1d4-2. Your attack rolls, damage rolls, ability checks, and saving throws have this modifier applied to them until the start of your next turn. You can't use this ability again until after taking a long rest.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Ba-amon's Ward",
+	"subtitle": "augment 2, any armor",
+	"text": "After finishing a long rest, choose one of the following damage types: fire, lightning, cold, force, acid. You have resistance to the damage type as long as your armor is protecting you. (For instance, if you pick acid and stick your unprotected hand in a vat of acid, this enchantment does not give you resistance to this damage.) This effect lasts for 24 hours or until you pick a new damage type.",
+	"sort": ["aug", "2"]
+}, {
+	"title": "Shimmer",
+	"subtitle": "augment 0, any armor",
+	"text": "As a bonus action, you can cause your armor to disappear. You can make it reappear as a bonus action. If you fall unconscious or die while your armor has disappeared, it will automatically reappear. You can only use the disappearing function if you are wearing other clothes underneath the armor. If your armor has disappeared, you do not gain any of its protective benefits, including other enchantments.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "E.Z.'s Clap",
+	"subtitle": "affinity 1, any melee weapon",
+	"text": "On a critical hit with a melee attack, the weapon emits a thunderclap that deals an extra 1d8 thunder damage to the target and 1d4 thunder damage to everything in a 5 foot radius except for the attacker.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "The Acolyte's Gaze",
+	"subtitle": "affinity 1, daggers, shortswords, darts",
+	"text": "On a successful hit with this weapon, you may deal 1d4+1 necrotic damage. Undead and constructs are immune to this damage. After using this ability, you must take a short rest before using it again. ",
+	"sort": ["aff", "1"]
+}, {
+	"title": "The Baron Leiden's Touch",
+	"subtitle": "affinity 1, any metal melee weapon",
+	"text": "When attacking, you may draw upon the weapon’s power to shock your target for 1d6+1 lightning damage. This damage is applied regardless of whether or not your attack was a hit. If the weapon attack or lightning damage kills the target, the lightning arcs, dealing the remaining lightning damage is dealt to an adjacent enemy. ",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Leiran Majesty",
+	"subtitle": "affinity 1, javelins, spears, sickles, scythes, lances, longswords, pikes, rapiers, scimitars, tridents made of iron, silver, steel, tin, mithril, or adamantine",
+	"text": "You can invoke the runes on this weapon to create an icy silhouette of the blade, granting you an extra 5 feet of reach and 1d6+1 cold damage. You can't use this ability again until after you take a short rest.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "King Rimeheart's Regret",
+	"subtitle": "affinity 1, any melee weapon with a metal blade",
+	"text": "You may use a bonus action to cause your blade to be covered in sharp black ice. The next attack you make with the weapon interrupts spellcasting and deals 1d4 cold damage. You can't use this ability again until after you take a long rest.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Brawler",
+	"subtitle": "augment 0, any two-handed melee weapon",
+	"text": "Being disarmed by a nonmagical effect causes this enchantment’s magic to linger in your gloves or gauntlets. You may use your reaction to make a melee attack. You can use a d6 as the damage die for this attack. If your armor is +1 or higher, add that modifier to this attack’s roll and damage. ",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Confidant",
+	"subtitle": "augment 0, shortswords, daggers",
+	"text": "As an action, you can touch the rune on the handle of your shortsword or dagger to cause the blade to disappear. Only the hilt or handle remains. If the space where the blade should go is unoccupied, you can cause it to reappear. You can do this as a bonus action, or as part of an attack with the weapon. Revealing the weapon while attacking grants sneak attack.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Colossus",
+	"subtitle": "augment 1, any two-handed melee weapon",
+	"text": "When attacking using your Strength stat, you can touch the rune on the hilt of your two-handed weapon to cause it to dramatically increase in weight. Doing so grants advantage on the attack. If you are attacking in this way with a height advantage, a successful hit with the weapon becomes a critical hit. Attacking with a height disadvantage and activating this ability instead grants disadvantage on the attack. After using this ability, you cannot use it again until after a long rest. Requires a Strength stat of 18 or higher. If your attack cleaves through the target, the cleave-through damage also has advantage.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Firebound",
+	"subtitle": "affinity 1, any weapon",
+	"text": "On a successful hit, you may invoke the fire runes inscribed on the weapon and deal 1d6+1 fire damage. If your weapon is a +2 weapon, it instead deals 1d6+2 fire damage (and 1d6+3 for a +3 weapon). You can’t use this ability again until after a short rest.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Emberbound",
+	"subtitle": "affinity 0, any weapon",
+	"text": "Your weapon deals an extra 1d4-1 fire damage.",
+	"sort": ["aff", "0"]
+}, {
+	"title": "Antimagic Void",
+	"subtitle": "augment 2, any weapon",
+	"text": "You can invoke the anti-magic enchantment on your weapon while making an attack with this weapon. If it hits, if the target is a spellcaster, they must succeed a DC15 saving throw using their main spellcasting ability or they cannot cast spells for the next round. The spellcaster automatically succeeds this saving throw using an \"Antimagic Ward\" enchantment. You can't use this ability again until after a short rest.",
+	"sort": ["aug", "2"]
+}, {
+	"title": "Ancient Melody",
+	"subtitle": "augment 1, any melee weapon using Dexterity",
+	"text": "You may use a bonus action to listen to the enchantment’s current melody. Roll a d8. If you make an attack this turn from the direction corresponding to the d8 roll (1 being north, 2 being northeast, 3 being east, etc.) you gain +2 on the attack roll and the attack deals an extra 1d4 damage. If the attack hits, you may use this ability again on your next turn and it does not cost a bonus action to determine the direction. If it does not hit, or you do not use it again the next turn, you cannot use this ability again until after a long rest. (The direction of the attack is relative to you. For instance, if you roll a 6 on the d8, you must position yourself to attack an enemy to the southwest to trigger the benefits. For larger than normal enemies, this succeeds as long as some attackable part of them is in that direction.)",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Grand Gambit",
+	"subtitle": "augment 1, hand crossbows, heavy crossbows, light crossbows, longbows, shortbows",
+	"text": "Make an attack on a willing target. If it critically hits, the target regains 8d4+8 hit points. Otherwise, they take critical damage from the weapon, not adding your ability modifier. This attack does not get disadvantage if the target is within 5 feet as ranged attacks usually would. ",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Precision",
+	"subtitle": "augment 0, any weapon",
+	"text": "Your weapon scores a critical hit on a 19 or 20. If another ability grants increased critical range, the effect stacks.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Brutality",
+	"subtitle": "augment 0, any weapon",
+	"text": "When you roll a 1 on a damage die for an attack made with your weapon, you may reroll the die and must use the new roll.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Lost Love",
+	"subtitle": "augment 2, any weapon with a blade",
+	"text": "On a critical hit, if the target has experienced heartbreak or unrequited love within the past year, they take an extra 10d10 psychic damage. After dealing damage this way, you cannot use this ability again until after a long rest.",
+	"sort": ["aug", "2"]
+}, {
+	"title": "Brikfused",
+	"subtitle": "affinity 0, any metal armor",
+	"text": "Your armor is infused with acid. Any creature that makes contact with the armor for the entire round, including the wearer, takes 1d6 acid damage each round. If the target of this damage has resistance to acid damage, it instead has no effect.",
+	"sort": ["aff", "0"]
+}, {
+	"title": "Calcified Blade",
+	"subtitle": "affinity 1, daggers",
+	"text": "Your necromancy spells get +1. This effect doesn't stack with +1 spell foci or similar effects.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Elemental Attunement: Fire",
+	"subtitle": "affinity 1, spell foci",
+	"text": "Your spells that deal fire damage have +1.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Overcharged",
+	"subtitle": "augment 1, spell foci",
+	"text": "When you cast a spell of 5th level or higher, roll a d100 and add your spellcasting modifier. On a 99 or higher, you regain a 1st level spell slot.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Essence of Life",
+	"subtitle": "augment 1, spell foci",
+	"text": "When you heal a target and they regain consciousness due to this healing, you can choose to give that target Vigor for one minute. If the target falls unconscious, they lose Vigor and can make a Constitution saving throw, adding your spellcasting modifier. The DC of this saving throw is 10 plus the damage taken. If they succeed the saving throw, they remain conscious with 1 hit point. While a target has Vigor, the effects of the Essence of Life affinity are doubled.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Essence of Death",
+	"subtitle": "affinity 1, spell foci",
+	"text": "Your necromancy spells get +1. This effect doesn't stack with +1 spell foci or similar effects.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Last Stand",
+	"subtitle": "augment 0, any melee weapon",
+	"text": "If you are flanked by at least 3 enemies and are below half your total hit points, you may take an action to make a melee attack with this weapon on every enemy flanking you. You then gain a level of exhaustion and can't use this ability again until you are no longer exhausted.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Hotswap",
+	"subtitle": "augment 0, any weapon",
+	"text": "Putting away this weapon and taking out another takes a bonus action instead of an action. If the other weapon has Hotswap, it does not cost a bonus action. (You may swap at will.)",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Illusion Affinity",
+	"subtitle": "affinity 0, spell foci",
+	"text": "When you use an illusion spell to deceive someone, the spell save DC to spot the illusion gains +1. This effect doesn't stack with +1 spell foci or similar effects.",
+	"sort": ["aff", "0"]
+}, {
+	"title": "Charged Eldritch Blast",
+	"subtitle": "augment 1, warlock spell foci",
+	"text": "If your eldritch blast spell critically hits and kills a target, you can choose to use a 1st level spell slot and your reaction to retroactively charge the shot. If you do so, it bounces to a new target. Make an attack roll for this target. If it hits, it becomes another critical hit. You may repeat this process for up to 4 targets. Only the first bounce costs a spell slot. You must have line of sight with the dying target as well as the next target in order to use this. After using this ability, you must take a long rest before using it again.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Stormcaller Staff",
+	"subtitle": "augment 1, staves",
+	"text": "When you cast call lightning, you may use another 3rd level spell slot to cast it again at another location as part of the same action. Targets of the first lightning strike don't take damage from the second. After using this ability, you must take a long rest before using it again.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Mark of the Showoff",
+	"subtitle": "augment 1, any Dexterity weapon",
+	"text": "Attacking while performing a trick, such as a backflip or a 360 noscope, grants 2 style points. Moving while performing a trick grants 1 style point. Failing a trick has consequences, for instance, you may trip and lose your attack. Style points expire 5 minutes after your most recent trick, and you lose all style points upon failing a trick. You may spent points on your turn to do the following things:\n1 point: Your movement speed increases by 10 feet this turn.\n3 points: Your next ranged attack this turn can bounce off a wall or similar sturdy surface once.\n5 points: Your next attack this turn doesn't require sight of the enemy.\n7 points: The next time you take the Attack action on this turn, you get an extra attack.\nYou can only use points if you are attacking with or currently wielding the weapon with this augment.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Survivalist's Dagger",
+	"subtitle": "augment 0, daggers",
+	"text": "You may use the dagger as a treetap. You have advantage on ability checks to retrieve venom from venomous beast corpses or poisonous plants using this dagger if you have proficiency on the check.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Lightforged",
+	"subtitle": "affinity 1, martial melee weapons",
+	"text": "When you deal damage with this weapon, you may invoke the holy energy in your weapon and deal 1d6 radiant damage. If the target is undead or a demon, deal 2d6 radiant damage instead. You must take a short rest before using this ability again.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Drunkard's Dart",
+	"subtitle": "augment 0, darts",
+	"text": "While drunk, you have advantage on attack rolls made with this dart when attacking a dartboard or similar target. This advantage overrides disadvantages to attack rolls from being drunk.",
+	"sort": ["aug", "0"]
+}, {
+	"title": "Demonbane",
+	"subtitle": "affinity 1, any weapon or spell focus",
+	"text": "Your attack rolls damage, saving throws, and ability checks against demons when using this weapon or spell focus gain +2.",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Demonbanebane",
+	"subtitle": "augment 1, any weapon or spell focus",
+	"text": "Your attacks against a wielder of Demonbane have advantage.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Mark of the Wild",
+	"subtitle": "augment 1, quarterstaves",
+	"text": "When attacking with shillelagh, you can apply the Mark of the Wild to your target. Any successful hit on the target, including this attack, if it hits, restores 1d6 health to the attacker.",
+	"sort": ["aug", "1"]
+}, {
+	"title": "Sigil of the Nine Hells",
+	"subtitle": "affinity 1, any spell focus",
+	"text": "When rolling damage for fireball, you may reroll the lowest value d6. (Roll 9d6k8 instead of 8d6.)",
+	"sort": ["aff", "1"]
+}, {
+	"title": "Gnomish Mechano-augment-graft",
+	"subtitle": "augment 1, any weapon",
+	"text": "You can attach certain Gnomish devices to your weapon that tap into its magical abilities.",
+	"sort": ["aug", "1"]
+}]

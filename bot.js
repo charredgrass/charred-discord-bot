@@ -16,6 +16,7 @@ const slots = require("./lib/slots.js");
 const wow = require("./lib/wowapi.js");
 const lbh = require("./lib/lb_archive.js");
 const dnd = require("./lib/dnd.js");
+const book = require("./lib/booktext.js");
 
 //assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
@@ -49,6 +50,7 @@ var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 //instantiate objects from my own code that require external files1
 var ghandler = new gamemod.GameData(gamedata);
 var archive = new lbh.LBArchive("./data/archives/", 1);
+var dench = new book.Book("./texts/enchantments.json");
 
 //start reading from stdin and set up event listener for commands
 process.stdin.setEncoding("utf8");
@@ -798,6 +800,16 @@ client.on("message", message => {
         send(dnd.getHP(hitdie, level, con) + " HP"); //could have done getHP(...args) for syntactic sugar
       } else {
         send("!hp help");
+      }
+    }
+    if (hascmd(msg, "ench")) {
+      let args = argify(msg, "ench");
+      let pnum = Number(args[0]);
+      if (isNaN(pnum) === false) {
+        let p = dench.getPageByNum(pnum);
+        send(dench.pageToPretty(p));
+      } else {
+
       }
     }
   }
