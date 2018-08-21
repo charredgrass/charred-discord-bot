@@ -807,9 +807,10 @@ client.on("message", message => {
       let pnum = Number(args[0]);
       if (isNaN(pnum) === false) {
         let p = dench.getPageByNum(pnum);
-        send(dench.pageToPretty(p));
+        if (p) send(dench.pageToPretty(p));
       } else {
-
+        let p = dench.getPageByName(msg.substring("!ench ".length));
+        if (p) send(dench.pageToPretty(p));
       }
     }
   }
