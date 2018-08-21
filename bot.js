@@ -50,7 +50,7 @@ var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 //instantiate objects from my own code that require external files1
 var ghandler = new gamemod.GameData(gamedata);
 var archive = new lbh.LBArchive("./data/archives/", 1);
-var dench = new book.Book("./texts/enchantments.json");
+var dench = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
 
 //start reading from stdin and set up event listener for commands
 process.stdin.setEncoding("utf8");
