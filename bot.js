@@ -682,9 +682,9 @@ client.on("message", message => {
     if (msg == "!token") {
       wow.getWowTokenPrice(TOKEN, send);
     }
-    if (msg.match( /\!\<\:token\:[\d]+\>/)) {
-      let temote = client.emojis.find("name","token");
-      let gemote = client.emojis.find("name","gold");
+    if (msg.match(/\!\<\:token\:[\d]+\>/)) {
+      let temote = client.emojis.find("name", "token");
+      let gemote = client.emojis.find("name", "gold");
       wow.wowTokenPrettySend(TOKEN, send, temote, gemote);
     }
     if (msg == "!broken") {
@@ -805,7 +805,9 @@ client.on("message", message => {
     if (hascmd(msg, "ench")) {
       let args = argify(msg, "ench");
       let pnum = Number(args[0]);
-      if (isNaN(pnum) === false) {
+      if (args[0].toLowerCase() === "toc") {
+        send(dench.tableofcontents());
+      } else if (isNaN(pnum) === false) {
         let p = dench.getPageByNum(pnum);
         if (p) send(dench.pageToPretty(p));
       } else {
