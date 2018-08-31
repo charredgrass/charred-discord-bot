@@ -17,6 +17,7 @@ const wow = require("./lib/wowapi.js");
 const lbh = require("./lib/lb_archive.js");
 const dnd = require("./lib/dnd.js");
 const book = require("./lib/booktext.js");
+const math = require("./lib/math/main.js");
 
 //assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
@@ -468,6 +469,13 @@ client.on("message", message => {
       if (anchorloc) {
         anchorloc.send(toSay);
       }
+    }
+  }
+
+  if (hascmd(msg, "linalg")) {
+    let args = argify(msg, "linalg");
+    if (args[0] === "rref" || args[0] === "gaussian" || args[0] === "gaussjordan") {
+      math.linalg_rref(args.slice(1).join(" "), send);
     }
   }
 
