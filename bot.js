@@ -18,6 +18,7 @@ const lbh = require("./lib/lb_archive.js");
 const dnd = require("./lib/dnd.js");
 const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js");
+const words = require("./lib/words.js");
 
 //assigning these just so I don't need to type them out
 const hascmd = utils.hascmd;
@@ -45,8 +46,12 @@ for (let i = 0; i < jokes.length; i++) {
   while (jokes[i].includes("///"))
     jokes[i] = jokes[i].replace("///", "\n");
 }
+let dict = words.loadWords(fs.readFileSync("./texts/wiktionary.txt"));
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
+
+let finallys = words.filter(/^p[a-z]{4,}[io][aeiou]?n$/,dict);
+
 
 //instantiate objects from my own code that require external files1
 var ghandler = new gamemod.GameData(gamedata);
@@ -786,6 +791,9 @@ client.on("message", message => {
     }
     if (msg == "!cheese") {
       sendimg("https://cdn.discordapp.com/attachments/412443393042677762/458863846166102047/giphy_1.gif");
+    }
+    if (msg == "!finally") {
+      send(getRandomFromList(finallys))
     }
   }
 
