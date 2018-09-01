@@ -1,7 +1,7 @@
 [{
 	"title": "Introduction",
 	"subtitle": "",
-	"text": "There are 3 types of enchantments I can offer you. The first is a basic +1 or +2 upgrade, for 1,200gp or 10,000gp respectively. You can also get an augment or an affinity for your weapon. Affinities add some type of Elemental damage, while augments add some utility feature. Your weapon can have one augment and one affinity each. A 1st level augment or affinity can only be applied to a +1 weapon or higher, a 2nd level to a +2, etc. Use `!ench toc` to view the table of contents.",
+	"text": "There are 3 types of enchantments I can offer you. The first is a basic +1 or +2 upgrade, for 1,200gp or 10,000gp respectively. You can also get an augment or an affinity for your weapon. Affinities add some type of Elemental damage, while augments add some utility feature. Your item can have one augment and one affinity each. A 1st level augment or affinity can only be applied to a +1 weapon or higher, a 2nd level to a +2, etc. Use `!ench toc` to view the table of contents.",
 	"sort": ["int", "0"]
 }, {
 	"title": "Tyche's Trickery",
