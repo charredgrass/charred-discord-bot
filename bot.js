@@ -31,7 +31,7 @@ const TOKEN = keyholder[0];
 const WOWKEY = keyholder[1];
 
 //Bad, hard coded constants
-const HOMEREALM = "Undermine";
+const HOMEREALM = "Maiev";
 const hiddenppl = {
   "god": "me",
   "england": "my city"
@@ -711,8 +711,8 @@ client.on("message", message => {
           if (err) {
             send(err);
           } else {
-            const CURRENT_RAIDS = ["The Emerald Nightmare", "Trial of Valor", "The Nighthold", "Tomb of Sargeras", "Antorus, the Burning Throne"];
-            const ABBREVS = [" EN", "ToV", " NH", "ToS", "ABT"];
+            const CURRENT_RAIDS = ["Uldir"];
+            const ABBREVS = ["Uld"];
             let progject = wow.getProgressionData(chardata, CURRENT_RAIDS, ABBREVS); //"progression object"
             send(wow.prettyProg(progject, CURRENT_RAIDS, ABBREVS, tr[1], tr[0]));
           }
