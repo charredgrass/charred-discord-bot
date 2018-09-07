@@ -391,7 +391,9 @@ client.on("message", message => {
   //SEND helper functions
   let send = function(msg, opts) {
     lastsent = Date.now();
-    loc.send(msg, opts);
+    loc.send(msg, opts).catch((err) => {
+      console.log(err);
+    });
   };
   let sgame = function(msg, opts) {
     lastsent = Date.now();
