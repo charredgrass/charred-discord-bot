@@ -176,7 +176,7 @@
 }, {
 	"title": "Demonbane",
 	"subtitle": "affinity 1, any weapon or spell focus",
-	"text": "Your attack rolls damage, saving throws, and ability checks against demons when using this weapon or spell focus gain +2.",
+	"text": "Your attack rolls, damage, saving throws, and ability checks against demons when using this weapon or spell focus gain +2.",
 	"sort": ["aff", "1"]
 }, {
 	"title": "Demonbanebane",
