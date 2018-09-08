@@ -50,7 +50,7 @@ let dict = words.loadWords(fs.readFileSync("./texts/wiktionary.txt"));
 var graves = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 var gamedata = JSON.parse(fs.readFileSync("./data/game_data.json"));
 
-let finallys = words.filter(/^p[a-z]{4,}[io][aeiou]?n$/,dict);
+let finallys = words.filter(/^p[a-z]{4,}[io][aeiou]?n$/, dict);
 
 
 //instantiate objects from my own code that require external files1
@@ -721,10 +721,12 @@ client.on("message", message => {
         }, tr[1], tr[0]);
       }
     }
-    if (msg == "!nextraid") {
-      let nextraid = utils.getNextRaidTime();
-      let tt = utils.timeTil(nextraid);
-      send("The next raid time is: " + nextraid + ", which occurs in " + tt[0] + " hours " + tt[1] + " minutes " + tt[2] + " seconds.");
+    if (msg == "!currentyear") {
+      if (getRandomInt(0, 20) == 0) {
+        send("The current year is probably: " + (new Date().getFullYear() + getRandomInt(-5, 6)));
+      } else {
+        send("The current year is probably: " + (new Date().getFullYear()));
+      }
     }
     if (msg == "!amitoxic") {
       if (message.author.id === "203714293340962817") { //cory
