@@ -146,7 +146,7 @@
 }, {
 	"title": "Charged Eldritch Blast",
 	"subtitle": "augment 1, warlock spell foci",
-	"text": "If your eldritch blast spell critically hits and kills a target, you can choose to use a 1st level spell slot and your reaction to retroactively charge the shot. If you do so, it bounces to a new target. Make an attack roll for this target. If it hits, it becomes another critical hit. You may repeat this process for up to 4 targets. Only the first bounce costs a spell slot. You must have line of sight with the dying target as well as the next target in order to use this. After using this ability, you must take a long rest before using it again.",
+	"text": "If your eldritch blast spell critically hits and kills a target, you can use your reaction to retroactively charge the shot. If you do so, it bounces to a new target. Make an attack roll for this target. If it hits, it becomes another critical hit. You may repeat this process for up to 4 targets. Only the first bounce costs a spell slot. You must have line of sight with the dying target as well as the next target in order to use this. After using this ability, you must take a short rest before using it again.",
 	"sort": ["aug", "1"]
 }, {
 	"title": "Stormcaller Staff",
