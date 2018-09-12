@@ -478,6 +478,10 @@ client.on("message", message => {
       }
     }
   }
+  if (msg.substring(0, "!🅱".length).toLowerCase() === "!🅱") {
+    let toBify = msg.substring("!🅱 ".length);
+    send(toBify.replace(/[a-zA-Z]/g, ":b:"));
+  }
 
   if (hascmd(msg, "linalg")) {
     let args = argify(msg, "linalg");
@@ -827,6 +831,8 @@ client.on("message", message => {
       let pnum = Number(args[0]);
       if (args[0].toLowerCase() === "toc") {
         send(dench.tableofcontents());
+      } else if (args[0].toLowerCase() === "search") {
+        send(dench.showSearch(args.slice(1)));
       } else if (isNaN(pnum) === false) {
         let p = dench.getPageByNum(pnum);
         if (p) send(dench.pageToPretty(p));
