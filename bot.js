@@ -490,6 +490,35 @@ client.on("message", message => {
     }
   }
 
+  if (hascmd(msg, "game")) {
+    let args = argify(msg, "game");
+    if (args[0] == "help") {
+      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
+      return;
+    }
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
+  }
+  if ((message.channel.name == "game" || message.channel.name == "botstuff") && msg.substring(0, "g ".length).toLowerCase() === "g ") {
+    let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
+    if (args[0] == "help") {
+      send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/raocsgo/game.md");
+      return;
+    }
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] == "bj") args[i] = "blackjack";
+      if (args[i] == "cf") args[i] = "coinflip";
+      if (args[i] == "h") args[i] = "hit";
+      if (args[i] == "s") args[i] = "stand";
+      if (args[i] == "b") args[i] = "balance";
+      if (args[i] == "lb") args[i] = "leaderboard";
+    }
+    if (args[0] == "f" && args.length == 1) {
+      send("GFs owned: 0. Because you're a fucking loser.");
+      return;
+    }
+    game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
+  }
+
   //RAO Commands
   if (shouldResp.rao === true) {
     if (msg.toLowerCase().match(/([^a-zA-Z]|^)osu/)) {
@@ -585,34 +614,6 @@ client.on("message", message => {
       } catch (err) {
         console.log(err.message);
       }
-    }
-    if (message.channel.name == "game" && msg.substring(0, "g ".length).toLowerCase() === "g ") {
-      let args = utils.clearEmptyArgs(msg.substring("g".length).split(" "));
-      if (args[0] == "help") {
-        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/raocsgo/game.md");
-        return;
-      }
-      for (let i = 0; i < args.length; i++) {
-        if (args[i] == "bj") args[i] = "blackjack";
-        if (args[i] == "cf") args[i] = "coinflip";
-        if (args[i] == "h") args[i] = "hit";
-        if (args[i] == "s") args[i] = "stand";
-        if (args[i] == "b") args[i] = "balance";
-        if (args[i] == "lb") args[i] = "leaderboard";
-      }
-      if (args[0] == "f" && args.length == 1) {
-        send("GFs owned: 0. Because you're a fucking loser.");
-        return;
-      }
-      game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, false);
-    }
-    if (hascmd(msg, "game")) {
-      let args = argify(msg, "game");
-      if (args[0] == "help") {
-        send("See the full list of commands here: https://github.com/charredgrass/raocsgo-discord-bot/blob/master/docs/game.md");
-        return;
-      }
-      game(args, message.author.id, sgame, message.mentions.users.array(), message.author.username, true);
     }
     if (hascmd(msg, "grave")) {
       let arg = msg.substring("!grave ".length);
