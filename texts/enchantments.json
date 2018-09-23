@@ -238,4 +238,22 @@
 	"text": "You can attach certain Gnomish devices to your weapon that tap into its magical abilities.",
 	"sort": ["aug", "1"],
 	"abbr": "GM--"
+}, {
+	"title": "Astral Fortitude",
+	"subtitle": "augment 2, any armor",
+	"text": "You can take an action to become immune to force damage until the end of your turn. *(Found in the Astral Vault)*.",
+	"sort": ["aug", "2"],
+	"abbr": "AsFo"
+}, {
+	"title": "Astral Shift",
+	"subtitle": "augment 1, bladed weapons, rogues only",
+	"text": "If you make a melee attack with this weapon then disengage in the same turn, you may choose to blink 10 feet into an unoccupied space as part of the disengage. This movement doesn't provoke any opportunity attacks, even if the attacker has an ability that would allow them to attack disengaging targets. After using this ability, you can't use it again until taking a long rest. The blink can't take you through a wall but it can take you through obstacles such as other creatures. *(Found in the Astral Vault)*",
+	"sort": ["aug", "1"],
+	"abbr": "AsSh"
+}, {
+	"title": "One With the Stars",
+	"subtitle": "augment 1, spell foci",
+	"text": "Sleeping under the stars with a clear sky gives you an extra 2nd level spell slot for the day. You must have a clear view of the night sky for the entire duration of the long rest to gain this benefit. *(Found in the Astral Vault)*",
+	"sort": ["aug", "1"],
+	"abbr": ["1WTS","OWTS"]
 }]
