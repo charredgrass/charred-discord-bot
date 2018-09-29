@@ -35,6 +35,8 @@ const jokeList = fs.readFileSync("./texts/jokes.txt").toString("utf-8").split("\
 const joke = raocsgoCommands.jokesCreator(jokeList);
 const graveList = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
 const grave = raocsgoCommands.gravesCreator(graveList);
+const priceOf = raocsgoCommands.priceOfCreator(community);
+//Removed imgOf because of changes to how the SCM sorts its data.
 //TODO load dictionary
 //TODO load game data in game file
 //TODO load finallys in finallys module
@@ -45,15 +47,16 @@ const grave = raocsgoCommands.gravesCreator(graveList);
 
 //TODO populate commands object with commands
 const cmds = {
-  /**{Array} args
-   * {Function} send
+  /**@param {Array} args
+   * @param {Function} send
    * **/
   "ping": (args, send) => {
     return send("pong");
   },
   "whois": whois,
   "joke": joke,
-  "grave": grave
+  "grave": grave,
+  "priceof": priceOf
 };
 
 //Enable reading from stdin
