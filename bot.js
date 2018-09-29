@@ -20,11 +20,6 @@ const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js");
 const words = require("./lib/words.js");
 
-//assigning these just so I don't need to type them out
-const hascmd = utils.hascmd;
-const argify = utils.argify;
-const flagify = utils.flagify;
-
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
 const raocsgoCommands = require("./lib/raocommands.js");
