@@ -18,7 +18,7 @@ const lbh = require("./lib/lb_archive.js");
 const dnd = require("./lib/dnd.js");
 const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js");
-const words = require("./lib/words.js");
+const words = require("./lib/dictionary.js");
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -33,12 +33,15 @@ const grave = raocsgoCommands.gravesCreator(graveList);
 const priceOf = raocsgoCommands.priceOfCreator(community);
 //Removed imgOf because of changes to how the SCM sorts its data.
 //TODO load dictionary
+const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
+const finallys = words.finallyCreator(dictionary);
 //TODO load game data in game file
-//TODO load finallys in finallys module
 
 //TODO load game module
 //TODO load leaderboard archive
 //TODO load enchantments
+const enchantmentDB = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
+const ench = book.enchantmentCreator(enchantmentDB);
 
 //TODO populate commands object with commands
 const cmds = {
@@ -51,7 +54,9 @@ const cmds = {
   "whois": whois,
   "joke": joke,
   "grave": grave,
-  "priceof": priceOf
+  "priceof": priceOf,
+  "finally": finallys,
+  "ench": ench
 };
 
 //Enable reading from stdin
@@ -108,6 +113,7 @@ function serverSelector(serverID) {
     ret.atg = true;
     ret.frz = true;
     ret.rao = true;
+    ret.dnd = true;
   }
   return ret;
 }
