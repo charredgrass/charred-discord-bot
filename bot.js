@@ -8,8 +8,6 @@ const client = new Discord.Client();
 const community = new SteamCommunity();
 
 //Importing my own files
-const gamemod = require("./lib/game_utils.js");
-const steamgame = require("./lib/steamgame.js");
 const utils = require("./lib/utils.js");
 const timer = require("./lib/timer.js");
 const slots = require("./lib/slots.js");
@@ -19,6 +17,9 @@ const dnd = require("./lib/dnd.js");
 const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js");
 const words = require("./lib/dictionary.js");
+
+const game = require("./lib/game/game.js");
+const gameChat = require("./lib/game/commands.js");
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -37,7 +38,13 @@ const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
 //TODO load game data in game file
 
-//TODO load game module
+const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
+const g = new game(gameData, (data) => {
+  fs.writeFileSync("./data/game_data.json", JSON.stringify(data));
+});
+
+const gameCommands = gameChat.gameCommandCreator(g);
+
 //TODO load leaderboard archive
 //TODO load enchantments
 const enchantmentDB = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
@@ -56,7 +63,8 @@ const cmds = {
   "grave": grave,
   "priceof": priceOf,
   "finally": finallys,
-  "ench": ench
+  "ench": ench,
+  "game": gameCommands
 };
 
 //Enable reading from stdin
@@ -71,6 +79,7 @@ const consoleCommands = {
   },
   "stop": () => {
     //call game module to save it
+    g.save();
     process.exit(0);
     return "Stopping";
   }
@@ -143,14 +152,14 @@ client.on("message", (message) => {
     if (cmds.hasOwnProperty(command)) {
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
-        cmds[command](args, send, serverSelector(server));
+        cmds[command](args, send, serverSelector(server), message.author);
       }
     }
   }
   //Special Cases
   if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
     let name = msg.substring("who is ".length);
-    cmds["whois"](name.split(" "), send, serverSelector(server));
+    cmds["whois"](name.split(" "), send, serverSelector(server), message.author);
   }
 
 });
