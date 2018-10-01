@@ -46,11 +46,9 @@ const g = new game(gameData, (data) => {
 const gameCommands = gameChat.gameCommandCreator(g);
 
 //TODO load leaderboard archive
-//TODO load enchantments
 const enchantmentDB = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
 const ench = book.enchantmentCreator(enchantmentDB);
 
-//TODO populate commands object with commands
 const cmds = {
   /**@param {Array} args
    * @param {Function} send
