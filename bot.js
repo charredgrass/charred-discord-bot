@@ -9,13 +9,13 @@ const community = new SteamCommunity();
 
 //Importing my own files
 const utils = require("./lib/utils.js");
-const timer = require("./lib/timer.js");
-const slots = require("./lib/slots.js");
-const wow = require("./lib/wowapi.js");
-const lbh = require("./lib/lb_archive.js");
-const dnd = require("./lib/dnd.js");
+const timer = require("./lib/timer.js");    //TODO
+const slots = require("./lib/slots.js");    //TODO
+const wow = require("./lib/wowapi.js");     //TODO
+const lbh = require("./lib/lb_archive.js"); //TODO
+const dnd = require("./lib/dnd.js");        //TODO
 const book = require("./lib/booktext.js");
-const math = require("./lib/math/main.js");
+const math = require("./lib/math/main.js"); //TODO
 const words = require("./lib/dictionary.js");
 
 const game = require("./lib/game/game.js");
