@@ -1,0 +1,12 @@
+{
+  "wow": {
+    "homeRealm": "Maiev",
+    "api": {
+      "token":"",
+      "key": ""
+    }
+  },
+  "discord": {
+    "key": ""
+  }
+}
