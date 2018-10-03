@@ -159,6 +159,10 @@ client.on("message", (message) => {
     let name = msg.substring("who is ".length);
     cmds["whois"](name.split(" "), send, serverSelector(server), message.author);
   }
+  if (msg.substring(0, "g ".length).toLowerCase() === "g ") {
+    let args = msg.substring("g ".length);
+    cmds["game"](args.split(" "), send, serverSelector(server), message.author);
+  }
 
 });
 
