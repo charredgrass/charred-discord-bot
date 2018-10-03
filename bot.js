@@ -33,15 +33,19 @@ const graveList = JSON.parse(fs.readFileSync("./texts/graves.json").toString("ut
 const grave = raocsgoCommands.gravesCreator(graveList);
 const priceOf = raocsgoCommands.priceOfCreator(community);
 //Removed imgOf because of changes to how the SCM sorts its data.
-//TODO load dictionary
+
 const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
-//TODO load game data in game file
+
 
 const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
 const g = new game(gameData, (data) => {
   fs.writeFileSync("./data/game_data.json", JSON.stringify(data));
 });
+setInterval(() => {
+  g.save();
+}, 1000 * 60 * 30); //save every 30 minutes
+
 
 const gameCommands = gameChat.gameCommandCreator(g);
 
@@ -159,9 +163,11 @@ client.on("message", (message) => {
     let name = msg.substring("who is ".length);
     cmds["whois"](name.split(" "), send, serverSelector(server), message.author);
   }
-  if (msg.substring(0, "g ".length).toLowerCase() === "g ") {
-    let args = msg.substring("g ".length);
-    cmds["game"](args.split(" "), send, serverSelector(server), message.author);
+  if (message.channel.name === "botstuff" || message.channel.name === "game") {
+    if (msg.substring(0, "g ".length).toLowerCase() === "g ") {
+      let args = msg.substring("g ".length);
+      cmds["game"](args.split(" "), send, serverSelector(server), message.author);
+    }
   }
 
 });
