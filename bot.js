@@ -11,7 +11,7 @@ const community = new SteamCommunity();
 const utils = require("./lib/utils.js");
 const timer = require("./lib/timer.js");    //TODO
 const slots = require("./lib/slots.js");    //TODO
-const wow = require("./lib/wowapi.js");     //TODO
+const wow = require("./lib/wow.js");
 const lbh = require("./lib/lb_archive.js"); //TODO
 const dnd = require("./lib/dnd.js");        //TODO
 const book = require("./lib/booktext.js");
@@ -37,6 +37,7 @@ const priceOf = raocsgoCommands.priceOfCreator(community);
 const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
 
+const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
 
 const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
 const g = new game(gameData, (data) => {
@@ -66,7 +67,8 @@ const cmds = {
   "priceof": priceOf,
   "finally": finallys,
   "ench": ench,
-  "game": gameCommands
+  "game": gameCommands,
+  "prog": prog
 };
 
 //Enable reading from stdin
