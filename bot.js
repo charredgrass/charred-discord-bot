@@ -21,6 +21,7 @@ const words = require("./lib/dictionary.js");
 const game = require("./lib/game/game.js");
 const gameChat = require("./lib/game/commands.js");
 
+//TODO make a fancy config object that crashes on undefined values
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
 const raocsgoCommands = require("./lib/raocommands.js");
@@ -38,6 +39,7 @@ const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
 
 const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
+const wowT = wow.tokenCreator(config.wow.api.token);
 
 const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
 const g = new game(gameData, (data) => {
@@ -68,7 +70,8 @@ const cmds = {
   "finally": finallys,
   "ench": ench,
   "game": gameCommands,
-  "prog": prog
+  "prog": prog,
+  "token": wowT
 };
 
 //Enable reading from stdin

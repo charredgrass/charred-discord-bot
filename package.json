@@ -12,6 +12,7 @@
     "bufferutil": "^4.0.0",
     "discord.js": "^11.4.2",
     "ffmpeg-binaries": "^3.2.2-3",
-    "steamcommunity": "latest"
+    "steamcommunity": "latest",
+    "request": "latest"
   }
 }
