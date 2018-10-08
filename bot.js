@@ -17,6 +17,7 @@ const dnd = require("./lib/dnd.js");        //TODO
 const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js"); //TODO
 const words = require("./lib/dictionary.js");
+const mtg = require("./lib/mtg.js");
 
 const game = require("./lib/game/game.js");
 const gameChat = require("./lib/game/commands.js");
@@ -71,7 +72,9 @@ const cmds = {
   "ench": ench,
   "game": gameCommands,
   "prog": prog,
-  "token": wowT
+  "token": wowT,
+  "mtg": mtg.mtgCardImage,
+  "mtgsets": mtg.mtgSets
 };
 
 //Enable reading from stdin
@@ -142,11 +145,20 @@ client.on("message", (message) => {
   let loc = message.channel;
   let msg = message.content;
 
-  //send helper function
+  //send helper functions
   let send = function (text, opts) {
     loc.send(text, opts).catch((err) => {
       console.log(err);
     });
+  };
+  let sendImg = function (text, img) {
+    if (img) {
+      send(text, {
+        embed: new Discord.RichEmbed().setImage(img)
+      });
+    } else {
+      send(text);
+    }
   };
 
   let server;
@@ -159,7 +171,7 @@ client.on("message", (message) => {
     if (cmds.hasOwnProperty(command)) {
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
-        cmds[command](args, send, serverSelector(server), message.author);
+        cmds[command](args, send, serverSelector(server), message.author, sendImg);
       }
     }
   }
