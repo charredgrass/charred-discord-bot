@@ -171,19 +171,19 @@ client.on("message", (message) => {
     if (cmds.hasOwnProperty(command)) {
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
-        cmds[command](args, send, serverSelector(server), message.author, sendImg);
+        cmds[command](args, send, serverSelector(server), message.author, sendImg, message.mentions);
       }
     }
   }
   //Special Cases
   if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
     let name = msg.substring("who is ".length);
-    cmds["whois"](name.split(" "), send, serverSelector(server), message.author);
+    cmds["whois"](name.split(" "), send, serverSelector(server), message.author, sendImg, message.mentions);
   }
   if (message.channel.name === "botstuff" || message.channel.name === "game") {
     if (msg.substring(0, "g ".length).toLowerCase() === "g ") {
       let args = msg.substring("g ".length);
-      cmds["game"](args.split(" "), send, serverSelector(server), message.author);
+      cmds["game"](args.split(" "), send, serverSelector(server), message.author, sendImg, message.mentions);
     }
   }
 
