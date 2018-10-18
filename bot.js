@@ -74,7 +74,8 @@ const cmds = {
   "prog": prog,
   "token": wowT,
   "mtg": mtg.mtgCardImage,
-  "mtgsets": mtg.mtgSets
+  "mtgsets": mtg.mtgSets,
+  "hp": dnd.hpCommand
 };
 
 //Enable reading from stdin
