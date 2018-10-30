@@ -69,7 +69,7 @@ const cmds = {
   "grave": grave,
   "priceof": priceOf,
   "finally": finallys,
-  ":b:inally": binallys,
+  "🅱inally": binallys,
   "ench": ench,
   "game": gameCommands,
   "prog": prog,
@@ -171,6 +171,7 @@ client.on("message", (message) => {
 
   for (let command in cmds) {
     if (cmds.hasOwnProperty(command)) {
+      console.log(msg);
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
         cmds[command](args, send, serverSelector(server), message.author, sendImg, message.mentions);
