@@ -37,6 +37,7 @@ const priceOf = raocsgoCommands.priceOfCreator(community);
 
 const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
+const binallys = words.binallyCreator(finallys);
 
 const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
 const wowT = wow.tokenCreator(config.wow.api.token);
@@ -68,6 +69,7 @@ const cmds = {
   "grave": grave,
   "priceof": priceOf,
   "finally": finallys,
+  ":b:inally": binallys,
   "ench": ench,
   "game": gameCommands,
   "prog": prog,
