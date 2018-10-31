@@ -171,7 +171,6 @@ client.on("message", (message) => {
 
   for (let command in cmds) {
     if (cmds.hasOwnProperty(command)) {
-      console.log(msg);
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
         cmds[command](args, send, serverSelector(server), message.author, sendImg, message.mentions);
