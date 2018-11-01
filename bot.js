@@ -17,6 +17,7 @@ const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js"); //TODO
 const words = require("./lib/dictionary.js");
 const mtg = require("./lib/mtg.js");
+const scryfall = require("./lib/mtg/scryfall.js");
 
 const game = require("./lib/game/game.js");
 const gameChat = require("./lib/game/commands.js");
