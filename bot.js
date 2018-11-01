@@ -17,6 +17,7 @@ const book = require("./lib/booktext.js");
 const math = require("./lib/math/main.js"); //TODO
 const words = require("./lib/dictionary.js");
 const mtg = require("./lib/mtg.js");
+const scryfall = require("./lib/mtg/scryfall.js");
 
 const game = require("./lib/game/game.js");
 const gameChat = require("./lib/game/commands.js");
@@ -171,7 +172,6 @@ client.on("message", (message) => {
 
   for (let command in cmds) {
     if (cmds.hasOwnProperty(command)) {
-      console.log(msg);
       if (utils.hascmd(msg, command) || msg === "!" + command) {
         let args = utils.argify(msg, command);
         cmds[command](args, send, serverSelector(server), message.author, sendImg, message.mentions);
