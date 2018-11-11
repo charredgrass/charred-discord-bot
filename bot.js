@@ -73,8 +73,8 @@ const cmds = {
   "🅱inally": binallys,
   "ench": ench,
   "game": gameCommands,
-  "prog": prog,
-  "token": wowT,
+  //"prog": prog, //Disabled due to Blizzard API change
+  //"token": wowT,
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
   "hp": dnd.hpCommand
