@@ -42,7 +42,7 @@ const binallys = words.binallyCreator(finallys);
 
 // const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
 // const wowT = wow.tokenCreator(config.wow.api.token);
-const wowAPI = new wow.WowAPI(config.wow.api.id, config.wow.api.secret);
+const wowAPI = new wow.WowAPI(config.wow.api.id, config.wow.api.secret, config.wow.homeRealm);
 
 const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
 const g = new game(gameData, (data) => {
@@ -74,7 +74,7 @@ const cmds = {
   "🅱inally": binallys,
   "ench": ench,
   "game": gameCommands,
-  //"prog": prog, //Disabled due to Blizzard API change
+  "prog": wowAPI.getProgCreator(),
   "token": wowAPI.getWowTPriceCreator(),
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
