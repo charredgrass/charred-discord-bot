@@ -2,8 +2,8 @@
   "wow": {
     "homeRealm": "Maiev",
     "api": {
-      "token":"",
-      "key": ""
+      "id":"",
+      "secret": ""
     }
   },
   "discord": {

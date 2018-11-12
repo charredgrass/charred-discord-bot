@@ -40,8 +40,9 @@ const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
 const finallys = words.finallyCreator(dictionary);
 const binallys = words.binallyCreator(finallys);
 
-const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
-const wowT = wow.tokenCreator(config.wow.api.token);
+// const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
+// const wowT = wow.tokenCreator(config.wow.api.token);
+const wowAPI = new wow.WowAPI(config.wow.api.id, config.wow.api.secret);
 
 const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
 const g = new game(gameData, (data) => {
@@ -74,7 +75,7 @@ const cmds = {
   "ench": ench,
   "game": gameCommands,
   //"prog": prog, //Disabled due to Blizzard API change
-  //"token": wowT,
+  "token": wowAPI.getWowTPriceCreator(),
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
   "hp": dnd.hpCommand
