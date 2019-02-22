@@ -132,6 +132,8 @@ function serverSelector(serverID) {
     ret.frz = true;
   } else if (serverID === "446813545049358336") { //D&D
     ret.dnd = true;
+  }else if (serverID === "220039870410784768") { //Clowns
+    ret.dnd = true;
   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
     ret.atg = true;
     ret.frz = true;
