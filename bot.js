@@ -78,7 +78,7 @@ const cmds = {
   "token": wowAPI.getWowTPriceCreator(),
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
-  "hp": dnd.hpCommand,
+  "hp": dnd.hpCommandAdvanced,
   "hpmc": dnd.hpCommandAdvanced
 };
 
