@@ -78,8 +78,7 @@ const cmds = {
   "token": wowAPI.getWowTPriceCreator(),
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
-  "hp": dnd.hpCommandAdvanced,
-  "hpmc": dnd.hpCommandAdvanced
+  "hp": dnd.hpCommandAdvanced
 };
 
 //Enable reading from stdin
