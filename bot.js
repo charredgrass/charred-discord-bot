@@ -79,7 +79,7 @@ const cmds = {
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
   "hp": dnd.hpCommandAdvanced,
-  "coinsToWeight": dnd.coinsToWeight
+  "weigh": dnd.coinsToWeight
 };
 
 //Enable reading from stdin
