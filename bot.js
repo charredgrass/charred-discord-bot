@@ -18,6 +18,7 @@ const math = require("./lib/math/main.js"); //TODO
 const words = require("./lib/dictionary.js");
 const mtg = require("./lib/mtg.js");
 const scryfall = require("./lib/mtg/scryfall.js");
+const basicCmds = require("./lib/basiccmds.js");
 
 const game = require("./lib/game/game.js");
 const gameChat = require("./lib/game/commands.js");
@@ -59,6 +60,8 @@ const gameCommands = gameChat.gameCommandCreator(g);
 const enchantmentDB = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
 const ench = book.enchantmentCreator(enchantmentDB);
 
+const pickStorage = {text:null};
+
 const cmds = {
   /**@param {Array} args
    * @param {Function} send
@@ -79,7 +82,10 @@ const cmds = {
   "mtg": mtg.mtgCardImage,
   "mtgsets": mtg.mtgSets,
   "hp": dnd.hpCommandAdvanced,
-  "weigh": dnd.coinsToWeight
+  "weigh": dnd.coinsToWeight,
+  "brickpicks": basicCmds.printPlaylist,
+  "brickpick": basicCmds.currPickCreator(pickStorage),
+  "setpick": basicCmds.setPickCreator(pickStorage)
 };
 
 //Enable reading from stdin
