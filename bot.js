@@ -199,15 +199,15 @@ client.on("message", (message) => {
       cmds["game"](args.split(" "), send, serverSelector(server), message.author, sendImg, message.mentions);
     }
   }
-  if (server === "276220128822165505" || server === "313169519545679872") {
-    let matcher = /^[Ii]'?[Mm] (.*)/;
-    let match = msg.match(matcher);
-    if (match && match[1]) {
-      message.member.setNickname(match[1]).then(()=>{
-        send("Hi " + match[1]);
-      })
-    }
-  }
+  // if (server === "276220128822165505" || server === "313169519545679872") {
+  //   let matcher = /^[Ii]'?[Mm] (.*)/;
+  //   let match = msg.match(matcher);
+  //   if (match && match[1]) {
+  //     message.member.setNickname(match[1]).then(()=>{
+  //       send("Hi " + match[1]);
+  //     })
+  //   }
+  // }
 
 });
 
