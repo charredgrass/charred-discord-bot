@@ -74,7 +74,7 @@ const cmds = {
   "grave": grave,
   "priceof": priceOf,
   "finally": finallys,
-  "🅱inally": binallys,
+  "\uFE0Finally": binallys,
   "ench": ench,
   "game": gameCommands,
   "prog": wowAPI.getProgCreator(),
