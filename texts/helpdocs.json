@@ -1,8 +1,0 @@
-{
-	"help": "Type \"!help\" for a general list of commands, or \"!help [commandname]\" for specific command documentation. Leave out any spaces for non-! commands, for instance, \"!help whois\"",
-	"priceof": "\"!priceof [search term]\" will give the top 5 search results from the Steam Community <arket for the given search term and their respective prices.",
-	"imgof":"\"!imgof [search term]\" will give the top 1 search result from the Steam Community Market for the given search term and its inventory thumbnail image.",
-	"whois": "\"who is [person]\" tells you who the person is.",
-	"magic8": "\"!magic8 [query]\" will ask the mystical Magic 8 Ball a question and tell you its response.",
-	"info": "!info to get info on the bot"
-}
