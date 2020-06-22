@@ -2,6 +2,13 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
+const logger = require("./lib/logger.js");
+const utils = require("./lib/utils.js");
+
+const client = new Discord.Client();
+
+let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
+
 //Enable reading from stdin
 process.stdin.setEncoding("utf8");
 const consoleCommands = {
@@ -10,8 +17,8 @@ const consoleCommands = {
     return "Reloaded.";
   },
   "test": () => {
-  	//Test code here.
-  	return "";
+    //Test code here.
+    return "";
   },
   "stop": () => {
     process.exit(0);
@@ -31,7 +38,13 @@ process.stdin.on("data", (text) => {
   }
 });
 
-let modules = [];
+let modules = [{
+  handle: (data) => {
+    if (data.message == "!ping") {
+      data.send("pong");
+    }
+  }
+}];
 
 //Main event listener for messages
 client.on("message", (message) => {
@@ -41,29 +54,42 @@ client.on("message", (message) => {
   let loc = message.channel;
   let msg = message.content;
 
-  //send helper functions
-  let send = function (text, opts) {
-    loc.send(text, opts).catch((err) => {
-      console.log(err);
-    });
-  };
-  let sendImg = function (text, img) {
-    if (img) {
-      send(text, {
-        embed: new Discord.RichEmbed().setImage(img)
-      });
-    } else {
-      send(text);
-    }
-  };
-
   let server;
   if (loc.guild) {
     server = loc.guild.id;
   }
-  for (let m in modules) {
-    if (m.handle && typeof m.handle == 'function') {
-      m.handle(msg, send);
+
+  let mdata = {
+    send: function(text, opts) {
+      loc.send(text, opts).catch((err) => {
+        console.log(err);
+      });
+    },
+    sendImg: function(text, img) {
+      if (img) {
+        send(text, {
+          embed: new Discord.RichEmbed().setImage(img)
+        });
+      } else {
+        send(text);
+      }
+    },
+    message: msg,
+    server: server
+  }
+  let a = utils.argsplit(msg); //will be null if msg is not a !command, otherwise will be an array
+  //TODO add filtering to only grab messages that fit command-form, to reduce on processing time
+  if (a) {
+    for (let m of modules) {
+      if (!(m.handle && typeof m.handle === 'function')) {
+        logger.warn("A handler was configured incorrectly.");
+      } else if (m.checker && typeof m.checker === 'function') {
+        if (m.checker(a) === true) {
+          m.handle(mdata);
+        }
+      } else {
+        logger.warn("A checker was configured incorrectly.");
+      }
     }
   }
 });
