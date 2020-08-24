@@ -95,11 +95,11 @@ client.on("message", (message) => {
   let msg = message.content;
 
   let server, channelName;
-  if (loc.guild) {
+  if (loc.guild) { //If loc.guild is not null, it is a server (not DMChannel)
     server = loc.guild.id;
     channelName = loc.name;
   }
-  selector = serverSelector(server);
+  selector = serverSelector(server); //set bits of selector based on which server this is
   let args = utils.argsplit(msg); //will be null if msg is not a !command, otherwise will be an array
   let mdata = {
     send: function(text, opts) {
@@ -116,18 +116,13 @@ client.on("message", (message) => {
         send(text);
       }
     },
-    message: msg, //the message content
-    server: server, //the server id
-    selector: selector, //server selector object
-    channel: channelName, //channel name as string
-    args: args, //array of args
-    location: loc, //Channel object
-    author: message.author, //author object
-    member: message.member, //GuildMember object
     delete: () => {
       message.delete();
     }, //delete function
-    client: client
+    message: msg, //the message content
+    server: server, //the server id
+    message: message, //Message object
+    client: client //the Discord client associated with the discord.js instance
   }
   if (args) { //only if it is a valid !command
     for (let m of modules) {
