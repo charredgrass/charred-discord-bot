@@ -5,7 +5,9 @@ const fs = require("fs");
 const logger = require("./lib/logger.js");
 const utils = require("./lib/utils.js");
 
-const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
+const client = new Discord.Client({
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+});
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -43,7 +45,8 @@ function serverSelector(serverID) {
     atg: false,
     frz: false,
     rao: false,
-    dnd: false
+    dnd: false,
+    dms: false
   };
   if (serverID === "167586953061990400") { //RAOCSGO
     ret.rao = true;
@@ -53,13 +56,16 @@ function serverSelector(serverID) {
     ret.frz = true;
   } else if (serverID === "446813545049358336") { //D&D
     ret.dnd = true;
-  }else if (serverID === "220039870410784768") { //Clowns
+  } else if (serverID === "220039870410784768") { //Clowns
     ret.dnd = true;
   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
     ret.atg = true;
     ret.frz = true;
     ret.rao = true;
     ret.dnd = true;
+  }
+  if (!serverID) {
+    ret.dms = true;
   }
   return ret;
 }
@@ -73,18 +79,10 @@ let modules = [{
       return true;
     }
   }
-}, {
-  handle: (data) => {
-
-  }, 
-  check: (args, selector, channelName) => {
-    if (args[0] == "!stamrow") {
-      return true;
-    }
-  }
 }];
 
-modules.push(require("./lib/rolemanager.js"));
+// modules.push(require("./lib/rolemanager.js"));
+modules.push(require("./lib/votemanager.js"));
 
 //Main event listener for messages
 client.on("message", (message) => {
@@ -100,6 +98,7 @@ client.on("message", (message) => {
     channelName = loc.name;
   }
   selector = serverSelector(server); //set bits of selector based on which server this is
+  //TODO make args configurable. check what server we are in and make it so we can change the prefix.
   let args = utils.argsplit(msg); //will be null if msg is not a !command, otherwise will be an array
   let mdata = {
     send: function(text, opts) {
@@ -128,6 +127,11 @@ client.on("message", (message) => {
     for (let m of modules) {
       if (!(m.handle && typeof m.handle === 'function')) {
         logger.warn("A handler was configured incorrectly.");
+        if (!m.handle) {
+          logger.warn("The handler does not exist.");
+        } else if (typeof m.handle !== 'function') {
+          logger.warn("The handler is not a function.");
+        }
       } else if (m.check && typeof m.check === 'function') {
         if (m.check(args, selector, channelName) === true) {
           m.handle(mdata);
@@ -139,7 +143,12 @@ client.on("message", (message) => {
   }
 });
 
-client.login(config.discord.key);
+client.login(config.discord.key).then(() => {
+  console.log("Successfully logged in.")
+}).catch((e) => {
+  console.log("Error logging in:");
+  console.log(e);
+});
 
 //Event listener to trigger when bot starts
 client.on("ready", () => {
