@@ -1,18 +1,13 @@
 # charred-discord-bot
 
-A Discord bot made by Charred#1196.
+A Discord bot made by Charred#9898.
 
 Currently runs on the following servers:
 
+* /r/Frozen
 * /r/randomactsofcsgo
 * \<Against the Grain\>, a guild on US-Undermine Alliance
 
 ## Dependencies
 
-Any version of node.js that supports ECMAScript 6.0.
-
-```
-npm install discord.js
-
-npm install steamcommunity
-```
+[discord.js](https://www.npmjs.com/package/discord.js) v12.2.0 and associated dependencies (Node v12.0.0 or higher)
