@@ -95,6 +95,10 @@ client.on("message", (message) => {
   let loc = message.channel;
   let msg = message.content;
 
+  if (message.author.bot === true) { //do not respond to bots
+    return;
+  }
+
   let server, channelName;
   if (loc.guild) { //If loc.guild is not null, it is a server (not DMChannel)
     server = loc.guild.id;
@@ -125,7 +129,8 @@ client.on("message", (message) => {
     server: server, //the server id
     message: message, //Message object
     client: client, //the Discord client associated with the discord.js instance
-    args: args
+    args: args,
+    isAdmin: (config.admins.indexOf(message.author.id))
   }
   if (args) { //only if it is a valid !command
     for (let m of modules) {
