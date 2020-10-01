@@ -11,7 +11,7 @@
   "dependencies": {
     "bufferutil": "^4.0.1",
     "colors": "^1.4.0",
-    "discord.js": "^12.2.0",
+    "discord.js": "^12.3.1",
     "ffmpeg-binaries": "^3.2.2-3",
     "request": "latest",
     "steamcommunity": "latest"

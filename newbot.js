@@ -5,6 +5,8 @@ const fs = require("fs");
 const logger = require("./lib/logger.js");
 const utils = require("./lib/utils.js");
 
+const votemanager = require("./lib/votemanager.js");
+
 const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
@@ -81,8 +83,9 @@ let modules = [{
   }
 }];
 
-// modules.push(require("./lib/rolemanager.js"));
-modules.push(require("./lib/votemanager.js"));
+const vm = new votemanager.VoteManager("votes.json");
+
+modules.push(vm.getVoter());
 
 //Main event listener for messages
 client.on("message", (message) => {
@@ -118,10 +121,11 @@ client.on("message", (message) => {
     delete: () => {
       message.delete();
     }, //delete function
-    message: msg, //the message content
+    msg: msg, //the message content
     server: server, //the server id
     message: message, //Message object
-    client: client //the Discord client associated with the discord.js instance
+    client: client, //the Discord client associated with the discord.js instance
+    args: args
   }
   if (args) { //only if it is a valid !command
     for (let m of modules) {
