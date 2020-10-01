@@ -2,11 +2,11 @@
   "wow": {
     "homeRealm": "Maiev",
     "api": {
-      "id":"",
-      "secret": ""
+      "id":"bcdfe33e45da44c8a630428b94c5b4ac",
+      "secret": "wBKs1TQyZLqZ9T3zVw7sWshQLdcso4q7"
     }
   },
   "discord": {
-    "key": ""
+    "key": "MzEzMTczMzA3MzI5NDc4NjY4.DpiYdg.uuNM0EfIk4jiPfN6tVZ4EP7a4jA"
   }
 }
