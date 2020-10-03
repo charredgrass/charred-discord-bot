@@ -1,105 +1,30 @@
 //Importing node.js modules
 const Discord = require("discord.js");
-const SteamCommunity = require("steamcommunity");
 const fs = require("fs");
 
-//Instantiating module objects
-const client = new Discord.Client();
-const community = new SteamCommunity();
-
-//Importing my own files
+const logger = require("./lib/logger.js");
 const utils = require("./lib/utils.js");
-const timer = require("./lib/timer.js");    //TODO
-const wow = require("./lib/wow.js");
-const dnd = require("./lib/dnd.js");
-const book = require("./lib/booktext.js");
-const math = require("./lib/math/main.js"); //TODO
-const words = require("./lib/dictionary.js");
-const mtg = require("./lib/mtg.js");
-const scryfall = require("./lib/mtg/scryfall.js");
-const basicCmds = require("./lib/basiccmds.js");
 
-const game = require("./lib/game/game.js");
-const gameChat = require("./lib/game/commands.js");
+const votemanager = require("./lib/votemanager.js");
 
-//TODO make a fancy config object that crashes on undefined values
-let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
-
-const raocsgoCommands = require("./lib/raocommands.js");
-const whos = JSON.parse(fs.readFileSync("./texts/whois.json").toString("utf-8"));
-const whois = raocsgoCommands.whoIsCreator(whos);
-//TODO load !help stuff in help file
-const jokeList = fs.readFileSync("./texts/jokes.txt").toString("utf-8").split("\n");
-const joke = raocsgoCommands.jokesCreator(jokeList);
-const graveList = JSON.parse(fs.readFileSync("./texts/graves.json").toString("utf-8"));
-const grave = raocsgoCommands.gravesCreator(graveList);
-const priceOf = raocsgoCommands.priceOfCreator(community);
-//Removed imgOf because of changes to how the SCM sorts its data.
-
-const dictionary = words.loadWords(fs.readFileSync("./texts/dictionary.txt"));
-const finallys = words.finallyCreator(dictionary);
-const binallys = words.binallyCreator(finallys);
-
-// const prog = wow.progCreator(config.wow.homeRealm, config.wow.api.key);
-// const wowT = wow.tokenCreator(config.wow.api.token);
-const wowAPI = new wow.WowAPI(config.wow.api.id, config.wow.api.secret, config.wow.homeRealm);
-
-const gameData = JSON.parse(fs.readFileSync("./data/game_data.json").toString("utf-8"));
-const g = new game(gameData, (data) => {
-  fs.writeFileSync("./data/game_data.json", JSON.stringify(data));
+const client = new Discord.Client({
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
-setInterval(() => {
-  g.save();
-}, 1000 * 60 * 30); //save every 30 minutes
 
-
-const gameCommands = gameChat.gameCommandCreator(g);
-
-//TODO load leaderboard archive
-const enchantmentDB = new book.Book("./texts/enchantments.json", ["int", "aug", "aff", "0", "1", "2", "3"]);
-const ench = book.enchantmentCreator(enchantmentDB);
-
-const pickStorage = {text:null};
-
-const cmds = {
-  /**@param {Array} args
-   * @param {Function} send
-   * **/
-  "ping": (args, send) => {
-    return send("pong");
-  },
-  "whois": whois,
-  "joke": joke,
-  "grave": grave,
-  "priceof": priceOf,
-  "finally": finallys,
-  "\uFE0Finally": binallys,
-  "ench": ench,
-  "game": gameCommands,
-  "prog": wowAPI.getProgCreator(),
-  "token": wowAPI.getWowTPriceCreator(),
-  "mtg": mtg.mtgCardImage,
-  "mtgsets": mtg.mtgSets,
-  "hp": dnd.hpCommandAdvanced,
-  "weigh": dnd.coinsToWeight,
-  "brickpicks": basicCmds.printPlaylist,
-  "brickpick": basicCmds.currPickCreator(pickStorage),
-  "setpick": basicCmds.setPickCreator(pickStorage)
-};
+let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
 //Enable reading from stdin
 process.stdin.setEncoding("utf8");
 const consoleCommands = {
   "reload": () => {
-    //TODO call reload functions on all modules
+    //Call reload function on each module here.
     return "Reloaded.";
   },
   "test": () => {
-
+    //Test code here.
+    return "";
   },
   "stop": () => {
-    //call game module to save it
-    g.save();
     process.exit(0);
     return "Stopping";
   }
@@ -117,18 +42,13 @@ process.stdin.on("data", (text) => {
   }
 });
 
-//Event listener to trigger when bot starts
-client.on("ready", () => {
-  console.log("Connected and initialized.");
-});
-
-
 function serverSelector(serverID) {
   let ret = {
     atg: false,
     frz: false,
     rao: false,
-    dnd: false
+    dnd: false,
+    dms: false
   };
   if (serverID === "167586953061990400") { //RAOCSGO
     ret.rao = true;
@@ -138,7 +58,7 @@ function serverSelector(serverID) {
     ret.frz = true;
   } else if (serverID === "446813545049358336") { //D&D
     ret.dnd = true;
-  }else if (serverID === "220039870410784768") { //Clowns
+  } else if (serverID === "220039870410784768") { //Clowns
     ret.dnd = true;
   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
     ret.atg = true;
@@ -146,8 +66,26 @@ function serverSelector(serverID) {
     ret.rao = true;
     ret.dnd = true;
   }
+  if (!serverID) {
+    ret.dms = true;
+  }
   return ret;
 }
+
+let modules = [{
+  handle: (data) => {
+    data.send("pong");
+  },
+  check: (args, selector, channelName) => {
+    if (args[0] == "!ping") {
+      return true;
+    }
+  }
+}];
+
+const vm = new votemanager.VoteManager("votes.json");
+
+modules.push(vm.getVoter());
 
 //Main event listener for messages
 client.on("message", (message) => {
@@ -157,74 +95,67 @@ client.on("message", (message) => {
   let loc = message.channel;
   let msg = message.content;
 
-  //send helper functions
-  let send = function (text, opts) {
-    loc.send(text, opts).catch((err) => {
-      console.log(err);
-    });
-  };
-  let sendImg = function (text, img) {
-    if (img) {
-      send(text, {
-        embed: new Discord.RichEmbed().setImage(img)
-      });
-    } else {
-      send(text);
-    }
-  };
-
-  let server;
-  if (loc.guild) {
+  let server, channelName;
+  if (loc.guild) { //If loc.guild is not null, it is a server (not DMChannel)
     server = loc.guild.id;
+    channelName = loc.name;
   }
-
-
-  for (let command in cmds) {
-    if (cmds.hasOwnProperty(command)) {
-      if (utils.hascmd(msg, command) || msg === "!" + command) {
-        let args = utils.argify(msg, command);
-        cmds[command](args, send, serverSelector(server), message.author, sendImg, message.mentions);
+  selector = serverSelector(server); //set bits of selector based on which server this is
+  //TODO make args configurable. check what server we are in and make it so we can change the prefix.
+  let args = utils.argsplit(msg); //will be null if msg is not a !command, otherwise will be an array
+  let mdata = {
+    send: function(text, opts) {
+      loc.send(text, opts).catch((err) => {
+        console.log(err);
+      });
+    },
+    sendImg: function(text, img) {
+      if (img) {
+        send(text, {
+          embed: new Discord.RichEmbed().setImage(img)
+        });
+      } else {
+        send(text);
+      }
+    },
+    delete: () => {
+      message.delete();
+    }, //delete function
+    msg: msg, //the message content
+    server: server, //the server id
+    message: message, //Message object
+    client: client, //the Discord client associated with the discord.js instance
+    args: args,
+    isAdmin: (config.admins.indexOf(message.author.id))
+  }
+  if (args) { //only if it is a valid !command
+    for (let m of modules) {
+      if (!(m.handle && typeof m.handle === 'function')) {
+        logger.warn("A handler was configured incorrectly.");
+        if (!m.handle) {
+          logger.warn("The handler does not exist.");
+        } else if (typeof m.handle !== 'function') {
+          logger.warn("The handler is not a function.");
+        }
+      } else if (m.check && typeof m.check === 'function') {
+        if (m.check(args, selector, channelName) === true) {
+          m.handle(mdata);
+        }
+      } else {
+        logger.warn("A checker was configured incorrectly.");
       }
     }
   }
-  //Special Cases
-  if (msg.substring(0, "who is ".length).toLowerCase() === "who is ") {
-    let name = msg.substring("who is ".length);
-    cmds["whois"](name.split(" "), send, serverSelector(server), message.author, sendImg, message.mentions);
-  }
-  if (message.channel.name === "botstuff" || message.channel.name === "game") {
-    if (msg.substring(0, "g ".length).toLowerCase() === "g ") {
-      let args = msg.substring("g ".length);
-      cmds["game"](args.split(" "), send, serverSelector(server), message.author, sendImg, message.mentions);
-    }
-  }
-  // if (server === "276220128822165505" || server === "313169519545679872") {
-  //   let matcher = /^[Ii]'?[Mm] (.*)/;
-  //   let match = msg.match(matcher);
-  //   if (match && match[1]) {
-  //     message.member.setNickname(match[1]).then(()=>{
-  //       send("Hi " + match[1]);
-  //     })
-  //   }
-  // }
-
 });
 
-client.login(config.discord.key);
+client.login(config.discord.key).then(() => {
+  console.log("Successfully logged in.")
+}).catch((e) => {
+  console.log("Error logging in:");
+  console.log(e);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Event listener to trigger when bot starts
+client.on("ready", () => {
+  console.log("Connected and initialized.");
+});
