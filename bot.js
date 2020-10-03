@@ -95,10 +95,6 @@ client.on("message", (message) => {
   let loc = message.channel;
   let msg = message.content;
 
-  if (message.author.bot === true) { //do not respond to bots
-    return;
-  }
-
   let server, channelName;
   if (loc.guild) { //If loc.guild is not null, it is a server (not DMChannel)
     server = loc.guild.id;
