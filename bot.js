@@ -83,7 +83,7 @@ let modules = [{
   }
 }];
 
-const vm = new votemanager.VoteManager("votes.json");
+const vm = new votemanager.VoteManager("votes.json", ["a", "b", "c"], ["❤️", "❄️"]);
 
 modules.push(vm.getVoter());
 
@@ -93,7 +93,7 @@ client.on("message", (message) => {
   if (message.author.bot === true) return;
 
   let loc = message.channel;
-  let msg = message.content;
+  let msg = message.content; //this will be weird with mentions
 
   let server, channelName;
   if (loc.guild) { //If loc.guild is not null, it is a server (not DMChannel)
