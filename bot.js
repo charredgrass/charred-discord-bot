@@ -83,9 +83,11 @@ let modules = [{
   }
 }];
 
-const vm = new votemanager.VoteManager("votes.json", ["a", "b", "c"], ["❤️", "❄️"]);
+const vm = new votemanager.VoteManager("votes.json", ["a", "b", "c"], ["❤️", "❄️"], [2, 1]);
 
 modules.push(vm.getVoter());
+modules.push(vm.getVoteStarter());
+modules.push(vm.getVoteCounter());
 
 //Main event listener for messages
 client.on("message", (message) => {
@@ -126,7 +128,8 @@ client.on("message", (message) => {
     message: message, //Message object
     client: client, //the Discord client associated with the discord.js instance
     args: args,
-    isAdmin: (config.admins.indexOf(message.author.id))
+    isAdmin: (config.admins.indexOf(message.author.id) >= 0),
+    Discord: Discord
   }
   if (args) { //only if it is a valid !command
     for (let m of modules) {
