@@ -83,10 +83,11 @@ let modules = [{
   }
 }];
 
-const vm = new votemanager.VoteManager("votes.json", ["a", "b", "c"], ["❤️", "❄️"]);
+const vm = new votemanager.VoteManager("votes.json", ["a", "b", "c"], ["❤️", "❄️"], [2, 1]);
 
 modules.push(vm.getVoter());
 modules.push(vm.getVoteStarter());
+modules.push(vm.getVoteCounter());
 
 //Main event listener for messages
 client.on("message", (message) => {
