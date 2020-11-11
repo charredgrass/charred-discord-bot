@@ -83,7 +83,7 @@ let modules = [{
   }
 }];
 
-const vm = new votemanager.VoteManager("votes.json", "votevip.json", ["A", "B", "C", "D"], 
+const vm = new votemanager.VoteManager("votes.json", "votevip.json", ["a", "b", "c", "d"], 
   ["❤️", "❄️"], [1, 1]);
 
 modules.push(vm.getVoter());
