@@ -11,3 +11,7 @@ Currently runs on the following servers:
 ## Dependencies
 
 [discord.js](https://www.npmjs.com/package/discord.js) v12.2.0 and associated dependencies (Node v12.0.0 or higher)
+
+## To run
+
+`npx tsc --build` 
