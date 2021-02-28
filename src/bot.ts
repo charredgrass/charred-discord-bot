@@ -1,5 +1,6 @@
 //Importing node.js modules
-const Discord = require("discord.js");
+// const Discord = require("discord.js");
+import * as Discord from 'discord.js';
 const fs = require("fs");
 
 const client = new Discord.Client({
@@ -37,7 +38,7 @@ process.stdin.on("data", (text: string) => {
   }
 });
 
-function serverSelector(serverID) {
+function serverSelector(serverID : string) : object {
   let ret = {
     atg: false,
     frz: false,
@@ -66,3 +67,75 @@ function serverSelector(serverID) {
   }
   return ret;
 }
+
+//this shouild be its own file at some point lol
+
+interface Command {
+	name: string;
+	run: (args: string[], msg: Discord.Message) => any;
+}
+
+//A place where a message can appear.
+type MessageLocation = Discord.TextChannel
+	| Discord.DMChannel
+	| Discord.NewsChannel;
+
+//A channel where a message can appear. Contains specific
+//    properties such as channel name and the server it's in.
+//  Subset of MessageLocation
+type ChannelLocation = Discord.TextChannel
+	| Discord.NewsChannel;
+
+//return null if it isn't a command
+function argsplit(message : string) : string[] {
+	message = message.toString()
+	let p = message.search(/^\s*!(\w).*/);
+	if (p < 0) {
+		return null;	
+	}
+	//now remove leading spaces and doublespaces
+	message = message.replace(/^\s*/, "").replace(/\s+/g, " ");
+	let args = message.split(" ");
+	return args;
+}
+
+let commands : Command[] = [];
+
+client.on("message", (message: Discord.Message) => {
+	if (message.author.bot === true) return;
+
+	let loc : MessageLocation = message.channel; //change this later
+	let msg = message.content;
+
+	let server, channelName;
+	
+	if (loc.hasOwnProperty("guild")) { //If loc.guild is not null, it is a server (not DMChannel)
+    	let nloc = loc as ChannelLocation;
+    	server = nloc.guild.id;
+    	channelName = nloc.name;
+  	}
+
+  	let selector = serverSelector(server);
+  	let args = argsplit(msg);
+
+  	if (args) {
+  		for (let c of commands) {
+  			if (args[0] == c.name) {
+  				c.run(args, message);
+  			}
+  		}
+  	}
+
+});
+
+client.login(config.discord.key).then(() => {
+  console.log("Successfully logged in.")
+}).catch((e) => {
+  console.log("Error logging in:");
+  console.log(e);
+});
+
+//Event listener to trigger when bot starts
+client.on("ready", () => {
+  console.log("Connected and initialized.");
+});
