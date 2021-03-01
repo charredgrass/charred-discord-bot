@@ -8,6 +8,7 @@ import {
 	MessageLocation, 
 	ChannelLocation
 } from "./types/types";
+// import * as cmds from "./cmds/core";
 
 const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION']
