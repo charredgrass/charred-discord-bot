@@ -1,7 +1,13 @@
 //Importing node.js modules
-// const Discord = require("discord.js");
 import * as Discord from 'discord.js';
 const fs = require("fs");
+
+//import my stuff
+import {
+	Command, 
+	MessageLocation, 
+	ChannelLocation
+} from "./types/types";
 
 const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION']
@@ -67,24 +73,6 @@ function serverSelector(serverID : string) : object {
   }
   return ret;
 }
-
-//this shouild be its own file at some point lol
-
-interface Command {
-	name: string;
-	run: (args: string[], msg: Discord.Message) => any;
-}
-
-//A place where a message can appear.
-type MessageLocation = Discord.TextChannel
-	| Discord.DMChannel
-	| Discord.NewsChannel;
-
-//A channel where a message can appear. Contains specific
-//    properties such as channel name and the server it's in.
-//  Subset of MessageLocation
-type ChannelLocation = Discord.TextChannel
-	| Discord.NewsChannel;
 
 //return null if it isn't a command
 function argsplit(message : string) : string[] {
