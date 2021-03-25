@@ -77,6 +77,12 @@ function argsplit(message) {
     return args;
 }
 var commands = [];
+commands.push({
+    name: "ping",
+    run: function (args, message) {
+        message.channel.send("pong");
+    }
+});
 client.on("message", function (message) {
     if (message.author.bot === true)
         return;
@@ -93,7 +99,7 @@ client.on("message", function (message) {
     if (args) {
         for (var _i = 0, commands_1 = commands; _i < commands_1.length; _i++) {
             var c = commands_1[_i];
-            if (args[0] == c.name) {
+            if (args[0] == "!" + c.name) {
                 c.run(args, message);
             }
         }
