@@ -8,7 +8,7 @@ import {
 	MessageLocation, 
 	ChannelLocation
 } from "./types/types";
-// import * as cmds from "./cmds/core";
+import * as Commands from './cmds/core';
 
 const client = new Discord.Client({
   partials: ['MESSAGE', 'CHANNEL', 'REACTION']
@@ -90,12 +90,14 @@ function argsplit(message : string) : string[] {
 
 let commands : Command[] = [];
 
-commands.push({
-	name: "ping",
-	run: (args, message) => {
-		message.channel.send("pong");
-	}
-});
+// commands.push({
+// 	name: "ping",
+// 	run: (args, message) => {
+// 		message.channel.send("pong");
+// 	}
+// });
+
+commands.push(Commands.cmds[0]);
 
 client.on("message", (message: Discord.Message) => {
 	if (message.author.bot === true) return;

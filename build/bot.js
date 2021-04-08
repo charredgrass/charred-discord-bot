@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var Discord = require("discord.js");
 var fs = require("fs");
+var Commands = require("./cmds/core");
 var client = new Discord.Client({
     partials: ['MESSAGE', 'CHANNEL', 'REACTION']
 });
@@ -77,12 +78,7 @@ function argsplit(message) {
     return args;
 }
 var commands = [];
-commands.push({
-    name: "ping",
-    run: function (args, message) {
-        message.channel.send("pong");
-    }
-});
+commands.push(Commands.cmds[0]);
 client.on("message", function (message) {
     if (message.author.bot === true)
         return;
