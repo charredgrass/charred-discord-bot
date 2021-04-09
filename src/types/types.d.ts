@@ -1,8 +1,11 @@
 import * as Discord from 'discord.js';
 
+//An object that stores the logic for executing a command.
+//Example commands available in /src/cmds/core.ts
 export interface Command {
 	name: string;
 	run: (args: string[], msg: Discord.Message) => any;
+	select: (selector: Object) => boolean;
 }
 
 //A place where a message can appear.

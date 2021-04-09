@@ -89,15 +89,7 @@ function argsplit(message : string) : string[] {
 }
 
 let commands : Command[] = [];
-
-// commands.push({
-// 	name: "ping",
-// 	run: (args, message) => {
-// 		message.channel.send("pong");
-// 	}
-// });
-
-commands.push(Commands.cmds[0]);
+commands = Commands.cmds;
 
 client.on("message", (message: Discord.Message) => {
 	if (message.author.bot === true) return;
@@ -116,11 +108,9 @@ client.on("message", (message: Discord.Message) => {
   	let selector = serverSelector(server);
   	let args = argsplit(msg);
 
-  	
-
   	if (args) {
   		for (let c of commands) {
-  			if (args[0] == "!" + c.name) {
+  			if (args[0] == "!" + c.name && c.select(selector)) {
   				c.run(args, message);
   			}
   		}
