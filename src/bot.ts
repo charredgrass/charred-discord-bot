@@ -46,12 +46,15 @@ process.stdin.on("data", (text: string) => {
 });
 
 function serverSelector(serverID : string) : object {
+	//feel like i should probably rework this to be like
+	// a bit array or something
   let ret = {
     atg: false,
     frz: false,
     rao: false,
     dnd: false,
-    dms: false
+    dms: false,
+    tst: false
   };
   if (serverID === "167586953061990400") { //RAOCSGO
     ret.rao = true;
@@ -68,6 +71,7 @@ function serverSelector(serverID : string) : object {
     ret.frz = true;
     ret.rao = true;
     ret.dnd = true;
+    ret.tst = true; //test servers
   }
   if (!serverID) {
     ret.dms = true;

@@ -8,6 +8,25 @@ export interface Command {
 	select: (selector: Object) => boolean;
 }
 
+//An object that stores logic for loggers.
+export interface Logger {
+	name: string;
+	file: string;
+	run: (msg: Discord.Message) => any;
+	select: (selector: Object) => boolean;
+}
+
+export interface Selector {
+	atg: boolean;
+	frz: boolean;
+	rao: boolean;
+	dnd: boolean;
+	dms: boolean;
+	tst: boolean;
+	isServer: () => boolean;
+	serverid: string;
+}
+
 //A place where a message can appear.
 export type MessageLocation = Discord.TextChannel
 	| Discord.DMChannel

@@ -1,7 +1,8 @@
 import {
 	Command, 
 	MessageLocation, 
-	ChannelLocation
+	ChannelLocation,
+	Logger
 } from "../types/types";
 
 
@@ -29,4 +30,17 @@ let ping : Command = {
 
 let cmds : Command[] = [ping];
 
-export { cmds };
+let logData : Logger = {
+	name: "logger",
+	file: "./logs/chat.log",
+	run: (message) => {
+
+	},
+	select: (selector) => {
+		return selector.tst;
+	}
+};
+
+let logs : Logger[] = [logData];
+
+export { cmds, logs };
