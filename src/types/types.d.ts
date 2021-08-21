@@ -23,6 +23,7 @@ export interface Selector {
 	dnd: boolean;
 	dms: boolean;
 	tst: boolean;
+	rs: boolean;
 	isServer: () => boolean;
 	serverid: string;
 }

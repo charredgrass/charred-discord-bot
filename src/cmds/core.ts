@@ -2,9 +2,11 @@ import {
 	Command, 
 	MessageLocation, 
 	ChannelLocation,
-	Logger
+	Logger,
+	Selector
 } from "../types/types";
 
+import * as rs from './runescape';
 
 //Example Command
 //name: name of the command. In this case executed using !ping.
@@ -23,12 +25,12 @@ let ping : Command = {
 	run: (args, message) => {
 		message.channel.send("pong");
 	},
-	select: (selector) => {
+	select: (selector : Selector) => {
 		return true;
 	}
 };
 
-let cmds : Command[] = [ping];
+let cmds : Command[] = [ping, rs.pingAPI];
 
 let logData : Logger = {
 	name: "logger",
@@ -36,7 +38,7 @@ let logData : Logger = {
 	run: (message) => {
 
 	},
-	select: (selector) => {
+	select: (selector : Selector) => {
 		return selector.tst;
 	}
 };

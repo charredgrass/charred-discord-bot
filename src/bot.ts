@@ -54,7 +54,8 @@ function serverSelector(serverID : string) : object {
     rao: false,
     dnd: false,
     dms: false,
-    tst: false
+    tst: false,
+    rs:  false,
   };
   if (serverID === "167586953061990400") { //RAOCSGO
     ret.rao = true;
@@ -66,12 +67,14 @@ function serverSelector(serverID : string) : object {
     ret.dnd = true;
   } else if (serverID === "220039870410784768") { //Clowns
     ret.dnd = true;
+    ret.rs = true;
   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
     ret.atg = true;
     ret.frz = true;
     ret.rao = true;
     ret.dnd = true;
     ret.tst = true; //test servers
+    ret.rs = true;
   }
   if (!serverID) {
     ret.dms = true;
