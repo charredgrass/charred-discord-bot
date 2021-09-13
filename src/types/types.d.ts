@@ -28,6 +28,8 @@ export interface Selector {
 	serverid: string;
 }
 
+
+//DEPRECATED? I think they made one for this
 //A place where a message can appear.
 export type MessageLocation = Discord.TextChannel
 	| Discord.DMChannel
