@@ -30,7 +30,7 @@ let ping : Command = {
 	}
 };
 
-let cmds : Command[] = [ping, rs.pingAPI];
+let cmds : Command[] = [ping, rs.pingAPI, rs.getGEPrice];
 
 let logData : Logger = {
 	name: "logger",

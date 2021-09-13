@@ -10,9 +10,7 @@ import {
 } from "./types/types";
 import * as Commands from './cmds/core';
 
-const client = new Discord.Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
-});
+const client = new Discord.Client();
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
