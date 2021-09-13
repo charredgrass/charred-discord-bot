@@ -8,11 +8,12 @@ import {
 	MessageLocation, 
 	ChannelLocation
 } from "./types/types";
-// import * as cmds from "./cmds/core";
+import * as Commands from './cmds/core';
 
-const client = new Discord.Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION']
-});
+const intents = new Discord.Intents();
+intents.add(Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGES);
+
+const client = new Discord.Client({ intents });
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -46,12 +47,16 @@ process.stdin.on("data", (text: string) => {
 });
 
 function serverSelector(serverID : string) : object {
+	//feel like i should probably rework this to be like
+	// a bit array or something
   let ret = {
     atg: false,
     frz: false,
     rao: false,
     dnd: false,
-    dms: false
+    dms: false,
+    tst: false,
+    rs:  false,
   };
   if (serverID === "167586953061990400") { //RAOCSGO
     ret.rao = true;
@@ -63,11 +68,14 @@ function serverSelector(serverID : string) : object {
     ret.dnd = true;
   } else if (serverID === "220039870410784768") { //Clowns
     ret.dnd = true;
+    ret.rs = true;
   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
     ret.atg = true;
     ret.frz = true;
     ret.rao = true;
     ret.dnd = true;
+    ret.tst = true; //test servers
+    ret.rs = true;
   }
   if (!serverID) {
     ret.dms = true;
@@ -89,11 +97,12 @@ function argsplit(message : string) : string[] {
 }
 
 let commands : Command[] = [];
+commands = Commands.cmds;
 
-client.on("message", (message: Discord.Message) => {
+client.on("messageCreate", (message: Discord.Message) => {
 	if (message.author.bot === true) return;
 
-	let loc : MessageLocation = message.channel; //change this later
+	let loc : Discord.TextBasedChannels = message.channel; //change this later
 	let msg = message.content;
 
 	let server, channelName;
@@ -109,7 +118,7 @@ client.on("message", (message: Discord.Message) => {
 
   	if (args) {
   		for (let c of commands) {
-  			if (args[0] == c.name) {
+  			if (args[0] == "!" + c.name && c.select(selector)) {
   				c.run(args, message);
   			}
   		}
