@@ -7,6 +7,7 @@ import {
 } from "../types/types";
 
 import * as rs from './runescape';
+import * as rsc from './runescapecalc';
 
 //Example Command
 //name: name of the command. In this case executed using !ping.
@@ -30,7 +31,7 @@ let ping : Command = {
 	}
 };
 
-let cmds : Command[] = [ping, rs.pingAPI, rs.getGEPrice];
+let cmds : Command[] = [ping, rs.pingAPI, rs.getGEPrice, rsc.howDry];
 
 let logData : Logger = {
 	name: "logger",
