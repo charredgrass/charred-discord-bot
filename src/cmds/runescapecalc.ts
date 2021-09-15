@@ -26,4 +26,32 @@ let howDry : Command = {
 	}
 };
 
-export {howDry};
+let chanceBelow : Command = {
+	name: "chance",
+	run: (args, message) => {
+		if (args[1] && args[1].match(/1\/\d+/)) {
+			args[1] = args[1].slice(2);
+		}
+		let odds = Number(args[1]);
+		let kc = Number(args[2]);
+		let drops = Number(args[3]);
+		if (isNaN(odds) || isNaN(kc) || isNaN(drops)) {
+			return message.channel.send("invalid arguments");
+		}
+		let chance = 0;
+		//chance = sum from i = 0 to drops-1 of binompdf(kc, 1/odds, i)
+		for (let i = 0; i < drops; i++) {
+			console.log(chance);
+			console.log(binompdf(kc, 1/odds, i));
+			chance += binompdf(kc, 1/odds, i);
+		}
+		console.log(chance)
+		message.channel.send(`Chance of getting ${drops} or more of a 1/${odds} drop at or before ${kc} kc is ${(100*(1 - chance))}%`);
+		// message.channel.send("pongapi");
+	},
+	select: (selector : Selector) => {
+		return selector.rs;
+	}
+};
+
+export {howDry, chanceBelow};

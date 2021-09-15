@@ -31,7 +31,7 @@ let ping : Command = {
 	}
 };
 
-let cmds : Command[] = [ping, rs.pingAPI, rs.getGEPrice, rsc.howDry];
+let cmds : Command[] = [ping, rs.pingAPI, rs.getGEPrice, rsc.howDry, rsc.chanceBelow];
 
 let logData : Logger = {
 	name: "logger",
