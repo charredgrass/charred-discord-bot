@@ -3,3 +3,5 @@ key.txt
 token.txt
 .idea
 config.json
+*.sublime-project
+*.sublime-workspace
