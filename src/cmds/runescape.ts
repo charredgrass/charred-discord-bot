@@ -70,6 +70,19 @@ function findItem(name : String, cb : Function) {
 	scanGE(name, cb, firstLetter, 1);
 }
 
+let idcache = null;
+const RS_WIKI_IDS : String = "https://prices.runescape.wiki/api/v1/osrs/mapping";
+const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/latest";
+
+async function wikiItem(name : String, cb : Function) {
+	if (!idcache) {
+		await callAPI(RS_WIKI_IDS, (e, r, body)=>{
+			let respjson : Object = JSON.parse(body);
+			console.log(respjson);
+		}, console.log);
+	}
+}
+
 let getGEPrice : Command = {
 	name: "price",
 	run: (args, message) => {
@@ -92,4 +105,14 @@ let getGEPrice : Command = {
 	}
 }
 
-export {pingAPI, getGEPrice};
+let getWikiPrice : Command = {
+	name: "price",
+	run: (args, message) => {
+		wikiItem(null, null);
+	},
+	select: (selector : Selector) => {
+		return selector.rs;
+	}
+}
+
+export {pingAPI, getWikiPrice};
