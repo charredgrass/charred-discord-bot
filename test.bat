@@ -1,0 +1,1 @@
+npx tsc --build && node build\bot.js

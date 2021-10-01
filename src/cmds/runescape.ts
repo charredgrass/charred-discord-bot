@@ -74,13 +74,34 @@ let idcache = null;
 const RS_WIKI_IDS : String = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/latest";
 
-async function wikiItem(name : String, cb : Function) {
-	if (!idcache) {
-		await callAPI(RS_WIKI_IDS, (e, r, body)=>{
-			let respjson : Object = JSON.parse(body);
-			console.log(respjson);
-		}, console.log);
-	}
+
+
+async function wikiItem(name: String, cb: Function) {
+	await prepCache();
+	console.log(idcache);
+}
+
+//TODO make this work with async and await. need to make promise version of request.ts
+function prepCache() : Promise<Object> {
+		const promise = new Promise((resolve, reject) => {
+			if (!idcache) { //todo check timestamp on cache
+				callAPI(RS_WIKI_IDS, (e, r, body)=>{
+					let respjson : Object = JSON.parse(body); //TODO err handling
+					idcache = respjson;
+					resolve(idcache);
+				}, (err) => {
+					console.log(err);
+					reject(err);
+				});
+			} else {
+				resolve(idcache);
+			}
+		});
+		return promise;
+}
+
+function searchCacheForId() : String {
+	return "1";
 }
 
 let getGEPrice : Command = {
