@@ -10,7 +10,7 @@ Currently runs on the following servers:
 
 ## Dependencies
 
-[discord.js](https://www.npmjs.com/package/discord.js) v12.2.0 and associated dependencies (Node v12.0.0 or higher)
+[discord.js](https://www.npmjs.com/package/discord.js) v13.1.0 and associated dependencies (Node v12.0.0 or higher)
 
 TypeScript v4.1.5 or higher (tested on v4.1.5) 
 
