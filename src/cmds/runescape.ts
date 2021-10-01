@@ -64,23 +64,74 @@ function scanGE(name, cb, letter, pnum) {
 //callback: true if found, 
 //TODO use axios to get out of callback hell
 //theres something smart with await in here
-function findItem(name : String, cb : Function) {
+function findItem(name : string, cb : Function) {
 
 	let firstLetter = name.toLowerCase()[0];
 	scanGE(name, cb, firstLetter, 1);
 }
 
 let idcache = null;
+let pricecache = null;
 const RS_WIKI_IDS : String = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/latest";
 
-async function wikiItem(name : String, cb : Function) {
-	if (!idcache) {
-		await callAPI(RS_WIKI_IDS, (e, r, body)=>{
-			let respjson : Object = JSON.parse(body);
-			console.log(respjson);
-		}, console.log);
+
+
+async function wikiItem(name: string, cb: Function) {
+	await prepCache();
+	await prepPriceCache();
+	// console.log(idcache);
+	// console.log(name);
+	let id = searchCacheForId(name);
+	// console.log(id);
+	cb(pricecache[id]);
+
+}
+
+//TODO make this work with async and await. need to make promise version of request.ts
+function prepCache() : Promise<Object> {
+		const promise = new Promise((resolve, reject) => {
+			if (!idcache) { //todo check timestamp on cache
+				callAPI(RS_WIKI_IDS, (e, r, body)=>{
+					let respjson : Object = JSON.parse(body); //TODO err handling
+					idcache = respjson;
+					resolve(idcache);
+				}, (err) => {
+					console.log(err);
+					reject(err);
+				});
+			} else {
+				resolve(idcache);
+			}
+		});
+		return promise;
+}
+
+function prepPriceCache() : Promise<Object> {
+		const promise = new Promise((resolve, reject) => {
+			if (!pricecache) { //todo check timestamp on cache
+				callAPI(RS_WIKI_PRICES, (e, r, body)=>{
+					let respjson : Object = JSON.parse(body).data; //TODO err handling
+					pricecache = respjson;
+					resolve(pricecache);
+				}, (err) => {
+					console.log(err);
+					reject(err);
+				});
+			} else {
+				resolve(pricecache);
+			}
+		});
+		return promise;
+}
+
+function searchCacheForId(name : string) : string {
+	for (let item of idcache) {
+		if (item.name.toLowerCase() == name.toLowerCase()) { //TODO make a better search function
+			return item.id;
+		}
 	}
+	return null;
 }
 
 let getGEPrice : Command = {
@@ -108,7 +159,14 @@ let getGEPrice : Command = {
 let getWikiPrice : Command = {
 	name: "price",
 	run: (args, message) => {
-		wikiItem(null, null);
+		wikiItem(args.slice(1).join(" "), (priceobj : Object) => {
+			if (priceobj) {
+				message.channel.send("Price: " + priceobj["high"] + "gp"); //TODO add commas
+			} else {
+				message.channel.send("Item not found.");
+			}
+			
+		});
 	},
 	select: (selector : Selector) => {
 		return selector.rs;
