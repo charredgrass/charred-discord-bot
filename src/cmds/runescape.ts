@@ -93,6 +93,9 @@ function prepCache() : Promise<Object> {
 		const promise = new Promise((resolve, reject) => {
 			if (!idcache) { //todo check timestamp on cache
 				callAPI(RS_WIKI_IDS, (e, r, body)=>{
+					if (e) {
+						return reject(e);
+					}
 					let respjson : Object = JSON.parse(body); //TODO err handling
 					idcache = respjson;
 					resolve(idcache);
@@ -111,6 +114,9 @@ function prepPriceCache() : Promise<Object> {
 		const promise = new Promise((resolve, reject) => {
 			if (!pricecache) { //todo check timestamp on cache
 				callAPI(RS_WIKI_PRICES, (e, r, body)=>{
+					if (e) {
+						return reject(e);
+					}
 					let respjson : Object = JSON.parse(body).data; //TODO err handling
 					pricecache = respjson;
 					resolve(pricecache);
