@@ -2,6 +2,7 @@
 exports.__esModule = true;
 exports.logs = exports.cmds = void 0;
 var rs = require("./runescape");
+var rsc = require("./runescapecalc");
 var ping = {
     name: "ping",
     run: function (args, message) {
@@ -11,7 +12,7 @@ var ping = {
         return true;
     }
 };
-var cmds = [ping, rs.pingAPI, rs.getGEPrice];
+var cmds = [ping, rs.pingAPI, rs.getWikiPrice, rsc.howDry, rsc.chanceBelow];
 exports.cmds = cmds;
 var logData = {
     name: "logger",
