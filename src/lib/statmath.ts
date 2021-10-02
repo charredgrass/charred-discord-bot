@@ -24,9 +24,16 @@ function binomcoeff(n : number, k : number) : number {
 	return fact(n) / (fact(k) * fact(n-k)); 
 }
 
+function binomcoeffrecur(n : number, k : number) : number {
+	if (n == k) return 1;
+	if (k == 1) return n;
+	if (k == 0) return 1;
+	return binomcoeffrecur(n-1, k) + binomcoeffrecur(n-1, k-1);
+}
+
 //probability density function for binomial distribution B(n,p) with k successes
 function binompdf(n : number, p : number, k : number) : number {
-	return binomcoeff(n, k) * Math.pow(p, k) * Math.pow(1-p, n-k);
+	return binomcoeffrecur(n, k) * Math.pow(p, k) * Math.pow(1-p, n-k);
 }
 
 export {binompdf};
