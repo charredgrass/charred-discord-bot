@@ -16,7 +16,8 @@ let itemcache : Object = {};
 let idcache = null, pricecache = null;
 const RS_WIKI_IDS : String = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/latest";
-let idcacheTime = 0, pricecacheTime = 0;
+let idcacheTime : number = 0, pricecacheTime : number = 0;
+const WAIT_TIME : number = 1000 * 60 * 60 * 6; //6hr
 
 
 
@@ -34,7 +35,7 @@ async function wikiItem(name: string, cb: Function) {
 //TODO make this work with async and await. need to make promise version of request.ts
 function prepCache() : Promise<Object> {
 		const promise = new Promise((resolve, reject) => {
-			if (!idcache) { //todo check timestamp on cache
+			if (!idcache && idcacheTime + WAIT_TIME < Date.now()) { //last updated + 6 hrs is BEFORE current time
 				callAPI(RS_WIKI_IDS, (e, r, body)=>{
 					if (e) {
 						return reject(e);
@@ -42,6 +43,7 @@ function prepCache() : Promise<Object> {
 					let respjson : Object = JSON.parse(body); //TODO err handling
 					idcache = respjson;
 					resolve(idcache);
+					idcacheTime = Date.now();
 				}, (err) => {
 					console.log(err);
 					reject(err);
@@ -55,7 +57,7 @@ function prepCache() : Promise<Object> {
 
 function prepPriceCache() : Promise<Object> {
 		const promise = new Promise((resolve, reject) => {
-			if (!pricecache) { //todo check timestamp on cache
+			if (!pricecache && pricecacheTime + WAIT_TIME < Date.now()) { //todo check timestamp on cache
 				callAPI(RS_WIKI_PRICES, (e, r, body)=>{
 					if (e) {
 						return reject(e);
@@ -63,6 +65,7 @@ function prepPriceCache() : Promise<Object> {
 					let respjson : Object = JSON.parse(body).data; //TODO err handling
 					pricecache = respjson;
 					resolve(pricecache);
+					pricecacheTime = Date.now();
 				}, (err) => {
 					console.log(err);
 					reject(err);
@@ -83,7 +86,7 @@ function searchCacheForId(name : string) : string {
 	return null;
 }
 
-let getWikiPrice : Command = {
+let getPrice : Command = {
 	name: "price",
 	run: (args, message) => {
 		wikiItem(args.slice(1).join(" "), (priceobj : Object) => {
@@ -100,4 +103,4 @@ let getWikiPrice : Command = {
 	}
 }
 
-export {getWikiPrice};
+export {getPrice};
