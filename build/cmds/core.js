@@ -12,7 +12,7 @@ var ping = {
         return true;
     }
 };
-var cmds = [ping, rs.pingAPI, rs.getWikiPrice, rsc.howDry, rsc.chanceBelow];
+var cmds = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow];
 exports.cmds = cmds;
 var logData = {
     name: "logger",
