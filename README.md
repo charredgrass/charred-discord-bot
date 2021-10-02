@@ -16,4 +16,4 @@ TypeScript v4.1.5 or higher (tested on v4.1.5)
 
 ## To run
 
-`npx tsc --build` transpiles the source code from `src/` into `build/`. Run by invoking node with `node bot.js`.
+`npx tsc --build` transpiles the source code from `src/` into `build/`. Run by invoking node with `node bot.js` in the build directory. 
