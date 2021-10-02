@@ -18,7 +18,16 @@ function binomcoeff(n, k) {
         return 1;
     return fact(n) / (fact(k) * fact(n - k));
 }
+function binomcoeffrecur(n, k) {
+    if (n == k)
+        return 1;
+    if (k == 1)
+        return n;
+    if (k == 0)
+        return 1;
+    return binomcoeffrecur(n - 1, k) + binomcoeffrecur(n - 1, k - 1);
+}
 function binompdf(n, p, k) {
-    return binomcoeff(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+    return binomcoeffrecur(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
 }
 exports.binompdf = binompdf;
