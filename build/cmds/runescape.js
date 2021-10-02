@@ -36,112 +36,100 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getWikiPrice = exports.pingAPI = void 0;
+exports.getPrice = void 0;
 var request_1 = require("../lib/request");
 var RS_GE = "http://services.runescape.com/m=itemdb_oldschool";
 var itemcache = {};
-var pingAPI = {
-    name: "pingapi",
-    run: function (args, message) {
-        request_1.callAPI(RS_GE + "/api/info.json", function (e, r, body) {
-            var respjson;
-            try {
-                respjson = JSON.parse(body);
-                message.channel.send("API last update Runedate=" + respjson.lastConfigUpdateRuneday);
-            }
-            catch (err) {
-                message.channel.send("API Error: malformed response");
-                return;
-            }
-        }, console.log);
-    },
-    select: function (selector) {
-        return selector.rs;
-    }
-};
-exports.pingAPI = pingAPI;
-function scanGE(name, cb, letter, pnum) {
-    console.log("Scanning page " + pnum + " for " + name);
-    request_1.callAPI(RS_GE + "/api/catalogue/items.json?category=1&alpha=" + letter + "&page=" + pnum, function (e, r, body) {
-        var respjson;
-        try {
-            respjson = JSON.parse(body);
-            var items = respjson.items;
-            if (items.length == 0) {
-                cb(false, null);
-                return;
-            }
-            for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
-                var item = items_1[_i];
-                if (item.name.toLowerCase() == name.toLowerCase()) {
-                    console.log("hit");
-                    cb(true, item);
-                    return;
-                }
-            }
-            scanGE(name, cb, letter, pnum + 1);
-        }
-        catch (err) {
-            console.log(err);
-            return null;
-        }
-    }, console.log);
-}
-function findItem(name, cb) {
-    var firstLetter = name.toLowerCase()[0];
-    scanGE(name, cb, firstLetter, 1);
-}
-var idcache = null;
+var idcache = null, pricecache = null;
 var RS_WIKI_IDS = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 var RS_WIKI_PRICES = "https://prices.runescape.wiki/api/v1/osrs/latest";
+var idcacheTime = 0, pricecacheTime = 0;
+var WAIT_TIME = 1000 * 60 * 60 * 6;
 function wikiItem(name, cb) {
     return __awaiter(this, void 0, void 0, function () {
+        var id;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    if (!!idcache) return [3, 2];
-                    return [4, request_1.callAPI(RS_WIKI_IDS, function (e, r, body) {
-                            var respjson = JSON.parse(body);
-                            console.log(respjson);
-                        }, console.log)];
+                case 0: return [4, prepCache()];
                 case 1:
                     _a.sent();
-                    _a.label = 2;
-                case 2: return [2];
+                    return [4, prepPriceCache()];
+                case 2:
+                    _a.sent();
+                    id = searchCacheForId(name);
+                    cb(pricecache[id]);
+                    return [2];
             }
         });
     });
 }
-var getGEPrice = {
-    name: "price",
-    run: function (args, message) {
-        if (args.length == 1) {
-            message.channel.send("Usage: `!price <item>`");
-        }
-        else {
-            var itemName = args.slice(1).join(" ");
-            message.channel.sendTyping();
-            var item = findItem(itemName, function (isFound, item) {
-                if (isFound === true) {
-                    message.channel.send("Price: " + item["current"]["price"]);
+function prepCache() {
+    var promise = new Promise(function (resolve, reject) {
+        if (!idcache && idcacheTime + WAIT_TIME < Date.now()) {
+            request_1.callAPI(RS_WIKI_IDS, function (e, r, body) {
+                if (e) {
+                    return reject(e);
                 }
-                else {
-                    message.channel.send("Item not found.");
-                }
+                var respjson = JSON.parse(body);
+                idcache = respjson;
+                resolve(idcache);
+                idcacheTime = Date.now();
+            }, function (err) {
+                console.log(err);
+                reject(err);
             });
         }
-    },
-    select: function (selector) {
-        return selector.rs;
+        else {
+            resolve(idcache);
+        }
+    });
+    return promise;
+}
+function prepPriceCache() {
+    var promise = new Promise(function (resolve, reject) {
+        if (!pricecache && pricecacheTime + WAIT_TIME < Date.now()) {
+            request_1.callAPI(RS_WIKI_PRICES, function (e, r, body) {
+                if (e) {
+                    return reject(e);
+                }
+                var respjson = JSON.parse(body).data;
+                pricecache = respjson;
+                resolve(pricecache);
+                pricecacheTime = Date.now();
+            }, function (err) {
+                console.log(err);
+                reject(err);
+            });
+        }
+        else {
+            resolve(pricecache);
+        }
+    });
+    return promise;
+}
+function searchCacheForId(name) {
+    for (var _i = 0, idcache_1 = idcache; _i < idcache_1.length; _i++) {
+        var item = idcache_1[_i];
+        if (item.name.toLowerCase() == name.toLowerCase()) {
+            return item.id;
+        }
     }
-};
-var getWikiPrice = {
+    return null;
+}
+var getPrice = {
     name: "price",
     run: function (args, message) {
-        wikiItem(null, null);
+        wikiItem(args.slice(1).join(" "), function (priceobj) {
+            if (priceobj) {
+                message.channel.send("Price: " + priceobj["high"] + "gp");
+            }
+            else {
+                message.channel.send("Item not found.");
+            }
+        });
     },
     select: function (selector) {
         return selector.rs;
     }
 };
-exports.getWikiPrice = getWikiPrice;
+exports.getPrice = getPrice;
