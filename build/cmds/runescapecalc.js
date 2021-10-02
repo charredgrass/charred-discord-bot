@@ -11,7 +11,7 @@ var howDry = {
         var odds = Number(args[1]);
         var kc = Number(args[2]);
         if (isNaN(odds) || isNaN(kc)) {
-            return message.channel.send("invalid arguments");
+            return message.channel.send("Invalid arguments. Syntax: !dry 1/[droprate] [kc]");
         }
         message.channel.send("Chance of getting a 1/" + odds + " drop at or before " + kc + " kc is " + (100 * (1 - statmath_1.binompdf(kc, 1 / odds, 0))) + "%");
     },
@@ -30,7 +30,7 @@ var chanceBelow = {
         var kc = Number(args[2]);
         var drops = Number(args[3]);
         if (isNaN(odds) || isNaN(kc) || isNaN(drops)) {
-            return message.channel.send("invalid arguments");
+            return message.channel.send("Invalid arguments. Syntax: !chance 1/[droprate] [kc] [number of drops]");
         }
         var chance = 0;
         for (var i = 0; i < drops; i++) {
@@ -38,7 +38,6 @@ var chanceBelow = {
             console.log(statmath_1.binompdf(kc, 1 / odds, i));
             chance += statmath_1.binompdf(kc, 1 / odds, i);
         }
-        console.log(chance);
         message.channel.send("Chance of getting " + drops + " or more of a 1/" + odds + " drop at or before " + kc + " kc is " + (100 * (1 - chance)) + "%");
     },
     select: function (selector) {
