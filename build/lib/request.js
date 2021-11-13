@@ -21,3 +21,20 @@ function callAPI(url, cb, ecb) {
     }
 }
 exports.callAPI = callAPI;
+function callAPIPromise(url) {
+    return new Promise(function (resolve, reject) {
+        try {
+            request({
+                url: url,
+                headers: {
+                    'User-Agent': "charredgrass/charred-discord-bot - @Charred#9898"
+                }
+            }, function (e, r, body) {
+                resolve(body);
+            });
+        }
+        catch (err) {
+            reject("API Error: " + err.message);
+        }
+    });
+}
