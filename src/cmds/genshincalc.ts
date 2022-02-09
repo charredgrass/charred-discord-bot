@@ -12,7 +12,7 @@ const HARDPITY = 90;
 //probability mass function obtained from 
 //https://www.reddit.com/r/Genshin_Impact/comments/rtqdl2/guide_how_many_wishes_you_should_save/
 //Given a banner with Pr(any 5-star) = p, pmf is defined as Pr(getting the 5-star in exactly n)
-function pullpmf(n , p ) {
+function pullpmf(n , p) {
 	let d = p * 10; //soft pity value 
 	if (n <= 0) {
 		return 0; //pmf not defined 
@@ -28,6 +28,23 @@ function pullpmf(n , p ) {
 		return res;
 	} else {
 		return 0; //pmf not defined
+	}
+}
+
+function pullcmf(n, p) {
+	//by def of cmf: cmf(n) = sum from 1 to n of f(i)
+	//for 0 <= n <= 73, simplifies to "chance to not hit p, n times in a row" = 1-(1-p)^n
+	if (n <= 0) {
+		return 0; //undef
+	} else if (n <= 73) {
+		return 1 - Math.pow(1 - p, n);
+	} else if (n <= 89) {
+		//TODO write something to skip the first 73 terms
+		let sum = 0;
+		for (let i = 1 ; i <= n; i++) {
+			sum += pullpmf(i, p);
+		}
+		return sum;
 	}
 }
 
