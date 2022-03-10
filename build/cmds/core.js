@@ -3,6 +3,7 @@ exports.__esModule = true;
 exports.logs = exports.cmds = void 0;
 var rs = require("./runescape");
 var rsc = require("./runescapecalc");
+var tft = require("./tft");
 var ping = {
     name: "ping",
     run: function (args, message) {
@@ -12,7 +13,7 @@ var ping = {
         return true;
     }
 };
-var cmds = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow];
+var cmds = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow, tft.augprob];
 exports.cmds = cmds;
 var logData = {
     name: "logger",

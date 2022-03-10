@@ -66,6 +66,7 @@ function serverSelector(serverID) {
         ret.dnd = true;
         ret.tst = true;
         ret.rs = true;
+        ret.dms = true;
     }
     if (!serverID) {
         ret.dms = true;

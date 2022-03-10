@@ -76,6 +76,7 @@ function serverSelector(serverID : string) : object {
     ret.dnd = true;
     ret.tst = true; //test servers
     ret.rs = true;
+    ret.dms = true;
   }
   if (!serverID) {
     ret.dms = true;

@@ -8,6 +8,7 @@ import {
 
 import * as rs from './runescape';
 import * as rsc from './runescapecalc';
+import * as tft from './tft';
 
 //Example Command
 //name: name of the command. In this case executed using !ping.
@@ -31,7 +32,7 @@ let ping : Command = {
 	}
 };
 
-let cmds : Command[] = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow];
+let cmds : Command[] = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow, tft.augprob];
 
 let logData : Logger = {
 	name: "logger",
