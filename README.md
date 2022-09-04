@@ -7,6 +7,7 @@ Currently runs on the following servers:
 * /r/Frozen
 * /r/randomactsofcsgo
 * \<Against the Grain\>, a guild on US-Undermine Alliance
+* Several private servers
 
 ## Dependencies
 
