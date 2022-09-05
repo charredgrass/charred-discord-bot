@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.callAPI = void 0;
-var request = require("request");
-var options = {
+const request = require("request");
+let options = {
     headers: {
         'User-Agent': "charredgrass/charred-discord-bot - @Charred#9898"
     }
@@ -10,7 +10,7 @@ var options = {
 function callAPI(url, cb, ecb) {
     try {
         request({
-            url: url,
+            url,
             headers: {
                 'User-Agent': "charredgrass/charred-discord-bot - @Charred#9898"
             }
@@ -22,14 +22,14 @@ function callAPI(url, cb, ecb) {
 }
 exports.callAPI = callAPI;
 function callAPIPromise(url) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         try {
             request({
-                url: url,
+                url,
                 headers: {
                     'User-Agent': "charredgrass/charred-discord-bot - @Charred#9898"
                 }
-            }, function (e, r, body) {
+            }, (e, r, body) => {
                 resolve(body);
             });
         }

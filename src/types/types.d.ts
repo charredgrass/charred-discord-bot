@@ -5,7 +5,8 @@ import * as Discord from 'discord.js';
 export interface Command {
 	name: string;
 	run: (args: string[], msg: Discord.Message) => any;
-	select: (selector: Object) => boolean;
+	select: (selector: Object) => boolean; //DEPRECATED
+	
 }
 
 //An object that stores logic for loggers.
@@ -16,6 +17,7 @@ export interface Logger {
 	select: (selector: Object) => boolean;
 }
 
+//DEPRECATED with slash commands.
 export interface Selector {
 	atg: boolean;
 	frz: boolean;

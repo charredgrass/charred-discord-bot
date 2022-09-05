@@ -1,32 +1,31 @@
 "use strict";
-exports.__esModule = true;
-var Discord = require("discord.js");
-var fs = require("fs");
-var Commands = require("./cmds/core");
-var intents = new Discord.Intents();
-intents.add(Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGES);
-var client = new Discord.Client({ intents: intents });
-var config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
+Object.defineProperty(exports, "__esModule", { value: true });
+const Discord = require("discord.js");
+const fs = require("fs");
+const Commands = require("./cmds/core");
+let intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const client = new Discord.Client({ intents });
+let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 process.stdin.setEncoding("utf8");
-var consoleCommands = {
-    "reload": function () {
+const consoleCommands = {
+    "reload": () => {
         return "Reloaded.";
     },
-    "test": function () {
+    "test": () => {
         return "";
     },
-    "stop": function () {
+    "stop": () => {
         process.exit(0);
         return "Stopping";
     }
 };
-process.stdin.on("data", function (text) {
+process.stdin.on("data", (text) => {
     text = text.replace(/[\n\r\t]/g, "").replace(/ {2+}/g, " ");
-    var args = text.split(" ");
-    var command = args[0].toLowerCase();
-    var echoed;
+    let args = text.split(" ");
+    let command = args[0].toLowerCase();
+    let echoed;
     if (consoleCommands.hasOwnProperty(command) === true) {
-        echoed = consoleCommands[command].apply(consoleCommands, args);
+        echoed = consoleCommands[command](...args);
         console.log(echoed);
     }
     else {
@@ -34,14 +33,14 @@ process.stdin.on("data", function (text) {
     }
 });
 function serverSelector(serverID) {
-    var ret = {
+    let ret = {
         atg: false,
         frz: false,
         rao: false,
         dnd: false,
         dms: false,
         tst: false,
-        rs: false
+        rs: false,
     };
     if (serverID === "167586953061990400") {
         ret.rao = true;
@@ -75,44 +74,43 @@ function serverSelector(serverID) {
 }
 function argsplit(message) {
     message = message.toString();
-    var p = message.search(/^\s*!(\w).*/);
+    let p = message.search(/^\s*!(\w).*/);
     if (p < 0) {
         return null;
     }
     message = message.replace(/^\s*/, "").replace(/\s+/g, " ");
-    var args = message.split(" ");
+    let args = message.split(" ");
     return args;
 }
-var commands = [];
+let commands = [];
 commands = Commands.cmds;
-client.on("messageCreate", function (message) {
+client.on("messageCreate", (message) => {
     if (message.author.bot === true)
         return;
-    var loc = message.channel;
-    var msg = message.content;
-    var server, channelName;
+    let loc = message.channel;
+    let msg = message.content;
+    let server, channelName;
     if (loc.hasOwnProperty("guild")) {
-        var nloc = loc;
+        let nloc = loc;
         server = nloc.guild.id;
         channelName = nloc.name;
     }
-    var selector = serverSelector(server);
-    var args = argsplit(msg);
+    let selector = serverSelector(server);
+    let args = argsplit(msg);
     if (args) {
-        for (var _i = 0, commands_1 = commands; _i < commands_1.length; _i++) {
-            var c = commands_1[_i];
+        for (let c of commands) {
             if (args[0] == "!" + c.name && c.select(selector)) {
                 c.run(args, message);
             }
         }
     }
 });
-client.login(config.discord.key).then(function () {
+client.login(config.discord.key).then(() => {
     console.log("Successfully logged in.");
-})["catch"](function (e) {
+}).catch((e) => {
     console.log("Error logging in:");
     console.log(e);
 });
-client.on("ready", function () {
+client.on("ready", () => {
     console.log("Connected and initialized.");
 });

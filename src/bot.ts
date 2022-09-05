@@ -10,10 +10,8 @@ import {
 } from "./types/types";
 import * as Commands from './cmds/core';
 
-const intents = new Discord.Intents();
-intents.add(Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGES);
-
-const client = new Discord.Client({ intents });
+let intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const client = new Discord.Client({intents});
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -45,6 +43,8 @@ process.stdin.on("data", (text: string) => {
     console.log("Unknown command. Type `help` for help.");
   }
 });
+
+
 
 function serverSelector(serverID : string) : object {
 	//feel like i should probably rework this to be like
@@ -103,7 +103,7 @@ commands = Commands.cmds;
 client.on("messageCreate", (message: Discord.Message) => {
 	if (message.author.bot === true) return;
 
-	let loc : Discord.TextBasedChannels = message.channel; //change this later
+	let loc : Discord.TextBasedChannel = message.channel; //change this later
 	let msg = message.content;
 
 	let server, channelName;

@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
-var HARDPITY = 90;
+Object.defineProperty(exports, "__esModule", { value: true });
+const HARDPITY = 90;
 function pullpmf(n, p) {
-    var d = p * 10;
+    let d = p * 10;
     if (n <= 0) {
         return 0;
     }
@@ -10,8 +10,8 @@ function pullpmf(n, p) {
         return p * Math.pow(1 - p, n - 1);
     }
     else if (n <= 89) {
-        var res = Math.pow(1 - p, 73) * (p + (n - 73) * d);
-        for (var i = 1; i <= n - 74; i++) {
+        let res = Math.pow(1 - p, 73) * (p + (n - 73) * d);
+        for (let i = 1; i <= n - 74; i++) {
             res *= 1 - p - n * d;
         }
         return res;
@@ -28,17 +28,17 @@ function pullcmf(n, p) {
         return 1 - Math.pow(1 - p, n);
     }
     else if (n <= 89) {
-        var sum = 0;
-        for (var i = 1; i <= n; i++) {
+        let sum = 0;
+        for (let i = 1; i <= n; i++) {
             sum += pullpmf(i, p);
         }
         return sum;
     }
 }
-var chanceIn = {
+let chanceIn = {
     name: "chancein",
-    run: function (args, message) {
-        var pulls = Number(args[1]);
+    run: (args, message) => {
+        let pulls = Number(args[1]);
         if (isNaN(pulls)) {
             return message.channel.send("Invalid arguments. Syntax: !chancein [kc]");
         }
@@ -46,7 +46,7 @@ var chanceIn = {
             return message.channel.send("You are guaranteed.");
         }
     },
-    select: function (selector) {
+    select: (selector) => {
         return selector.dms;
     }
 };
