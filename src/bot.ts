@@ -1,16 +1,17 @@
 //Importing node.js modules
 import * as Discord from 'discord.js';
+import { REST } from '@discordjs/rest';
 const fs = require("fs");
 
 //import my stuff
 import {
-	Command, 
+	SCommand, 
 	MessageLocation, 
 	ChannelLocation
 } from "./types/types";
 import * as Commands from './cmds/core';
 
-let intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
 const client = new Discord.Client({intents});
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
@@ -29,6 +30,10 @@ const consoleCommands = {
   "stop": () => {
     process.exit(0);
     return "Stopping";
+  },
+  "register": () => {
+    registerCommands();
+    return "Process completed."
   }
 };
 process.stdin.on("data", (text: string) => {
@@ -97,35 +102,75 @@ function argsplit(message : string) : string[] {
 	return args;
 }
 
-let commands : Command[] = [];
-commands = Commands.cmds;
+// let commands : Command[] = [];
+// commands = Commands.cmds;
 
-client.on("messageCreate", (message: Discord.Message) => {
-	if (message.author.bot === true) return;
+// client.on("messageCreate", (message: Discord.Message) => {
+// 	if (message.author.bot === true) return;
 
-	let loc : Discord.TextBasedChannel = message.channel; //change this later
-	let msg = message.content;
+// 	let loc : Discord.TextBasedChannel = message.channel; //change this later
+// 	let msg = message.content;
 
-	let server, channelName;
+// 	let server, channelName;
 	
-	if (loc.hasOwnProperty("guild")) { //If loc.guild is not null, it is a server (not DMChannel)
-    	let nloc = loc as ChannelLocation;
-    	server = nloc.guild.id;
-    	channelName = nloc.name;
-  	}
+// 	if (loc.hasOwnProperty("guild")) { //If loc.guild is not null, it is a server (not DMChannel)
+//     	let nloc = loc as ChannelLocation;
+//     	server = nloc.guild.id;
+//     	channelName = nloc.name;
+//   	}
 
-  	let selector = serverSelector(server);
-  	let args = argsplit(msg);
+//   	let selector = serverSelector(server);
+//   	let args = argsplit(msg);
 
-  	if (args) {
-  		for (let c of commands) {
-  			if (args[0] == "!" + c.name && c.select(selector)) {
-  				c.run(args, message);
-  			}
-  		}
-  	}
+//   	if (args) {
+//   		for (let c of commands) {
+//   			if (args[0] == "!" + c.name && c.select(selector)) {
+//   				c.run(args, message);
+//   			}
+//   		}
+//   	}
 
-});
+// });
+
+let commands : SCommand[] = [];
+commands = Commands.cmds;
+let guildCommandList : Object = {};
+const guilds = {
+  NASS: "313169519545679872",
+}
+for (const key in guilds) {
+  guildCommandList[guilds[key]] = [];
+}
+
+const clientid = config.discord.clientid;
+const nassid = "313169519545679872";
+
+const rest = new REST({ version: '10' }).setToken(config.discord.key);
+
+function registerCommands() {
+  for (const cmd of commands) {
+    if (cmd.flavor === "runescape") {
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+    }
+  }
+  for (const g in guildCommandList) {
+    let toReg = guildCommandList[g];
+    (async () => {
+      try {
+        console.log(`Started refreshing ${toReg.length} application (/) commands in guild ${g}`);
+        const data = await rest.put(
+          Discord.Routes.applicationGuildCommands(clientid, g),
+          {body: toReg}
+        );
+
+        console.log(`Successfully reloaded commands for guild ${g}.`);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }
+}
+
 
 client.login(config.discord.key).then(() => {
   console.log("Successfully logged in.")

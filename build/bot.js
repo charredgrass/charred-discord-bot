@@ -1,9 +1,19 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Discord = require("discord.js");
+const rest_1 = require("@discordjs/rest");
 const fs = require("fs");
 const Commands = require("./cmds/core");
-let intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
 const client = new Discord.Client({ intents });
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 process.stdin.setEncoding("utf8");
@@ -17,6 +27,10 @@ const consoleCommands = {
     "stop": () => {
         process.exit(0);
         return "Stopping";
+    },
+    "register": () => {
+        registerCommands();
+        return "Process completed.";
     }
 };
 process.stdin.on("data", (text) => {
@@ -84,27 +98,36 @@ function argsplit(message) {
 }
 let commands = [];
 commands = Commands.cmds;
-client.on("messageCreate", (message) => {
-    if (message.author.bot === true)
-        return;
-    let loc = message.channel;
-    let msg = message.content;
-    let server, channelName;
-    if (loc.hasOwnProperty("guild")) {
-        let nloc = loc;
-        server = nloc.guild.id;
-        channelName = nloc.name;
-    }
-    let selector = serverSelector(server);
-    let args = argsplit(msg);
-    if (args) {
-        for (let c of commands) {
-            if (args[0] == "!" + c.name && c.select(selector)) {
-                c.run(args, message);
-            }
+let guildCommandList = {};
+const guilds = {
+    NASS: "313169519545679872",
+};
+for (const key in guilds) {
+    guildCommandList[guilds[key]] = [];
+}
+const clientid = config.discord.clientid;
+const nassid = "313169519545679872";
+const rest = new rest_1.REST({ version: '10' }).setToken(config.discord.key);
+function registerCommands() {
+    for (const cmd of commands) {
+        if (cmd.flavor === "runescape") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
         }
     }
-});
+    for (const g in guildCommandList) {
+        let toReg = guildCommandList[g];
+        (() => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(`Started refreshing ${toReg.length} application (/) commands in guildid ${g}`);
+                const data = yield rest.put(Discord.Routes.applicationGuildCommands(clientid, g), { body: toReg });
+                console.log("Successfully reloaded commands!");
+            }
+            catch (err) {
+                console.error(err);
+            }
+        }))();
+    }
+}
 client.login(config.discord.key).then(() => {
     console.log("Successfully logged in.");
 }).catch((e) => {

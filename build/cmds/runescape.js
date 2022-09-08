@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPrice = void 0;
 const request_1 = require("../lib/request");
+const discord_js_1 = require("discord.js");
 const RS_GE = "http://services.runescape.com/m=itemdb_oldschool";
 let itemcache = {};
 let idcache = null, pricecache = null;
@@ -80,6 +81,7 @@ function searchCacheForId(name) {
 }
 let getPrice = {
     name: "price",
+    flavor: "runescape",
     run: (args, message) => {
         wikiItem(args.slice(1).join(" "), (priceobj) => {
             if (priceobj) {
@@ -92,6 +94,12 @@ let getPrice = {
     },
     select: (selector) => {
         return selector.rs;
+    },
+    data: new discord_js_1.SlashCommandBuilder().setName("price").setDescription("nice"),
+    execute(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield interaction.reply("this is where we do the calculation");
+        });
     }
 };
 exports.getPrice = getPrice;

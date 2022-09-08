@@ -2,12 +2,15 @@ import {
 	Command, 
 	MessageLocation, 
 	ChannelLocation,
-	Selector
+	Selector,
+	SCommand
 } from "../types/types";
 
 import {
 	callAPI
-} from "../lib/request"
+} from "../lib/request";
+
+import {SlashCommandBuilder} from "discord.js";
 
 const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
@@ -86,8 +89,9 @@ function searchCacheForId(name : string) : string {
 	return null;
 }
 
-let getPrice : Command = {
+let getPrice : SCommand = {
 	name: "price",
+	flavor: "runescape",
 	run: (args, message) => {
 		wikiItem(args.slice(1).join(" "), (priceobj : Object) => {
 			if (priceobj) {
@@ -95,11 +99,14 @@ let getPrice : Command = {
 			} else {
 				message.channel.send("Item not found.");
 			}
-			
 		});
 	},
 	select: (selector : Selector) => {
 		return selector.rs;
+	},
+	data: new SlashCommandBuilder().setName("price").setDescription("nice"),
+	async execute(interaction) {
+		await interaction.reply("this is where we do the calculation");
 	}
 }
 

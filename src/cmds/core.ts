@@ -3,7 +3,8 @@ import {
 	MessageLocation, 
 	ChannelLocation,
 	Logger,
-	Selector
+	Selector,
+	SCommand
 } from "../types/types";
 
 import * as rs from './runescape';
@@ -32,19 +33,8 @@ let ping : Command = {
 	}
 };
 
-let cmds : Command[] = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow, tft.augprob];
+let oldcmds : Command[] = [ping, /*rs.getPrice,*/ rsc.howDry, rsc.chanceBelow, tft.augprob];
 
-let logData : Logger = {
-	name: "logger",
-	file: "./logs/chat.log",
-	run: (message) => {
+let cmds : SCommand[] = [rs.getPrice];
 
-	},
-	select: (selector : Selector) => {
-		return selector.tst;
-	}
-};
-
-let logs : Logger[] = [logData];
-
-export { cmds, logs };
+export { cmds};
