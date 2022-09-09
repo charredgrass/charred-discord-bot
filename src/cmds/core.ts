@@ -13,7 +13,8 @@ import * as tft from './tft';
 
 import {
 	SlashCommandBuilder, 
-	ChatInputCommandInteraction
+	ChatInputCommandInteraction,
+	Collection
  } from "discord.js";
 
 //Example Command
@@ -50,6 +51,10 @@ let ping : SCommand = {
 
 let oldcmds : Command[] = [/*ping, rs.getPrice,*/ rsc.howDry, rsc.chanceBelow, tft.augprob];
 
-let cmds : SCommand[] = [ping, rs.getPrice];
+let scmds : SCommand[] = [ping, rs.getPrice];
+let cmds : Collection<string, SCommand> = new Collection();
+for (let sc of scmds) {
+	cmds.set(sc.name, sc);
+}
 
-export { cmds};
+export { cmds };

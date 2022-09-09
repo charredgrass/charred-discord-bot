@@ -10,7 +10,9 @@ import {
 	callAPI
 } from "../lib/request";
 
-import {SlashCommandBuilder, ChatInputCommandInteraction} from "discord.js";
+import {SlashCommandBuilder, 
+	ChatInputCommandInteraction, 
+	AutocompleteInteraction} from "discord.js";
 
 const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
@@ -85,6 +87,22 @@ function searchCacheForId(name : string) : string {
 	return null;
 }
 
+async function searchCacheForPartial(name : string) : Promise<any[]> {
+	return new Promise(async (resolve, reject) => {
+			await prepCache();
+			await prepPriceCache();
+			const ret : any[] = [];
+			if (name.length == 0) return resolve(ret);
+			for (let item of idcache) {
+				if (item.name.toLowerCase().substring(0,name.length) == name.toLowerCase()) {
+					ret.push({name: item.name, value: item.name});
+				}
+				if (ret.length >= 24) break; //capped size or API will throw err
+			}
+			return resolve(ret);
+		});
+}
+
 let getPrice : SCommand = {
 	name: "price",
 	flavor: "runescape",
@@ -92,16 +110,21 @@ let getPrice : SCommand = {
 		.addStringOption(option => 
 			option.setName("item")
 			  .setDescription("The in-game name of the item to price check.")
-			  .setRequired(true)),
+			  .setRequired(true)
+			  .setAutocomplete(true)),
 	async execute(interaction : ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		const item = interaction.options.get("item").value;
 		const price : Object = await wikiItem(String(item));
 		if (price) {
-			interaction.editReply(`Price: ${price["high"]} gp`);
+			return interaction.editReply(`${String(item)}: Instabuy ${price["high"]} gp Instasell ${price["low"]} gp`);
 		} else {
-			interaction.editReply("Item not found.");
+			return interaction.editReply("Item not found.");
 		}
+	},
+	async autocomplete(interaction : AutocompleteInteraction) {
+		const item = interaction.options.get("item").value;
+		return interaction.respond(await searchCacheForPartial(String(item)));
 	}
 }
 

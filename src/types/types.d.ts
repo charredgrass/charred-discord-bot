@@ -16,8 +16,9 @@ export interface SCommand {
 	run?: Function; select?: Function; //backwards compat, DEPRECATED
 	// data: Discord.SlashCommandBuilder,
 	data: any,
-	execute: (interaction: Discord.ChatInputCommandInteraction) => Promise<void>,
+	execute: (interaction: Discord.ChatInputCommandInteraction) => Promise<any>,
 	// execute: (interaction: any) => Promise<void>
+	autocomplete?: (interaction: any) => Promise<void>
 }
 
 //An object that stores logic for loggers.

@@ -102,11 +102,12 @@ function argsplit(message : string) : string[] {
 	return args;
 }
 
-let commands : SCommand[] = [];
+let commands : Discord.Collection<string, SCommand> = new Discord.Collection();
 commands = Commands.cmds;
 let guildCommandList : Object = {};
 const guilds = {
   NASS: "313169519545679872",
+  CLOWNS: "220039870410784768"
 }
 for (const key in guilds) {
   guildCommandList[guilds[key]] = [];
@@ -118,9 +119,11 @@ const nassid = "313169519545679872";
 const rest = new REST({ version: '10' }).setToken(config.discord.key);
 
 function registerCommands() {
-  for (const cmd of commands) {
+  for (const c of commands) {
+    const cmd = c[1]; //the value of the k-v pair
     if (cmd.flavor === "runescape") { //TODO make this a function
       guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+      guildCommandList[guilds.CLOWNS].push(cmd.data.toJSON());
     } else if (cmd.flavor === "test") {
       guildCommandList[guilds.NASS].push(cmd.data.toJSON());
     }
@@ -156,18 +159,29 @@ client.on("ready", () => {
   console.log("Connected and initialized.");
 });
 
+async function handleAutocomplete(interaction : Discord.AutocompleteInteraction) {
+  const cmdName : string = interaction.commandName;
+  let cmd : SCommand = commands.get(cmdName);
+
+  try { 
+    await cmd.autocomplete(interaction);
+  } catch (err) {
+    console.error(err);
+  }
+
+}
+
 client.on("interactionCreate", async (interaction) => {
+  // console.log(interaction);
+  if (interaction.isAutocomplete()) {
+    handleAutocomplete(interaction);
+    return;
+  }
   if (!interaction.isChatInputCommand()) return;
   // console.log(interaction);
 
   const cmdName : string = interaction.commandName;
-  let cmd : SCommand;
-
-  for (let c of commands) {
-    if (c.name === cmdName) { //could cause issues if SlashCommandBuilder does not match this.name
-      cmd = c;
-    }
-  }
+  let cmd : SCommand = commands.get(cmdName);
 
   try {
     await cmd.execute(interaction);
