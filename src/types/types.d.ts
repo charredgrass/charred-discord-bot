@@ -13,10 +13,11 @@ export interface Command {
 export interface SCommand {
 	name: string;
 	flavor: string;
-	run: Function; select: Function; //backwards compat,
-	data: Discord.SlashCommandBuilder,
-	// execute: (interaction: Discord.BaseInteraction) => Promise<void>,
-	execute: (interaction: any) => Promise<void>
+	run?: Function; select?: Function; //backwards compat, DEPRECATED
+	// data: Discord.SlashCommandBuilder,
+	data: any,
+	execute: (interaction: Discord.ChatInputCommandInteraction) => Promise<void>,
+	// execute: (interaction: any) => Promise<void>
 }
 
 //An object that stores logic for loggers.

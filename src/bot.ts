@@ -149,7 +149,9 @@ const rest = new REST({ version: '10' }).setToken(config.discord.key);
 
 function registerCommands() {
   for (const cmd of commands) {
-    if (cmd.flavor === "runescape") {
+    if (cmd.flavor === "runescape") { //TODO make this a function
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+    } else if (cmd.flavor === "test") {
       guildCommandList[guilds.NASS].push(cmd.data.toJSON());
     }
   }
@@ -182,4 +184,26 @@ client.login(config.discord.key).then(() => {
 //Event listener to trigger when bot starts
 client.on("ready", () => {
   console.log("Connected and initialized.");
+});
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+  // console.log(interaction);
+
+  const cmdName : string = interaction.commandName;
+  let cmd : SCommand;
+
+  for (let c of commands) {
+    if (c.name === cmdName) { //could cause issues if SlashCommandBuilder does not match this.name
+      cmd = c;
+    }
+  }
+
+  try {
+    await cmd.execute(interaction);
+  } catch (err){
+    console.error(err);
+    await interaction.reply({content: 'An error occured while executing command.', ephemeral: true});
+  }
+
 });

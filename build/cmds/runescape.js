@@ -19,13 +19,13 @@ const RS_WIKI_IDS = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 const RS_WIKI_PRICES = "https://prices.runescape.wiki/api/v1/osrs/latest";
 let idcacheTime = 0, pricecacheTime = 0;
 const WAIT_TIME = 1000 * 60 * 60 * 6;
-function wikiItem(name, cb) {
-    return __awaiter(this, void 0, void 0, function* () {
+function wikiItem(name) {
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
         yield prepCache();
         yield prepPriceCache();
         let id = searchCacheForId(name);
-        cb(pricecache[id]);
-    });
+        resolve(pricecache[id]);
+    }));
 }
 function prepCache() {
     const promise = new Promise((resolve, reject) => {
@@ -82,23 +82,21 @@ function searchCacheForId(name) {
 let getPrice = {
     name: "price",
     flavor: "runescape",
-    run: (args, message) => {
-        wikiItem(args.slice(1).join(" "), (priceobj) => {
-            if (priceobj) {
-                message.channel.send("Price: " + priceobj["high"] + "gp");
-            }
-            else {
-                message.channel.send("Item not found.");
-            }
-        });
-    },
-    select: (selector) => {
-        return selector.rs;
-    },
-    data: new discord_js_1.SlashCommandBuilder().setName("price").setDescription("nice"),
+    data: new discord_js_1.SlashCommandBuilder().setName("price").setDescription("OSRS Price Checker")
+        .addStringOption(option => option.setName("item")
+        .setDescription("The in-game name of the item to price check.")
+        .setRequired(true)),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield interaction.reply("this is where we do the calculation");
+            yield interaction.deferReply();
+            const item = interaction.options.get("item").value;
+            const price = yield wikiItem(String(item));
+            if (price) {
+                interaction.editReply(`Price: ${price["high"]} gp`);
+            }
+            else {
+                interaction.editReply("Item not found.");
+            }
         });
     }
 };

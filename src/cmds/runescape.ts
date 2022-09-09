@@ -10,7 +10,7 @@ import {
 	callAPI
 } from "../lib/request";
 
-import {SlashCommandBuilder} from "discord.js";
+import {SlashCommandBuilder, ChatInputCommandInteraction} from "discord.js";
 
 const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
@@ -22,17 +22,13 @@ const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/lates
 let idcacheTime : number = 0, pricecacheTime : number = 0;
 const WAIT_TIME : number = 1000 * 60 * 60 * 6; //6hr
 
-
-
-async function wikiItem(name: string, cb: Function) {
-	await prepCache();
-	await prepPriceCache();
-	// console.log(idcache);
-	// console.log(name);
-	let id = searchCacheForId(name);
-	// console.log(id);
-	cb(pricecache[id]);
-
+function wikiItem(name : string) {
+	return new Promise(async (resolve, reject) => {
+		await prepCache();
+		await prepPriceCache();
+		let id = searchCacheForId(name);
+		resolve(pricecache[id]);
+	})
 }
 
 //TODO make this work with async and await. need to make promise version of request.ts
@@ -92,21 +88,20 @@ function searchCacheForId(name : string) : string {
 let getPrice : SCommand = {
 	name: "price",
 	flavor: "runescape",
-	run: (args, message) => {
-		wikiItem(args.slice(1).join(" "), (priceobj : Object) => {
-			if (priceobj) {
-				message.channel.send("Price: " + priceobj["high"] + "gp"); //TODO add commas
-			} else {
-				message.channel.send("Item not found.");
-			}
-		});
-	},
-	select: (selector : Selector) => {
-		return selector.rs;
-	},
-	data: new SlashCommandBuilder().setName("price").setDescription("nice"),
-	async execute(interaction) {
-		await interaction.reply("this is where we do the calculation");
+	data: new SlashCommandBuilder().setName("price").setDescription("OSRS Price Checker")
+		.addStringOption(option => 
+			option.setName("item")
+			  .setDescription("The in-game name of the item to price check.")
+			  .setRequired(true)),
+	async execute(interaction : ChatInputCommandInteraction) {
+		await interaction.deferReply();
+		const item = interaction.options.get("item").value;
+		const price : Object = await wikiItem(String(item));
+		if (price) {
+			interaction.editReply(`Price: ${price["high"]} gp`);
+		} else {
+			interaction.editReply("Item not found.");
+		}
 	}
 }
 

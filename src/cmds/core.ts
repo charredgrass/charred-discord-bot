@@ -11,6 +11,11 @@ import * as rs from './runescape';
 import * as rsc from './runescapecalc';
 import * as tft from './tft';
 
+import {
+	SlashCommandBuilder, 
+	ChatInputCommandInteraction
+ } from "discord.js";
+
 //Example Command
 //name: name of the command. In this case executed using !ping.
 //run: the logic of the command. Executed using ![name] [args]
@@ -23,18 +28,28 @@ import * as tft from './tft';
 //        If the property is true, the message was in that server.
 //        Return true for the command to execute, and false if not.
 //        Example: return selector.dnd; to execute only in DND servers. 
-let ping : Command = {
+// let ping : Command = {
+// 	name: "ping",
+// 	run: (args, message) => {
+// 		message.channel.send("pong");
+// 	},
+// 	select: (selector : Selector) => {
+// 		return true;
+// 	}
+// };
+
+let ping : SCommand = {
 	name: "ping",
-	run: (args, message) => {
-		message.channel.send("pong");
-	},
-	select: (selector : Selector) => {
-		return true;
+	flavor: "test",
+	data: new SlashCommandBuilder().setName("ping").setDescription("test command"),
+	async execute(interaction : ChatInputCommandInteraction) {
+		interaction.reply("pong");
 	}
-};
+}
 
-let oldcmds : Command[] = [ping, /*rs.getPrice,*/ rsc.howDry, rsc.chanceBelow, tft.augprob];
 
-let cmds : SCommand[] = [rs.getPrice];
+let oldcmds : Command[] = [/*ping, rs.getPrice,*/ rsc.howDry, rsc.chanceBelow, tft.augprob];
+
+let cmds : SCommand[] = [ping, rs.getPrice];
 
 export { cmds};

@@ -113,14 +113,17 @@ function registerCommands() {
         if (cmd.flavor === "runescape") {
             guildCommandList[guilds.NASS].push(cmd.data.toJSON());
         }
+        else if (cmd.flavor === "test") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+        }
     }
     for (const g in guildCommandList) {
         let toReg = guildCommandList[g];
         (() => __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(`Started refreshing ${toReg.length} application (/) commands in guildid ${g}`);
+                console.log(`Started refreshing ${toReg.length} application (/) commands in guild ${g}`);
                 const data = yield rest.put(Discord.Routes.applicationGuildCommands(clientid, g), { body: toReg });
-                console.log("Successfully reloaded commands!");
+                console.log(`Successfully reloaded commands for guild ${g}.`);
             }
             catch (err) {
                 console.error(err);
@@ -137,3 +140,21 @@ client.login(config.discord.key).then(() => {
 client.on("ready", () => {
     console.log("Connected and initialized.");
 });
+client.on("interactionCreate", (interaction) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!interaction.isChatInputCommand())
+        return;
+    const cmdName = interaction.commandName;
+    let cmd;
+    for (let c of commands) {
+        if (c.name === cmdName) {
+            cmd = c;
+        }
+    }
+    try {
+        yield cmd.execute(interaction);
+    }
+    catch (err) {
+        console.error(err);
+        yield interaction.reply({ content: 'An error occured while executing command.', ephemeral: true });
+    }
+}));
