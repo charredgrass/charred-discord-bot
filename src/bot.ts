@@ -51,43 +51,43 @@ process.stdin.on("data", (text: string) => {
 
 
 
-function serverSelector(serverID : string) : object {
-	//feel like i should probably rework this to be like
-	// a bit array or something
-  let ret = {
-    atg: false,
-    frz: false,
-    rao: false,
-    dnd: false,
-    dms: false,
-    tst: false,
-    rs:  false,
-  };
-  if (serverID === "167586953061990400") { //RAOCSGO
-    ret.rao = true;
-  } else if (serverID === "276220128822165505") { //AtG
-    ret.atg = true;
-  } else if (serverID === "234382619767341056") { //r/Frozen
-    ret.frz = true;
-  } else if (serverID === "446813545049358336") { //D&D
-    ret.dnd = true;
-  } else if (serverID === "220039870410784768") { //Clowns
-    ret.dnd = true;
-    ret.rs = true;
-  } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
-    ret.atg = true;
-    ret.frz = true;
-    ret.rao = true;
-    ret.dnd = true;
-    ret.tst = true; //test servers
-    ret.rs = true;
-    ret.dms = true;
-  }
-  if (!serverID) {
-    ret.dms = true;
-  }
-  return ret;
-}
+// function serverSelector(serverID : string) : object {
+// 	//feel like i should probably rework this to be like
+// 	// a bit array or something
+//   let ret = {
+//     atg: false,
+//     frz: false,
+//     rao: false,
+//     dnd: false,
+//     dms: false,
+//     tst: false,
+//     rs:  false,
+//   };
+//   if (serverID === "167586953061990400") { //RAOCSGO
+//     ret.rao = true;
+//   } else if (serverID === "276220128822165505") { //AtG
+//     ret.atg = true;
+//   } else if (serverID === "234382619767341056") { //r/Frozen
+//     ret.frz = true;
+//   } else if (serverID === "446813545049358336") { //D&D
+//     ret.dnd = true;
+//   } else if (serverID === "220039870410784768") { //Clowns
+//     ret.dnd = true;
+//     ret.rs = true;
+//   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
+//     ret.atg = true;
+//     ret.frz = true;
+//     ret.rao = true;
+//     ret.dnd = true;
+//     ret.tst = true; //test servers
+//     ret.rs = true;
+//     ret.dms = true;
+//   }
+//   if (!serverID) {
+//     ret.dms = true;
+//   }
+//   return ret;
+// }
 
 //return null if it isn't a command
 function argsplit(message : string) : string[] {
@@ -101,36 +101,6 @@ function argsplit(message : string) : string[] {
 	let args = message.split(" ");
 	return args;
 }
-
-// let commands : Command[] = [];
-// commands = Commands.cmds;
-
-// client.on("messageCreate", (message: Discord.Message) => {
-// 	if (message.author.bot === true) return;
-
-// 	let loc : Discord.TextBasedChannel = message.channel; //change this later
-// 	let msg = message.content;
-
-// 	let server, channelName;
-	
-// 	if (loc.hasOwnProperty("guild")) { //If loc.guild is not null, it is a server (not DMChannel)
-//     	let nloc = loc as ChannelLocation;
-//     	server = nloc.guild.id;
-//     	channelName = nloc.name;
-//   	}
-
-//   	let selector = serverSelector(server);
-//   	let args = argsplit(msg);
-
-//   	if (args) {
-//   		for (let c of commands) {
-//   			if (args[0] == "!" + c.name && c.select(selector)) {
-//   				c.run(args, message);
-//   			}
-//   		}
-//   	}
-
-// });
 
 let commands : SCommand[] = [];
 commands = Commands.cmds;
