@@ -10,9 +10,12 @@ import {
 	callAPI
 } from "../lib/request";
 
-import {SlashCommandBuilder, 
+import {
+	SlashCommandBuilder, 
 	ChatInputCommandInteraction, 
-	AutocompleteInteraction} from "discord.js";
+	AutocompleteInteraction,
+	EmbedBuilder
+} from "discord.js";
 
 const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
@@ -28,8 +31,12 @@ function wikiItem(name : string) {
 	return new Promise(async (resolve, reject) => {
 		await prepCache();
 		await prepPriceCache();
-		let id = searchCacheForId(name);
-		resolve(pricecache[id]);
+		let item = searchCacheForItem(name);
+		let ret = {
+			price: pricecache[item.id],
+			desc: item
+		}
+		resolve(ret);
 	})
 }
 
@@ -78,10 +85,10 @@ function prepPriceCache() : Promise<Object> {
 		return promise;
 }
 
-function searchCacheForId(name : string) : string {
+function searchCacheForItem(name : string) : any {
 	for (let item of idcache) {
 		if (item.name.toLowerCase() == name.toLowerCase()) { //TODO make a better search function
-			return item.id;
+			return item;
 		}
 	}
 	return null;
@@ -103,6 +110,15 @@ async function searchCacheForPartial(name : string) : Promise<any[]> {
 		});
 }
 
+function replaceSpaces(name : string) : string {
+	return name.replace(/ /g, "_");
+}
+
+function formatNum(price: number) : string {
+	//putting this in a function in case I want to set options
+	return price.toLocaleString();
+}
+
 let getPrice : SCommand = {
 	name: "price",
 	flavor: "runescape",
@@ -114,10 +130,18 @@ let getPrice : SCommand = {
 			  .setAutocomplete(true)),
 	async execute(interaction : ChatInputCommandInteraction) {
 		await interaction.deferReply();
-		const item = interaction.options.get("item").value;
-		const price : Object = await wikiItem(String(item));
+		const item : string = String(interaction.options.get("item").value);
+		const result : Object = (await wikiItem(item));
+		const price : Object = result["price"], desc : Object = result["desc"];
 		if (price) {
-			return interaction.editReply(`${String(item)}: Instabuy ${price["high"]} gp Instasell ${price["low"]} gp`);
+			let embed : EmbedBuilder = new EmbedBuilder().setTitle(item).addFields(
+					{name: "Buy price", value: `${formatNum(price["high"])} gp`},
+					{name: "Sell price", value: `${formatNum(price["low"])} gp`}
+				);
+			if (desc["icon"]){
+				embed = embed.setThumbnail(`https://oldschool.runescape.wiki/images/${replaceSpaces(desc["icon"])}`)
+			}
+			return interaction.editReply({embeds: [embed]});
 		} else {
 			return interaction.editReply("Item not found.");
 		}
