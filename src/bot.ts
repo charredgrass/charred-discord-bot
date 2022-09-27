@@ -124,6 +124,8 @@ function registerCommands() {
     if (cmd.flavor === "runescape") { //TODO make this a function
       guildCommandList[guilds.NASS].push(cmd.data.toJSON());
       guildCommandList[guilds.CLOWNS].push(cmd.data.toJSON());
+    } else if (cmd.flavor === "genshin") {
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
     } else if (cmd.flavor === "test") {
       guildCommandList[guilds.NASS].push(cmd.data.toJSON());
     }
