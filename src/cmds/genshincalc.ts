@@ -16,6 +16,8 @@ import {
 
 const HARDPITY = 90;
 
+//this doesnt seem right
+
 //probability mass function obtained from 
 //https://www.reddit.com/r/Genshin_Impact/comments/rtqdl2/guide_how_many_wishes_you_should_save/
 //Given a banner with Pr(any 5-star) = p, pmf is defined as Pr(getting the 5-star in exactly n)
@@ -52,6 +54,8 @@ function pullcmf(n, p) {
 			sum += pullpmf(i, p);
 		}
 		return sum;
+	} else {
+		return 1;
 	}
 }
 

@@ -23,8 +23,12 @@ function wikiItem(name) {
     return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
         yield prepCache();
         yield prepPriceCache();
-        let id = searchCacheForId(name);
-        resolve(pricecache[id]);
+        let item = searchCacheForItem(name);
+        let ret = {
+            price: pricecache[item.id],
+            desc: item
+        };
+        resolve(ret);
     }));
 }
 function prepCache() {
@@ -71,13 +75,38 @@ function prepPriceCache() {
     });
     return promise;
 }
-function searchCacheForId(name) {
+function searchCacheForItem(name) {
     for (let item of idcache) {
         if (item.name.toLowerCase() == name.toLowerCase()) {
-            return item.id;
+            return item;
         }
     }
     return null;
+}
+function searchCacheForPartial(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            yield prepCache();
+            yield prepPriceCache();
+            const ret = [];
+            if (name.length == 0)
+                return resolve(ret);
+            for (let item of idcache) {
+                if (item.name.toLowerCase().substring(0, name.length) == name.toLowerCase()) {
+                    ret.push({ name: item.name, value: item.name });
+                }
+                if (ret.length >= 24)
+                    break;
+            }
+            return resolve(ret);
+        }));
+    });
+}
+function replaceSpaces(name) {
+    return name.replace(/ /g, "_");
+}
+function formatNum(price) {
+    return price.toLocaleString();
 }
 let getPrice = {
     name: "price",
@@ -85,18 +114,30 @@ let getPrice = {
     data: new discord_js_1.SlashCommandBuilder().setName("price").setDescription("OSRS Price Checker")
         .addStringOption(option => option.setName("item")
         .setDescription("The in-game name of the item to price check.")
-        .setRequired(true)),
+        .setRequired(true)
+        .setAutocomplete(true)),
     execute(interaction) {
         return __awaiter(this, void 0, void 0, function* () {
             yield interaction.deferReply();
-            const item = interaction.options.get("item").value;
-            const price = yield wikiItem(String(item));
+            const item = String(interaction.options.get("item").value);
+            const result = (yield wikiItem(item));
+            const price = result["price"], desc = result["desc"];
             if (price) {
-                interaction.editReply(`Price: ${price["high"]} gp`);
+                let embed = new discord_js_1.EmbedBuilder().setTitle(item).addFields({ name: "Buy price", value: `${formatNum(price["high"])} gp` }, { name: "Sell price", value: `${formatNum(price["low"])} gp` });
+                if (desc["icon"]) {
+                    embed = embed.setThumbnail(`https://oldschool.runescape.wiki/images/${replaceSpaces(desc["icon"])}`);
+                }
+                return interaction.editReply({ embeds: [embed] });
             }
             else {
-                interaction.editReply("Item not found.");
+                return interaction.editReply("Item not found.");
             }
+        });
+    },
+    autocomplete(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const item = interaction.options.get("item").value;
+            return interaction.respond(yield searchCacheForPartial(String(item)));
         });
     }
 };

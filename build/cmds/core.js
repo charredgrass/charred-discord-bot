@@ -13,6 +13,7 @@ exports.cmds = void 0;
 const rs = require("./runescape");
 const rsc = require("./runescapecalc");
 const tft = require("./tft");
+const genshin = require("./genshincalc");
 const discord_js_1 = require("discord.js");
 let ping = {
     name: "ping",
@@ -25,5 +26,9 @@ let ping = {
     }
 };
 let oldcmds = [rsc.howDry, rsc.chanceBelow, tft.augprob];
-let cmds = [ping, rs.getPrice];
+let scmds = [ping, rs.getPrice, genshin.chanceHit];
+let cmds = new discord_js_1.Collection();
 exports.cmds = cmds;
+for (let sc of scmds) {
+    cmds.set(sc.name, sc);
+}

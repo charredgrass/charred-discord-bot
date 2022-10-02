@@ -46,46 +46,6 @@ process.stdin.on("data", (text) => {
         console.log("Unknown command. Type `help` for help.");
     }
 });
-function serverSelector(serverID) {
-    let ret = {
-        atg: false,
-        frz: false,
-        rao: false,
-        dnd: false,
-        dms: false,
-        tst: false,
-        rs: false,
-    };
-    if (serverID === "167586953061990400") {
-        ret.rao = true;
-    }
-    else if (serverID === "276220128822165505") {
-        ret.atg = true;
-    }
-    else if (serverID === "234382619767341056") {
-        ret.frz = true;
-    }
-    else if (serverID === "446813545049358336") {
-        ret.dnd = true;
-    }
-    else if (serverID === "220039870410784768") {
-        ret.dnd = true;
-        ret.rs = true;
-    }
-    else if (serverID === "313169519545679872" || !serverID) {
-        ret.atg = true;
-        ret.frz = true;
-        ret.rao = true;
-        ret.dnd = true;
-        ret.tst = true;
-        ret.rs = true;
-        ret.dms = true;
-    }
-    if (!serverID) {
-        ret.dms = true;
-    }
-    return ret;
-}
 function argsplit(message) {
     message = message.toString();
     let p = message.search(/^\s*!(\w).*/);
@@ -96,11 +56,12 @@ function argsplit(message) {
     let args = message.split(" ");
     return args;
 }
-let commands = [];
+let commands = new Discord.Collection();
 commands = Commands.cmds;
 let guildCommandList = {};
 const guilds = {
     NASS: "313169519545679872",
+    CLOWNS: "220039870410784768"
 };
 for (const key in guilds) {
     guildCommandList[guilds[key]] = [];
@@ -109,8 +70,13 @@ const clientid = config.discord.clientid;
 const nassid = "313169519545679872";
 const rest = new rest_1.REST({ version: '10' }).setToken(config.discord.key);
 function registerCommands() {
-    for (const cmd of commands) {
+    for (const c of commands) {
+        const cmd = c[1];
         if (cmd.flavor === "runescape") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+            guildCommandList[guilds.CLOWNS].push(cmd.data.toJSON());
+        }
+        else if (cmd.flavor === "genshin") {
             guildCommandList[guilds.NASS].push(cmd.data.toJSON());
         }
         else if (cmd.flavor === "test") {
@@ -140,16 +106,27 @@ client.login(config.discord.key).then(() => {
 client.on("ready", () => {
     console.log("Connected and initialized.");
 });
+function handleAutocomplete(interaction) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const cmdName = interaction.commandName;
+        let cmd = commands.get(cmdName);
+        try {
+            yield cmd.autocomplete(interaction);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    });
+}
 client.on("interactionCreate", (interaction) => __awaiter(void 0, void 0, void 0, function* () {
+    if (interaction.isAutocomplete()) {
+        handleAutocomplete(interaction);
+        return;
+    }
     if (!interaction.isChatInputCommand())
         return;
     const cmdName = interaction.commandName;
-    let cmd;
-    for (let c of commands) {
-        if (c.name === cmdName) {
-            cmd = c;
-        }
-    }
+    let cmd = commands.get(cmdName);
     try {
         yield cmd.execute(interaction);
     }
