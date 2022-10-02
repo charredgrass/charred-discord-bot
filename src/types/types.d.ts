@@ -1,11 +1,24 @@
 import * as Discord from 'discord.js';
 
+//DEPRECATED use SCommand
 //An object that stores the logic for executing a command.
 //Example commands available in /src/cmds/core.ts
 export interface Command {
 	name: string;
-	run: (args: string[], msg: Discord.Message) => any;
+	run: (args: string[], msg: Discord.Message) => any; 
 	select: (selector: Object) => boolean;
+}
+
+//new template for slash commands
+export interface SCommand {
+	name: string;
+	flavor: string;
+	run?: Function; select?: Function; //backwards compat, DEPRECATED
+	// data: Discord.SlashCommandBuilder,
+	data: any,
+	execute: (interaction: Discord.ChatInputCommandInteraction) => Promise<any>,
+	// execute: (interaction: any) => Promise<void>
+	autocomplete?: (interaction: any) => Promise<void>
 }
 
 //An object that stores logic for loggers.
@@ -16,6 +29,7 @@ export interface Logger {
 	select: (selector: Object) => boolean;
 }
 
+//DEPRECATED with slash commands.
 export interface Selector {
 	atg: boolean;
 	frz: boolean;

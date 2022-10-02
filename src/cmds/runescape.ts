@@ -2,12 +2,20 @@ import {
 	Command, 
 	MessageLocation, 
 	ChannelLocation,
-	Selector
+	Selector,
+	SCommand
 } from "../types/types";
 
 import {
 	callAPI
-} from "../lib/request"
+} from "../lib/request";
+
+import {
+	SlashCommandBuilder, 
+	ChatInputCommandInteraction, 
+	AutocompleteInteraction,
+	EmbedBuilder
+} from "discord.js";
 
 const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
@@ -19,17 +27,17 @@ const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/lates
 let idcacheTime : number = 0, pricecacheTime : number = 0;
 const WAIT_TIME : number = 1000 * 60 * 60 * 6; //6hr
 
-
-
-async function wikiItem(name: string, cb: Function) {
-	await prepCache();
-	await prepPriceCache();
-	// console.log(idcache);
-	// console.log(name);
-	let id = searchCacheForId(name);
-	// console.log(id);
-	cb(pricecache[id]);
-
+function wikiItem(name : string) {
+	return new Promise(async (resolve, reject) => {
+		await prepCache();
+		await prepPriceCache();
+		let item = searchCacheForItem(name);
+		let ret = {
+			price: pricecache[item.id],
+			desc: item
+		}
+		resolve(ret);
+	})
 }
 
 //TODO make this work with async and await. need to make promise version of request.ts
@@ -77,29 +85,70 @@ function prepPriceCache() : Promise<Object> {
 		return promise;
 }
 
-function searchCacheForId(name : string) : string {
+function searchCacheForItem(name : string) : any {
 	for (let item of idcache) {
 		if (item.name.toLowerCase() == name.toLowerCase()) { //TODO make a better search function
-			return item.id;
+			return item;
 		}
 	}
 	return null;
 }
 
-let getPrice : Command = {
-	name: "price",
-	run: (args, message) => {
-		wikiItem(args.slice(1).join(" "), (priceobj : Object) => {
-			if (priceobj) {
-				message.channel.send("Price: " + priceobj["high"] + "gp"); //TODO add commas
-			} else {
-				message.channel.send("Item not found.");
+async function searchCacheForPartial(name : string) : Promise<any[]> {
+	return new Promise(async (resolve, reject) => {
+			await prepCache();
+			await prepPriceCache();
+			const ret : any[] = [];
+			if (name.length == 0) return resolve(ret);
+			for (let item of idcache) {
+				if (item.name.toLowerCase().substring(0,name.length) == name.toLowerCase()) {
+					ret.push({name: item.name, value: item.name});
+				}
+				if (ret.length >= 24) break; //capped size or API will throw err
 			}
-			
+			return resolve(ret);
 		});
+}
+
+function replaceSpaces(name : string) : string {
+	return name.replace(/ /g, "_");
+}
+
+function formatNum(price: number) : string {
+	//putting this in a function in case I want to set options
+	return price.toLocaleString();
+}
+
+let getPrice : SCommand = {
+	name: "price",
+	flavor: "runescape",
+	data: new SlashCommandBuilder().setName("price").setDescription("OSRS Price Checker")
+		.addStringOption(option => 
+			option.setName("item")
+			  .setDescription("The in-game name of the item to price check.")
+			  .setRequired(true)
+			  .setAutocomplete(true)),
+	async execute(interaction : ChatInputCommandInteraction) {
+		await interaction.deferReply();
+		const item : string = String(interaction.options.get("item").value);
+		const result : Object = (await wikiItem(item));
+		const price : Object = result["price"], desc : Object = result["desc"];
+		if (price) {
+			let embed : EmbedBuilder = new EmbedBuilder().setTitle(item).addFields(
+					{name: "Buy price", value: `${formatNum(price["high"])} gp`},
+					{name: "Sell price", value: `${formatNum(price["low"])} gp`}
+				);
+			if (desc["icon"]){
+				embed = embed.setThumbnail(`https://oldschool.runescape.wiki/images/${replaceSpaces(desc["icon"])}`)
+			}
+			return interaction.editReply({embeds: [embed]});
+		} else {
+			return interaction.editReply("Item not found.");
+		}
 	},
-	select: (selector : Selector) => {
-		return selector.rs;
+	async autocomplete(interaction : AutocompleteInteraction) {
+		const item = interaction.options.get("item").value;
+		return interaction.respond(await searchCacheForPartial(String(item)));
 	}
 }
 

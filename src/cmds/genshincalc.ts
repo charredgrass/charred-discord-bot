@@ -1,13 +1,22 @@
 import {
 	Command, 
-	Selector
+	Selector,
+	SCommand
 } from "../types/types";
 
 import {
 	binompdf
 } from "../lib/statmath";
 
+import {
+	SlashCommandBuilder, 
+	EmbedBuilder,
+	ChatInputCommandInteraction
+} from "discord.js";
+
 const HARDPITY = 90;
+
+//this doesnt seem right
 
 //probability mass function obtained from 
 //https://www.reddit.com/r/Genshin_Impact/comments/rtqdl2/guide_how_many_wishes_you_should_save/
@@ -45,6 +54,8 @@ function pullcmf(n, p) {
 			sum += pullpmf(i, p);
 		}
 		return sum;
+	} else {
+		return 1;
 	}
 }
 
@@ -63,3 +74,25 @@ let chanceIn : Command = {
 		return selector.dms;
 	}
 }
+
+let chanceHit : SCommand = {
+	name: "chancehit",
+	flavor: "genshin",
+	data: new SlashCommandBuilder().setName("chancehit").setDescription("Chance to hit your Genshin 5 star.")
+		.addIntegerOption(option =>
+			option.setName("pulls")
+			.setDescription("Number of pulls to attempt")
+			.setRequired(true))
+		.addIntegerOption(option =>
+			option.setName("currentpity")
+			.setDescription("Current pity")
+			.setRequired(false)),
+	async execute(interaction: ChatInputCommandInteraction) {
+		await interaction.deferReply();
+		const pulls : number = Number(interaction.options.get("pulls").value);
+		const pity : number = Number(interaction.options.get("currentpity").value || 0);
+		return interaction.editReply(`${pulls} ${pity}`);
+	}
+}
+
+export {chanceHit};

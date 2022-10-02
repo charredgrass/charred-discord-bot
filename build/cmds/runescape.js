@@ -8,73 +8,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPrice = void 0;
-var request_1 = require("../lib/request");
-var RS_GE = "http://services.runescape.com/m=itemdb_oldschool";
-var itemcache = {};
-var idcache = null, pricecache = null;
-var RS_WIKI_IDS = "https://prices.runescape.wiki/api/v1/osrs/mapping";
-var RS_WIKI_PRICES = "https://prices.runescape.wiki/api/v1/osrs/latest";
-var idcacheTime = 0, pricecacheTime = 0;
-var WAIT_TIME = 1000 * 60 * 60 * 6;
-function wikiItem(name, cb) {
-    return __awaiter(this, void 0, void 0, function () {
-        var id;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4, prepCache()];
-                case 1:
-                    _a.sent();
-                    return [4, prepPriceCache()];
-                case 2:
-                    _a.sent();
-                    id = searchCacheForId(name);
-                    cb(pricecache[id]);
-                    return [2];
-            }
-        });
-    });
+const request_1 = require("../lib/request");
+const discord_js_1 = require("discord.js");
+const RS_GE = "http://services.runescape.com/m=itemdb_oldschool";
+let itemcache = {};
+let idcache = null, pricecache = null;
+const RS_WIKI_IDS = "https://prices.runescape.wiki/api/v1/osrs/mapping";
+const RS_WIKI_PRICES = "https://prices.runescape.wiki/api/v1/osrs/latest";
+let idcacheTime = 0, pricecacheTime = 0;
+const WAIT_TIME = 1000 * 60 * 60 * 6;
+function wikiItem(name) {
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        yield prepCache();
+        yield prepPriceCache();
+        let item = searchCacheForItem(name);
+        let ret = {
+            price: pricecache[item.id],
+            desc: item
+        };
+        resolve(ret);
+    }));
 }
 function prepCache() {
-    var promise = new Promise(function (resolve, reject) {
+    const promise = new Promise((resolve, reject) => {
         if (!idcache && idcacheTime + WAIT_TIME < Date.now()) {
-            request_1.callAPI(RS_WIKI_IDS, function (e, r, body) {
+            (0, request_1.callAPI)(RS_WIKI_IDS, (e, r, body) => {
                 if (e) {
                     return reject(e);
                 }
-                var respjson = JSON.parse(body);
+                let respjson = JSON.parse(body);
                 idcache = respjson;
                 resolve(idcache);
                 idcacheTime = Date.now();
-            }, function (err) {
+            }, (err) => {
                 console.log(err);
                 reject(err);
             });
@@ -86,17 +54,17 @@ function prepCache() {
     return promise;
 }
 function prepPriceCache() {
-    var promise = new Promise(function (resolve, reject) {
+    const promise = new Promise((resolve, reject) => {
         if (!pricecache && pricecacheTime + WAIT_TIME < Date.now()) {
-            request_1.callAPI(RS_WIKI_PRICES, function (e, r, body) {
+            (0, request_1.callAPI)(RS_WIKI_PRICES, (e, r, body) => {
                 if (e) {
                     return reject(e);
                 }
-                var respjson = JSON.parse(body).data;
+                let respjson = JSON.parse(body).data;
                 pricecache = respjson;
                 resolve(pricecache);
                 pricecacheTime = Date.now();
-            }, function (err) {
+            }, (err) => {
                 console.log(err);
                 reject(err);
             });
@@ -107,29 +75,70 @@ function prepPriceCache() {
     });
     return promise;
 }
-function searchCacheForId(name) {
-    for (var _i = 0, idcache_1 = idcache; _i < idcache_1.length; _i++) {
-        var item = idcache_1[_i];
+function searchCacheForItem(name) {
+    for (let item of idcache) {
         if (item.name.toLowerCase() == name.toLowerCase()) {
-            return item.id;
+            return item;
         }
     }
     return null;
 }
-var getPrice = {
+function searchCacheForPartial(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            yield prepCache();
+            yield prepPriceCache();
+            const ret = [];
+            if (name.length == 0)
+                return resolve(ret);
+            for (let item of idcache) {
+                if (item.name.toLowerCase().substring(0, name.length) == name.toLowerCase()) {
+                    ret.push({ name: item.name, value: item.name });
+                }
+                if (ret.length >= 24)
+                    break;
+            }
+            return resolve(ret);
+        }));
+    });
+}
+function replaceSpaces(name) {
+    return name.replace(/ /g, "_");
+}
+function formatNum(price) {
+    return price.toLocaleString();
+}
+let getPrice = {
     name: "price",
-    run: function (args, message) {
-        wikiItem(args.slice(1).join(" "), function (priceobj) {
-            if (priceobj) {
-                message.channel.send("Price: " + priceobj["high"] + "gp");
+    flavor: "runescape",
+    data: new discord_js_1.SlashCommandBuilder().setName("price").setDescription("OSRS Price Checker")
+        .addStringOption(option => option.setName("item")
+        .setDescription("The in-game name of the item to price check.")
+        .setRequired(true)
+        .setAutocomplete(true)),
+    execute(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield interaction.deferReply();
+            const item = String(interaction.options.get("item").value);
+            const result = (yield wikiItem(item));
+            const price = result["price"], desc = result["desc"];
+            if (price) {
+                let embed = new discord_js_1.EmbedBuilder().setTitle(item).addFields({ name: "Buy price", value: `${formatNum(price["high"])} gp` }, { name: "Sell price", value: `${formatNum(price["low"])} gp` });
+                if (desc["icon"]) {
+                    embed = embed.setThumbnail(`https://oldschool.runescape.wiki/images/${replaceSpaces(desc["icon"])}`);
+                }
+                return interaction.editReply({ embeds: [embed] });
             }
             else {
-                message.channel.send("Item not found.");
+                return interaction.editReply("Item not found.");
             }
         });
     },
-    select: function (selector) {
-        return selector.rs;
+    autocomplete(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const item = interaction.options.get("item").value;
+            return interaction.respond(yield searchCacheForPartial(String(item)));
+        });
     }
 };
 exports.getPrice = getPrice;

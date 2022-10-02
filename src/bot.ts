@@ -1,19 +1,18 @@
 //Importing node.js modules
 import * as Discord from 'discord.js';
+import { REST } from '@discordjs/rest';
 const fs = require("fs");
 
 //import my stuff
 import {
-	Command, 
+	SCommand, 
 	MessageLocation, 
 	ChannelLocation
 } from "./types/types";
 import * as Commands from './cmds/core';
 
-const intents = new Discord.Intents();
-intents.add(Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGES);
-
-const client = new Discord.Client({ intents });
+const intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const client = new Discord.Client({intents});
 
 let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -31,6 +30,10 @@ const consoleCommands = {
   "stop": () => {
     process.exit(0);
     return "Stopping";
+  },
+  "register": () => {
+    registerCommands();
+    return "Process completed."
   }
 };
 process.stdin.on("data", (text: string) => {
@@ -46,43 +49,45 @@ process.stdin.on("data", (text: string) => {
   }
 });
 
-function serverSelector(serverID : string) : object {
-	//feel like i should probably rework this to be like
-	// a bit array or something
-  let ret = {
-    atg: false,
-    frz: false,
-    rao: false,
-    dnd: false,
-    dms: false,
-    tst: false,
-    rs:  false,
-  };
-  if (serverID === "167586953061990400") { //RAOCSGO
-    ret.rao = true;
-  } else if (serverID === "276220128822165505") { //AtG
-    ret.atg = true;
-  } else if (serverID === "234382619767341056") { //r/Frozen
-    ret.frz = true;
-  } else if (serverID === "446813545049358336") { //D&D
-    ret.dnd = true;
-  } else if (serverID === "220039870410784768") { //Clowns
-    ret.dnd = true;
-    ret.rs = true;
-  } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
-    ret.atg = true;
-    ret.frz = true;
-    ret.rao = true;
-    ret.dnd = true;
-    ret.tst = true; //test servers
-    ret.rs = true;
-    ret.dms = true;
-  }
-  if (!serverID) {
-    ret.dms = true;
-  }
-  return ret;
-}
+
+
+// function serverSelector(serverID : string) : object {
+// 	//feel like i should probably rework this to be like
+// 	// a bit array or something
+//   let ret = {
+//     atg: false,
+//     frz: false,
+//     rao: false,
+//     dnd: false,
+//     dms: false,
+//     tst: false,
+//     rs:  false,
+//   };
+//   if (serverID === "167586953061990400") { //RAOCSGO
+//     ret.rao = true;
+//   } else if (serverID === "276220128822165505") { //AtG
+//     ret.atg = true;
+//   } else if (serverID === "234382619767341056") { //r/Frozen
+//     ret.frz = true;
+//   } else if (serverID === "446813545049358336") { //D&D
+//     ret.dnd = true;
+//   } else if (serverID === "220039870410784768") { //Clowns
+//     ret.dnd = true;
+//     ret.rs = true;
+//   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
+//     ret.atg = true;
+//     ret.frz = true;
+//     ret.rao = true;
+//     ret.dnd = true;
+//     ret.tst = true; //test servers
+//     ret.rs = true;
+//     ret.dms = true;
+//   }
+//   if (!serverID) {
+//     ret.dms = true;
+//   }
+//   return ret;
+// }
 
 //return null if it isn't a command
 function argsplit(message : string) : string[] {
@@ -97,35 +102,52 @@ function argsplit(message : string) : string[] {
 	return args;
 }
 
-let commands : Command[] = [];
+let commands : Discord.Collection<string, SCommand> = new Discord.Collection();
 commands = Commands.cmds;
+let guildCommandList : Object = {};
+const guilds = {
+  NASS: "313169519545679872",
+  CLOWNS: "220039870410784768"
+}
+for (const key in guilds) {
+  guildCommandList[guilds[key]] = [];
+}
 
-client.on("messageCreate", (message: Discord.Message) => {
-	if (message.author.bot === true) return;
+const clientid = config.discord.clientid;
+const nassid = "313169519545679872";
 
-	let loc : Discord.TextBasedChannels = message.channel; //change this later
-	let msg = message.content;
+const rest = new REST({ version: '10' }).setToken(config.discord.key);
 
-	let server, channelName;
-	
-	if (loc.hasOwnProperty("guild")) { //If loc.guild is not null, it is a server (not DMChannel)
-    	let nloc = loc as ChannelLocation;
-    	server = nloc.guild.id;
-    	channelName = nloc.name;
-  	}
+function registerCommands() {
+  for (const c of commands) {
+    const cmd = c[1]; //the value of the k-v pair
+    if (cmd.flavor === "runescape") { //TODO make this a function
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+      guildCommandList[guilds.CLOWNS].push(cmd.data.toJSON());
+    } else if (cmd.flavor === "genshin") {
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+    } else if (cmd.flavor === "test") {
+      guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+    }
+  }
+  for (const g in guildCommandList) {
+    let toReg = guildCommandList[g];
+    (async () => {
+      try {
+        console.log(`Started refreshing ${toReg.length} application (/) commands in guild ${g}`);
+        const data = await rest.put(
+          Discord.Routes.applicationGuildCommands(clientid, g),
+          {body: toReg}
+        );
 
-  	let selector = serverSelector(server);
-  	let args = argsplit(msg);
+        console.log(`Successfully reloaded commands for guild ${g}.`);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }
+}
 
-  	if (args) {
-  		for (let c of commands) {
-  			if (args[0] == "!" + c.name && c.select(selector)) {
-  				c.run(args, message);
-  			}
-  		}
-  	}
-
-});
 
 client.login(config.discord.key).then(() => {
   console.log("Successfully logged in.")
@@ -137,4 +159,37 @@ client.login(config.discord.key).then(() => {
 //Event listener to trigger when bot starts
 client.on("ready", () => {
   console.log("Connected and initialized.");
+});
+
+async function handleAutocomplete(interaction : Discord.AutocompleteInteraction) {
+  const cmdName : string = interaction.commandName;
+  let cmd : SCommand = commands.get(cmdName);
+
+  try { 
+    await cmd.autocomplete(interaction);
+  } catch (err) {
+    console.error(err);
+  }
+
+}
+
+client.on("interactionCreate", async (interaction) => {
+  // console.log(interaction);
+  if (interaction.isAutocomplete()) {
+    handleAutocomplete(interaction);
+    return;
+  }
+  if (!interaction.isChatInputCommand()) return;
+  // console.log(interaction);
+
+  const cmdName : string = interaction.commandName;
+  let cmd : SCommand = commands.get(cmdName);
+
+  try {
+    await cmd.execute(interaction);
+  } catch (err){
+    console.error(err);
+    await interaction.reply({content: 'An error occured while executing command.', ephemeral: true});
+  }
+
 });

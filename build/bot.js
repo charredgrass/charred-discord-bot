@@ -1,118 +1,137 @@
 "use strict";
-exports.__esModule = true;
-var Discord = require("discord.js");
-var fs = require("fs");
-var Commands = require("./cmds/core");
-var intents = new Discord.Intents();
-intents.add(Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.DIRECT_MESSAGES);
-var client = new Discord.Client({ intents: intents });
-var config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Discord = require("discord.js");
+const rest_1 = require("@discordjs/rest");
+const fs = require("fs");
+const Commands = require("./cmds/core");
+const intents = [Discord.GatewayIntentBits.Guilds, Discord.GatewayIntentBits.GuildMessages, Discord.GatewayIntentBits.DirectMessages];
+const client = new Discord.Client({ intents });
+let config = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 process.stdin.setEncoding("utf8");
-var consoleCommands = {
-    "reload": function () {
+const consoleCommands = {
+    "reload": () => {
         return "Reloaded.";
     },
-    "test": function () {
+    "test": () => {
         return "";
     },
-    "stop": function () {
+    "stop": () => {
         process.exit(0);
         return "Stopping";
+    },
+    "register": () => {
+        registerCommands();
+        return "Process completed.";
     }
 };
-process.stdin.on("data", function (text) {
+process.stdin.on("data", (text) => {
     text = text.replace(/[\n\r\t]/g, "").replace(/ {2+}/g, " ");
-    var args = text.split(" ");
-    var command = args[0].toLowerCase();
-    var echoed;
+    let args = text.split(" ");
+    let command = args[0].toLowerCase();
+    let echoed;
     if (consoleCommands.hasOwnProperty(command) === true) {
-        echoed = consoleCommands[command].apply(consoleCommands, args);
+        echoed = consoleCommands[command](...args);
         console.log(echoed);
     }
     else {
         console.log("Unknown command. Type `help` for help.");
     }
 });
-function serverSelector(serverID) {
-    var ret = {
-        atg: false,
-        frz: false,
-        rao: false,
-        dnd: false,
-        dms: false,
-        tst: false,
-        rs: false
-    };
-    if (serverID === "167586953061990400") {
-        ret.rao = true;
-    }
-    else if (serverID === "276220128822165505") {
-        ret.atg = true;
-    }
-    else if (serverID === "234382619767341056") {
-        ret.frz = true;
-    }
-    else if (serverID === "446813545049358336") {
-        ret.dnd = true;
-    }
-    else if (serverID === "220039870410784768") {
-        ret.dnd = true;
-        ret.rs = true;
-    }
-    else if (serverID === "313169519545679872" || !serverID) {
-        ret.atg = true;
-        ret.frz = true;
-        ret.rao = true;
-        ret.dnd = true;
-        ret.tst = true;
-        ret.rs = true;
-        ret.dms = true;
-    }
-    if (!serverID) {
-        ret.dms = true;
-    }
-    return ret;
-}
 function argsplit(message) {
     message = message.toString();
-    var p = message.search(/^\s*!(\w).*/);
+    let p = message.search(/^\s*!(\w).*/);
     if (p < 0) {
         return null;
     }
     message = message.replace(/^\s*/, "").replace(/\s+/g, " ");
-    var args = message.split(" ");
+    let args = message.split(" ");
     return args;
 }
-var commands = [];
+let commands = new Discord.Collection();
 commands = Commands.cmds;
-client.on("messageCreate", function (message) {
-    if (message.author.bot === true)
-        return;
-    var loc = message.channel;
-    var msg = message.content;
-    var server, channelName;
-    if (loc.hasOwnProperty("guild")) {
-        var nloc = loc;
-        server = nloc.guild.id;
-        channelName = nloc.name;
-    }
-    var selector = serverSelector(server);
-    var args = argsplit(msg);
-    if (args) {
-        for (var _i = 0, commands_1 = commands; _i < commands_1.length; _i++) {
-            var c = commands_1[_i];
-            if (args[0] == "!" + c.name && c.select(selector)) {
-                c.run(args, message);
-            }
+let guildCommandList = {};
+const guilds = {
+    NASS: "313169519545679872",
+    CLOWNS: "220039870410784768"
+};
+for (const key in guilds) {
+    guildCommandList[guilds[key]] = [];
+}
+const clientid = config.discord.clientid;
+const nassid = "313169519545679872";
+const rest = new rest_1.REST({ version: '10' }).setToken(config.discord.key);
+function registerCommands() {
+    for (const c of commands) {
+        const cmd = c[1];
+        if (cmd.flavor === "runescape") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+            guildCommandList[guilds.CLOWNS].push(cmd.data.toJSON());
+        }
+        else if (cmd.flavor === "genshin") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
+        }
+        else if (cmd.flavor === "test") {
+            guildCommandList[guilds.NASS].push(cmd.data.toJSON());
         }
     }
-});
-client.login(config.discord.key).then(function () {
+    for (const g in guildCommandList) {
+        let toReg = guildCommandList[g];
+        (() => __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(`Started refreshing ${toReg.length} application (/) commands in guild ${g}`);
+                const data = yield rest.put(Discord.Routes.applicationGuildCommands(clientid, g), { body: toReg });
+                console.log(`Successfully reloaded commands for guild ${g}.`);
+            }
+            catch (err) {
+                console.error(err);
+            }
+        }))();
+    }
+}
+client.login(config.discord.key).then(() => {
     console.log("Successfully logged in.");
-})["catch"](function (e) {
+}).catch((e) => {
     console.log("Error logging in:");
     console.log(e);
 });
-client.on("ready", function () {
+client.on("ready", () => {
     console.log("Connected and initialized.");
 });
+function handleAutocomplete(interaction) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const cmdName = interaction.commandName;
+        let cmd = commands.get(cmdName);
+        try {
+            yield cmd.autocomplete(interaction);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    });
+}
+client.on("interactionCreate", (interaction) => __awaiter(void 0, void 0, void 0, function* () {
+    if (interaction.isAutocomplete()) {
+        handleAutocomplete(interaction);
+        return;
+    }
+    if (!interaction.isChatInputCommand())
+        return;
+    const cmdName = interaction.commandName;
+    let cmd = commands.get(cmdName);
+    try {
+        yield cmd.execute(interaction);
+    }
+    catch (err) {
+        console.error(err);
+        yield interaction.reply({ content: 'An error occured while executing command.', ephemeral: true });
+    }
+}));

@@ -1,7 +1,7 @@
 function getopt(args) {
-    var fflags = {}, flags = {}, plainargs = [];
-    var pflag;
-    for (var i = 1; i < args.length; i++) {
+    let fflags = {}, flags = {}, plainargs = [];
+    let pflag;
+    for (let i = 1; i < args.length; i++) {
         if (args[i].match(/^-[a-zA-Z0-9]$/)) {
             if (pflag) {
                 return [{}, {}, []];

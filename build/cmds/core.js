@@ -1,28 +1,34 @@
 "use strict";
-exports.__esModule = true;
-exports.logs = exports.cmds = void 0;
-var rs = require("./runescape");
-var rsc = require("./runescapecalc");
-var tft = require("./tft");
-var ping = {
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cmds = void 0;
+const rs = require("./runescape");
+const rsc = require("./runescapecalc");
+const tft = require("./tft");
+const genshin = require("./genshincalc");
+const discord_js_1 = require("discord.js");
+let ping = {
     name: "ping",
-    run: function (args, message) {
-        message.channel.send("pong");
-    },
-    select: function (selector) {
-        return true;
+    flavor: "test",
+    data: new discord_js_1.SlashCommandBuilder().setName("ping").setDescription("test command"),
+    execute(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            interaction.reply("pong");
+        });
     }
 };
-var cmds = [ping, rs.getPrice, rsc.howDry, rsc.chanceBelow, tft.augprob];
+let oldcmds = [rsc.howDry, rsc.chanceBelow, tft.augprob];
+let scmds = [ping, rs.getPrice, genshin.chanceHit];
+let cmds = new discord_js_1.Collection();
 exports.cmds = cmds;
-var logData = {
-    name: "logger",
-    file: "./logs/chat.log",
-    run: function (message) {
-    },
-    select: function (selector) {
-        return selector.tst;
-    }
-};
-var logs = [logData];
-exports.logs = logs;
+for (let sc of scmds) {
+    cmds.set(sc.name, sc);
+}
