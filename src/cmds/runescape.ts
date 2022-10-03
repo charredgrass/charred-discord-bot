@@ -21,19 +21,19 @@ const RS_GE : String = "http://services.runescape.com/m=itemdb_oldschool";
 
 let itemcache : Object = {};
 
-let idcache = null, pricecache = null;
+let idcache : Object[] = null, pricecache : Object = null;
 const RS_WIKI_IDS : String = "https://prices.runescape.wiki/api/v1/osrs/mapping";
 const RS_WIKI_PRICES : String = "https://prices.runescape.wiki/api/v1/osrs/latest";
 let idcacheTime : number = 0, pricecacheTime : number = 0;
 const WAIT_TIME : number = 1000 * 60 * 60 * 6; //6hr
 
-function wikiItem(name : string) {
+function wikiItem(name : string) : Promise<Object>{
 	return new Promise(async (resolve, reject) => {
 		await prepCache();
 		await prepPriceCache();
 		let item = searchCacheForItem(name);
 		let ret = {
-			price: pricecache[item.id],
+			price: pricecache[item["id"]],
 			desc: item
 		}
 		resolve(ret);
@@ -48,7 +48,7 @@ function prepCache() : Promise<Object> {
 					if (e) {
 						return reject(e);
 					}
-					let respjson : Object = JSON.parse(body); //TODO err handling
+					let respjson : Object[] = JSON.parse(body); //TODO err handling
 					idcache = respjson;
 					resolve(idcache);
 					idcacheTime = Date.now();
@@ -85,15 +85,17 @@ function prepPriceCache() : Promise<Object> {
 		return promise;
 }
 
-function searchCacheForItem(name : string) : any {
+function searchCacheForItem(name : string) : Object {
 	for (let item of idcache) {
-		if (item.name.toLowerCase() == name.toLowerCase()) { //TODO make a better search function
+		if (item["name"].toLowerCase() == name.toLowerCase()) { //TODO make a better search function
 			return item;
 		}
 	}
 	return null;
 }
 
+//this returns any so it can be cast into a Discord.ApplicationCommandOptionChoiceData<string | number>
+//idk how to fix that lol
 async function searchCacheForPartial(name : string) : Promise<any[]> {
 	return new Promise(async (resolve, reject) => {
 			await prepCache();
@@ -101,8 +103,8 @@ async function searchCacheForPartial(name : string) : Promise<any[]> {
 			const ret : any[] = [];
 			if (name.length == 0) return resolve(ret);
 			for (let item of idcache) {
-				if (item.name.toLowerCase().substring(0,name.length) == name.toLowerCase()) {
-					ret.push({name: item.name, value: item.name});
+				if (item["name"].toLowerCase().substring(0,name.length) == name.toLowerCase()) {
+					ret.push({name: item["name"], value: item["name"]});
 				}
 				if (ret.length >= 24) break; //capped size or API will throw err
 			}
