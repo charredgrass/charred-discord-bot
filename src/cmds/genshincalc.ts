@@ -61,9 +61,9 @@ function pullcmf(n, p) {
 
 
 //https://www.hoyolab.com/article/497840
-const P = 0.006;
+const P : number = 0.006;
 
-function pullpr(n) {
+function pullpr(n : number) : number {
 	if (n < 0 || n > 90) {
 		return NaN; //out of bounds
 	} else if (n <= 73) {

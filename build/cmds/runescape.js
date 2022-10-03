@@ -25,7 +25,7 @@ function wikiItem(name) {
         yield prepPriceCache();
         let item = searchCacheForItem(name);
         let ret = {
-            price: pricecache[item.id],
+            price: pricecache[item["id"]],
             desc: item
         };
         resolve(ret);
@@ -77,7 +77,7 @@ function prepPriceCache() {
 }
 function searchCacheForItem(name) {
     for (let item of idcache) {
-        if (item.name.toLowerCase() == name.toLowerCase()) {
+        if (item["name"].toLowerCase() == name.toLowerCase()) {
             return item;
         }
     }
@@ -92,8 +92,8 @@ function searchCacheForPartial(name) {
             if (name.length == 0)
                 return resolve(ret);
             for (let item of idcache) {
-                if (item.name.toLowerCase().substring(0, name.length) == name.toLowerCase()) {
-                    ret.push({ name: item.name, value: item.name });
+                if (item["name"].toLowerCase().includes(name.toLowerCase()) == true) {
+                    ret.push({ name: item["name"], value: item["name"] });
                 }
                 if (ret.length >= 24)
                     break;
