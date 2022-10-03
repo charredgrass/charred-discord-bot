@@ -16,7 +16,7 @@ import {
 
 const HARDPITY = 90;
 
-//this doesnt seem right
+//these are not very useful
 
 //probability mass function obtained from 
 //https://www.reddit.com/r/Genshin_Impact/comments/rtqdl2/guide_how_many_wishes_you_should_save/
@@ -59,20 +59,30 @@ function pullcmf(n, p) {
 	}
 }
 
-let chanceIn : Command = {
-	name: "chancein",
-	run: (args, message) => {
-		let pulls = Number(args[1]);
-		if (isNaN(pulls)) {
-			return message.channel.send("Invalid arguments. Syntax: !chancein [kc]");
-		}
-		if (pulls >= HARDPITY * 2) {
-			return message.channel.send("You are guaranteed.")
-		}
-	},
-	select: (selector: Selector) => {
-		return selector.dms;
+
+//https://www.hoyolab.com/article/497840
+const P = 0.006;
+
+function pullpr(n) {
+	if (n < 0 || n > 90) {
+		return NaN; //out of bounds
+	} else if (n <= 73) {
+		return P;
+	} else if (n <= 89) {
+		return P + ((n-73)*10*P);
+	} else { //n == 90
+		return 1;
 	}
+}
+
+function chanceRange(start : number, numPulls : number, multi : number = 1) : number{
+	if (numPulls == 0) {
+		return 1 - multi;
+	}
+	if (multi == 0) { //end early to avoid out of bounds
+		return 1;
+	}
+	return chanceRange(start + 1, numPulls - 1, multi * (1 - pullpr(start)));
 }
 
 let chanceHit : SCommand = {
@@ -91,7 +101,7 @@ let chanceHit : SCommand = {
 		await interaction.deferReply();
 		const pulls : number = Number(interaction.options.get("pulls").value);
 		const pity : number = Number(interaction.options.get("currentpity").value || 0);
-		return interaction.editReply(`${pulls} ${pity}`);
+		return interaction.editReply(`${pulls} ${pity} = ${chanceRange(pity, pulls)}`);
 	}
 }
 

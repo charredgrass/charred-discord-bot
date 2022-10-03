@@ -56,7 +56,7 @@ let chanceBelow = {
             for (let i = 0; i < drops; i++) {
                 chance += (0, statmath_1.binompdf)(kc, 1 / odds, i);
             }
-            return interaction.editReply(`The chances of getting at ${drops} 1/${odds} drops at ${kc} kc is ${(100 * (1 - chance))}%.`);
+            return interaction.editReply(`The chances of getting at ${drops} or more drops at a rate of 1/${odds} with ${kc} kc is ${(100 * (1 - chance))}%.`);
         });
     }
 };
