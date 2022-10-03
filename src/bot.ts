@@ -49,46 +49,6 @@ process.stdin.on("data", (text: string) => {
   }
 });
 
-
-
-// function serverSelector(serverID : string) : object {
-// 	//feel like i should probably rework this to be like
-// 	// a bit array or something
-//   let ret = {
-//     atg: false,
-//     frz: false,
-//     rao: false,
-//     dnd: false,
-//     dms: false,
-//     tst: false,
-//     rs:  false,
-//   };
-//   if (serverID === "167586953061990400") { //RAOCSGO
-//     ret.rao = true;
-//   } else if (serverID === "276220128822165505") { //AtG
-//     ret.atg = true;
-//   } else if (serverID === "234382619767341056") { //r/Frozen
-//     ret.frz = true;
-//   } else if (serverID === "446813545049358336") { //D&D
-//     ret.dnd = true;
-//   } else if (serverID === "220039870410784768") { //Clowns
-//     ret.dnd = true;
-//     ret.rs = true;
-//   } else if (serverID === "313169519545679872" || !serverID) { //nass and dmchannel
-//     ret.atg = true;
-//     ret.frz = true;
-//     ret.rao = true;
-//     ret.dnd = true;
-//     ret.tst = true; //test servers
-//     ret.rs = true;
-//     ret.dms = true;
-//   }
-//   if (!serverID) {
-//     ret.dms = true;
-//   }
-//   return ret;
-// }
-
 //return null if it isn't a command
 function argsplit(message : string) : string[] {
 	message = message.toString()
@@ -107,7 +67,10 @@ commands = Commands.cmds;
 let guildCommandList : Object = {};
 const guilds = {
   NASS: "313169519545679872",
-  CLOWNS: "220039870410784768"
+  CLOWNS: "220039870410784768",
+  RAOCSGO: "167586953061990400",
+  ATG: "276220128822165505",
+  RFROZEN: "234382619767341056"
 }
 for (const key in guilds) {
   guildCommandList[guilds[key]] = [];

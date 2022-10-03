@@ -9,19 +9,21 @@ const PROBS : [string, number][] = [
 	["psp", 1], ["ppp", 1], ["spp", 1]
 ]
 
-let augprob : Command = {
-	"name": "augprob",
-	run: (args, message) => {
-		let auglist = args[1];
-		let percentages = PROBS.filter(p => p[0].indexOf(auglist) === 0);
-		if (percentages.length === 0) {
-			return message.channel.send("invalid augment outcome")
-		}
-		return message.channel.send(percentages.toString());
-	},
-	select: (selector : Selector) => {
-		return selector.dms;
-	}
-};
+//deprecated and never fully implemented.
 
-export {augprob};
+// let augprob : Command = {
+// 	"name": "augprob",
+// 	run: (args, message) => {
+// 		let auglist = args[1];
+// 		let percentages = PROBS.filter(p => p[0].indexOf(auglist) === 0);
+// 		if (percentages.length === 0) {
+// 			return message.channel.send("invalid augment outcome")
+// 		}
+// 		return message.channel.send(percentages.toString());
+// 	},
+// 	select: (selector : Selector) => {
+// 		return selector.dms;
+// 	}
+// };
+
+// export {augprob};
