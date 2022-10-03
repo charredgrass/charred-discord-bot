@@ -103,7 +103,8 @@ async function searchCacheForPartial(name : string) : Promise<any[]> {
 			const ret : any[] = [];
 			if (name.length == 0) return resolve(ret);
 			for (let item of idcache) {
-				if (item["name"].toLowerCase().substring(0,name.length) == name.toLowerCase()) {
+				// if (item["name"].toLowerCase().substring(0,name.length) == name.toLowerCase()) {
+				if (item["name"].toLowerCase().includes(name.toLowerCase()) == true) {
 					ret.push({name: item["name"], value: item["name"]});
 				}
 				if (ret.length >= 24) break; //capped size or API will throw err
