@@ -49,21 +49,30 @@ function pullcmf(n, p) {
         return 1;
     }
 }
-let chanceIn = {
-    name: "chancein",
-    run: (args, message) => {
-        let pulls = Number(args[1]);
-        if (isNaN(pulls)) {
-            return message.channel.send("Invalid arguments. Syntax: !chancein [kc]");
-        }
-        if (pulls >= HARDPITY * 2) {
-            return message.channel.send("You are guaranteed.");
-        }
-    },
-    select: (selector) => {
-        return selector.dms;
+const P = 0.006;
+function pullpr(n) {
+    if (n < 0 || n > 90) {
+        return NaN;
     }
-};
+    else if (n <= 73) {
+        return P;
+    }
+    else if (n <= 89) {
+        return P + ((n - 73) * 10 * P);
+    }
+    else {
+        return 1;
+    }
+}
+function chanceRange(start, numPulls, multi = 1) {
+    if (numPulls == 0) {
+        return 1 - multi;
+    }
+    if (multi == 0) {
+        return 1;
+    }
+    return chanceRange(start + 1, numPulls - 1, multi * (1 - pullpr(start)));
+}
 let chanceHit = {
     name: "chancehit",
     flavor: "genshin",
@@ -79,7 +88,7 @@ let chanceHit = {
             yield interaction.deferReply();
             const pulls = Number(interaction.options.get("pulls").value);
             const pity = Number(interaction.options.get("currentpity").value || 0);
-            return interaction.editReply(`${pulls} ${pity}`);
+            return interaction.editReply(`${pulls} ${pity} = ${chanceRange(pity, pulls)}`);
         });
     }
 };
