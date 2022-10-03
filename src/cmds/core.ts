@@ -27,9 +27,9 @@ let ping : SCommand = {
 	}
 }
 
-let oldcmds : Command[] = [/*ping, rs.getPrice,*/ rsc.howDry, rsc.chanceBelow, tft.augprob];
+let oldcmds : Command[] = [/*ping, rs.getPrice, rsc.howDry, rsc.chanceBelow*/, tft.augprob];
 
-let scmds : SCommand[] = [ping, rs.getPrice, genshin.chanceHit];
+let scmds : SCommand[] = [ping, rs.getPrice, genshin.chanceHit, rsc.howDry, rsc.chanceBelow];
 let cmds : Collection<string, SCommand> = new Collection();
 for (let sc of scmds) {
 	cmds.set(sc.name, sc);

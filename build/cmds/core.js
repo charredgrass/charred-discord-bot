@@ -25,8 +25,8 @@ let ping = {
         });
     }
 };
-let oldcmds = [rsc.howDry, rsc.chanceBelow, tft.augprob];
-let scmds = [ping, rs.getPrice, genshin.chanceHit];
+let oldcmds = [, tft.augprob];
+let scmds = [ping, rs.getPrice, genshin.chanceHit, rsc.howDry, rsc.chanceBelow];
 let cmds = new discord_js_1.Collection();
 exports.cmds = cmds;
 for (let sc of scmds) {
