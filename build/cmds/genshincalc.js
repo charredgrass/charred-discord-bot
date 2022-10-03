@@ -45,6 +45,9 @@ function pullcmf(n, p) {
         }
         return sum;
     }
+    else {
+        return 1;
+    }
 }
 let chanceIn = {
     name: "chancein",
