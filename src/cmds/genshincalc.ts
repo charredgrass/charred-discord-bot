@@ -85,6 +85,23 @@ function chanceRange(start : number, numPulls : number, multi : number = 1) : nu
 	return chanceRange(start + 1, numPulls - 1, multi * (1 - pullpr(start)));
 }
 
+//O(pulls^2)
+function chanceRange5050(start : number, numPulls : number, guarantee : boolean = false, 
+	multi : number = 1) : number {
+	if (numPulls == 0) {
+		return 1 - multi;
+	}
+	if (multi == 0) {
+		return 1;
+	}
+	if (guarantee === true) {
+		return chanceRange5050(start + 1, numPulls - 1, true, multi * (1 - pullpr(start)));
+	} else {
+		return 2 - chanceRange5050(start + 1, numPulls - 1, false, multi * (1 - pullpr(start))) - 
+			chanceRange5050(start + 1, numPulls - 1, true, multi * (pullpr(start)));
+	}
+}
+
 let chanceHit : SCommand = {
 	name: "chancehit",
 	flavor: "genshin",
@@ -96,12 +113,18 @@ let chanceHit : SCommand = {
 		.addIntegerOption(option =>
 			option.setName("currentpity")
 			.setDescription("Current pity")
+			.setRequired(false))
+		.addBooleanOption(option =>
+			option.setName("guarantee")
+			.setDescription("If you are guaranteed your next limited 5 star")
 			.setRequired(false)),
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 		const pulls : number = Number(interaction.options.get("pulls").value);
 		const pity : number = Number(interaction.options.get("currentpity").value || 0);
-		return interaction.editReply(`${pulls} ${pity} = ${chanceRange(pity, pulls)}`);
+		const guar : boolean = Boolean(interaction.options.get("guarantee").value || false);
+		// return interaction.editReply(`${pulls} ${pity} = ${chanceRange(pity, pulls)}`);
+		return interaction.editReply(`${pulls} ${pity} ${guar} = ${chanceRange5050(pity, pulls, guar)}`);
 	}
 }
 
